@@ -1,0 +1,91 @@
+[
+    {
+        "id": "93eda25cb37f8a18",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "99d73c18984382ff",
+        "type": "tail",
+        "z": "93eda25cb37f8a18",
+        "name": "Tail file",
+        "filetype": "text",
+        "split": "[\\r]{0,1}\\n",
+        "filename": "C:\\Users\\zhussein3\\Github\\Obj2\\rpmi_machine_data.csv",
+        "inputs": 0,
+        "x": 190,
+        "y": 80,
+        "wires": [
+            [
+                "7044f7eab563924d"
+            ]
+        ]
+    },
+    {
+        "id": "5e6b6fa89b758449",
+        "type": "debug",
+        "z": "93eda25cb37f8a18",
+        "name": "Print to debug window",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "7044f7eab563924d",
+        "type": "function",
+        "z": "93eda25cb37f8a18",
+        "name": "Parse string",
+        "func": "var parts = msg.payload.trim().split(',');\n\nfunction parseNum(val) {\n    return (val && val !== \"\") ? parseFloat(val) : 0.0;\n}\n\nmsg.payload = {\n    timestamp: parts[0],\n    time_offset_s: parseNum(parts[1]),\n    x_mm: parseNum(parts[2]),\n    y_mm: parseNum(parts[3]),\n    z_mm: parseNum(parts[4]),\n    powder_flow_rate_g_min: parseNum(parts[5]),\n    laser_power_W: parseNum(parts[6]),\n    scan_speed_mm_s: parseNum(parts[7]),\n    oxygen_ppm: parseNum(parts[8]),\n    gas_flow_rate_L_min: parseNum(parts[9]),\n    laser_on: parseInt(parts[10]) === 1, // Converts 1 to true, 0 to false\n    melt_pool_intensity: parseNum(parts[11])\n};\n\nflow.set(\"live_process_data\", msg.payload);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 80,
+        "wires": [
+            [
+                "5e6b6fa89b758449",
+                "8a76061ecc0acc72"
+            ]
+        ]
+    },
+    {
+        "id": "8a76061ecc0acc72",
+        "type": "file",
+        "z": "93eda25cb37f8a18",
+        "name": "Write to new CSV",
+        "filename": "C:\\Users\\zhussein3\\Github\\Obj2\\node_rpmi_machine_data.csv",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 610,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "714fa33c43512f40",
+        "type": "comment",
+        "z": "93eda25cb37f8a18",
+        "name": "Change to DB insert",
+        "info": "Change this to an database insert statement\nDatabase parameters will likely have to be stored at global level.\nThis can be done by using an inject node and fuction node to set things up. ",
+        "x": 610,
+        "y": 160,
+        "wires": []
+    }
+]

@@ -5,6 +5,7 @@ import time
 import xmltodict
 import json
 import socket 
+import sqlite3 
 
 '''need to add timestamp, set to UTC. timestamp once the folder is available. 
 If available and the laser is on, create a string saying Good to start reading, then create a timestamp. 
