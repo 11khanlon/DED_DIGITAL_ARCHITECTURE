@@ -1,0 +1,65 @@
+Variable_Names
+TimeStamp
+Pos X(inch)
+Pos Y(inch)
+Pos Z(inch)
+Pho X(inch)
+Pho Y(inch)
+Pho Z(inch)
+Pho Tilt
+Pho Rotate
+Motion Compensation Active
+Pos Alps(inch)
+Alps Spot Size(inch)
+PF1 RPM Setpoint
+PF2 RPM Setpoint
+PF4 RPM Setpoint
+PF1 Argon: Valid Value
+PF2 Argon: Valid Value
+PF3 Argon: Valid Value
+PF4 Argon: Valid Value
+Center Purge Argon MFlow
+Center Purge Argon: Valid Value
+Center Purge Argon VFlow
+PF1 Argon Temp(°F)
+PF2 Argon Temp(°F)
+PF3 Argon Temp(°F)
+PF4 Argon Temp(°F)
+Center Purge Argon Temp(°F)
+PF1 Argon Absolute Pressure
+PF2 Argon Absolute Pressure
+PF3 Argon Absolute Pressure
+PF4 Argon Absolute Pressure
+Center Purge Argon Absolute Pressure
+Center Purge Pressure: Valid Value
+H2O Sensor
+O2 Sensor
+Head Temperature (RTD 1)(°F)
+PF2 Powder Low
+PF3 Powder Low
+PF4 Powder Low
+PF1 Top Pressure
+PF1 Bottom Pressure
+Dust Collector Diff Pressure
+PF2 Top Pressure
+PF2 Bottom Pressure
+Powder Manifold Pressure Sensor
+PF3 Top Pressure
+PF3 Bottom Pressure
+PF4 Top Pressure
+PF4 Bottom Pressure
+Optics Box Pressure Sensor
+Optics Box Pressure: Valid Value
+Dryrun Mode
+Laser Setpoint
+Laser Water Flow (L/min)
+Laser Water Temp (°C)
+DI Water Temp (°C)
+Process Fiber FFBD (mV)
+Beam Flags From Meter
+Camera Temp(°F)
+Contour Override
+Hatch Override
+Cmd Mode
+DeadMove Override
+Block Number
