@@ -1,15 +1,22 @@
 import numpy as np 
 import pandas as pd 
-import requests
+#import requests
 import time
-import xmltodict
+#import xmltodict
 import json
 import socket 
 import sqlite3 
+from datetime import datetime
+import csv 
 
 '''need to add timestamp, set to UTC. timestamp once the folder is available. 
 If available and the laser is on, create a string saying Good to start reading, then create a timestamp. 
-When the laser is turned off - check laser on time - then timestamp the folder that process has ended '''
+When the laser is turned off - check laser on time - then timestamp the folder that process has ended 
+Maybe, we do not need to cleanup the rows for later?'''
+
+
+
+#%%
 
 
 # --- Load data ---
