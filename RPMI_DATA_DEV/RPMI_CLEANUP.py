@@ -27,11 +27,14 @@ If available and the laser is on, create a string saying Good to start reading, 
 When the laser is turned off - check laser on time - then timestamp the folder that process has ended 
 Maybe, we do not need to cleanup the rows for later?'''
 
-
 #Create laser on time stamp function 
 def find_laser_timeframe(df):
-    df["TimeStamp"] = pd.to_datetime(df["TimeStamp"], errors="coerce")
-    df["TimeStamp"] = df["TimeStamp"].dt.tz_localize("UTC")
+
+    df["TimeStamp"] = pd.to_datetime(df["TimeStamp"], format="%Y-%m-%d %H:%M:%S", errors="coerce")  #pd.to_datetime(...), converts strings into real datetime objects. Can perform subtraction
+    df = df.dropna(subset=["TimeStamp"]).reset_index(drop=True)
+    df["TimeStamp"] = df["TimeStamp"].dt.tz_convert("UTC")  # .dt access datetime proprties, UTC will attatch UTC timezone
+    
+    print(df["TimeStamp"])
     
     # Find first index where Laser On is not zero
     laser_on_indices = df.index[df["Laser On"] != 0]
@@ -53,7 +56,12 @@ def find_laser_timeframe(df):
 
     laser_on_duration = final_timestamp - reference_timestamp
     laser_on_duration_seconds = laser_on_duration.total_seconds() 
+
     return reference_timestamp, laser_on_duration_seconds
+
+reference_timestamp, laser_on_duration_seconds = find_laser_timeframe(df)
+print(reference_timestamp, laser_on_duration_seconds)
+
 #%%
 
 #run this if there is missing data -- for now I do not know if there will be 

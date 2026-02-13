@@ -29,8 +29,10 @@ column_names.to_csv("RPMI_column_names.csv", index=False, header=False)
 #Create laser on time stamp function 
 def find_laser_timeframe(df):
 
-    df["TimeStamp"] = pd.to_datetime(df["TimeStamp"], format="%Y-%m-%d %H:%M:%S", errors="coerce")  #pd.to_datetime(...), converts strings into real datetime objects
-    df["TimeStamp"] = df["TimeStamp"].dt.tz_localize("UTC")
+    df["TimeStamp"] = pd.to_datetime(df["TimeStamp"], format="%Y-%m-%d %H:%M:%S", errors="coerce")  #pd.to_datetime(...), converts strings into real datetime objects. Can perform subtraction
+    df = df.dropna(subset=["TimeStamp"]).reset_index(drop=True)
+    df["TimeStamp"] = df["TimeStamp"].dt.tz_convert("UTC")  # .dt access datetime proprties, UTC will attatch UTC timezone
+    
     print(df["TimeStamp"])
     
     # Find first index where Laser On is not zero
@@ -53,6 +55,7 @@ def find_laser_timeframe(df):
 
     laser_on_duration = final_timestamp - reference_timestamp
     laser_on_duration_seconds = laser_on_duration.total_seconds() 
+
     return reference_timestamp, laser_on_duration_seconds
 
 reference_timestamp, laser_on_duration_seconds = find_laser_timeframe(df)
