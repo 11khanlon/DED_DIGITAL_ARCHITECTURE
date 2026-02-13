@@ -1,3 +1,4 @@
+#%%
 import numpy as np 
 import pandas as pd 
 import time
@@ -19,13 +20,18 @@ rng = np.random.default_rng(seed=42)
 
 # --- Get column names and Laser on timestamp ---
 columns = df.columns 
-column_names = df.columns.tolist()
+column_names1 = df.columns.tolist()
+column_names = pd.Series(df.columns)
+column_names.to_csv("RPMI_column_names.csv", index=False, header=False)
 
+#%%
 
 #Create laser on time stamp function 
 def find_laser_timeframe(df):
-    df["TimeStamp"] = pd.to_datetime(df["TimeStamp"], errors="coerce")
+
+    df["TimeStamp"] = pd.to_datetime(df["TimeStamp"], format="%Y-%m-%d %H:%M:%S", errors="coerce")  #pd.to_datetime(...), converts strings into real datetime objects
     df["TimeStamp"] = df["TimeStamp"].dt.tz_localize("UTC")
+    print(df["TimeStamp"])
     
     # Find first index where Laser On is not zero
     laser_on_indices = df.index[df["Laser On"] != 0]
@@ -49,8 +55,11 @@ def find_laser_timeframe(df):
     laser_on_duration_seconds = laser_on_duration.total_seconds() 
     return reference_timestamp, laser_on_duration_seconds
 
+reference_timestamp, laser_on_duration_seconds = find_laser_timeframe(df)
+print(reference_timestamp, laser_on_duration_seconds)
 
 
+#%%
 def generate_parameter_data(layer_num, time_offset, x_pos, y_pos, laser_on=True):
 
     if laser_start_time != 0: 
