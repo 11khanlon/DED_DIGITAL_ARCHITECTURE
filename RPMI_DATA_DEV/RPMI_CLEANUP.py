@@ -8,6 +8,19 @@ import socket
 import sqlite3 
 from datetime import datetime
 import csv 
+import os
+
+
+
+#%%
+# --- Load data and get column values ---
+os.chdir(r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV")
+df = pd.read_csv("dlog_2023-08-09_1106_purge testing.csv", low_memory=False)
+
+#%%
+# --- Get column names and Laser on timestamp ---
+columns = df.columns 
+column_names = df.columns.tolist()
 
 '''need to add timestamp, set to UTC. timestamp once the folder is available. 
 If available and the laser is on, create a string saying Good to start reading, then create a timestamp. 
@@ -15,12 +28,35 @@ When the laser is turned off - check laser on time - then timestamp the folder t
 Maybe, we do not need to cleanup the rows for later?'''
 
 
+#Create laser on time stamp function 
+def find_laser_timeframe(df):
+    df["TimeStamp"] = pd.to_datetime(df["TimeStamp"], errors="coerce")
+    df["TimeStamp"] = df["TimeStamp"].dt.tz_localize("UTC")
+    
+    # Find first index where Laser On is not zero
+    laser_on_indices = df.index[df["Laser On"] != 0]
 
+    if len(laser_on_indices) == 0:
+        return None, 0
+
+    first_on_idx = laser_on_indices[0]
+
+    if first_on_idx > 0:
+        reference_idx = first_on_idx - 1
+    else:
+        reference_idx = first_on_idx
+
+    reference_timestamp = df.loc[reference_idx, "TimeStamp"]
+
+    last_on_idx = laser_on_indices[-1]
+    final_timestamp = df.loc[last_on_idx, "TimeStamp"]
+
+    laser_on_duration = final_timestamp - reference_timestamp
+    laser_on_duration_seconds = laser_on_duration.total_seconds() 
+    return reference_timestamp, laser_on_duration_seconds
 #%%
 
-
-# --- Load data ---
-df = pd.read_csv("dlog_2023-08-09_1106_purge testing.csv", low_memory=False)
+#run this if there is missing data -- for now I do not know if there will be 
 
 # --- Track original shape ---
 original_shape = df.shape
