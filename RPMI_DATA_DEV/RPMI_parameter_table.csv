@@ -1,0 +1,151 @@
+parameter_id,parameter_name
+1,TimeStamp
+2,Pos X(inch)
+3,Pos Y(inch)
+4,Pos Z(inch)
+5,Velocity X
+6,Velocity Y
+7,Velocity Z
+8,Motion Compensation Active
+9,Pos Alps(inch)
+10,Alps Spot Size(inch)
+11,PF1 RPM
+12,PF2 RPM
+13,PF3 RPM
+14,PF4 RPM
+15,PF1 Override
+16,PF2 Override
+17,PF3 Override
+18,PF4 Override
+19,PF1 RPM Setpoint
+20,PF2 RPM Setpoint
+21,PF3 RPM Setpoint
+22,PF4 RPM Setpoint
+23,PF1 Argon MFlow
+24,PF1 Argon: Warning High Level
+25,PF1 Argon: Warning Low Level
+26,PF1 Argon: Alarm High Level
+27,PF1 Argon: Alarm Low Level
+28,PF1 Argon: Baseline Level
+29,PF1 Argon: Warning Tolerance Level
+30,PF1 Argon: Alarm Tolerance Level
+31,PF1 Argon: Valid Value
+32,PF2 Argon MFlow
+33,PF2 Argon: Warning Enabled
+34,PF2 Argon: Warning High Level
+35,PF2 Argon: Warning Low Level
+36,PF2 Argon: Alarm High Level
+37,PF2 Argon: Alarm Low Level
+38,PF2 Argon: Warning Tolerance Level
+39,PF2 Argon: Alarm Tolerance Level
+40,PF3 Argon MFlow
+41,PF3 Argon: Warning Enabled
+42,PF3 Argon: Warning High Level
+43,PF3 Argon: Warning Low Level
+44,PF3 Argon: Alarm High Level
+45,PF3 Argon: Alarm Low Level
+46,PF3 Argon: Warning Tolerance Level
+47,PF3 Argon: Alarm Tolerance Level
+48,PF4 Argon MFlow
+49,PF4 Argon: Warning Enabled
+50,PF4 Argon: Warning High Level
+51,PF4 Argon: Warning Low Level
+52,PF4 Argon: Alarm High Level
+53,PF4 Argon: Alarm Low Level
+54,PF4 Argon: Warning Tolerance Level
+55,PF4 Argon: Alarm Tolerance Level
+56,Center Purge Argon MFlow
+57,Center Purge Argon: Warning High Level
+58,Center Purge Argon: Warning Low Level
+59,Center Purge Argon: Alarm High Level
+60,Center Purge Argon: Alarm Low Level
+61,Center Purge Argon: Warning Tolerance Level
+62,Center Purge Argon: Alarm Tolerance Level
+63,PF1 Argon VFlow
+64,PF2 Argon VFlow
+65,PF3 Argon VFlow
+66,PF4 Argon VFlow
+67,Center Purge Argon VFlow
+68,PF1 Argon Temp(°F)
+69,PF2 Argon Temp(°F)
+70,PF3 Argon Temp(°F)
+71,PF4 Argon Temp(°F)
+72,Center Purge Argon Temp(°F)
+73,PF1 Argon Absolute Pressure
+74,PF2 Argon Absolute Pressure
+75,PF3 Argon Absolute Pressure
+76,PF4 Argon Absolute Pressure
+77,Center Purge Argon Absolute Pressure
+78,Center Purge Pressure: Warning High Level
+79,Center Purge Pressure: Warning Low Level
+80,Center Purge Pressure: Alarm High Level
+81,Center Purge Pressure: Alarm Low Level
+82,Center Purge Pressure: Warning Tolerance Level
+83,Center Purge Pressure: Alarm Tolerance Level
+84,H2O Sensor
+85,H2O Sensor: Warning High Level
+86,H2O Sensor: Warning Low Level
+87,H2O Sensor: Alarm High Level
+88,H2O Sensor: Alarm Low Level
+89,O2 Sensor
+90,O2 Sensor: Warning High Level
+91,O2 Sensor: Warning Low Level
+92,O2 Sensor: Alarm High Level
+93,O2 Sensor: Alarm Low Level
+94,Head Temperature (RTD 1)(°F)
+95,Head Temp: Warning High Level
+96,Head Temp: Warning Low Level
+97,Head Temp: Alarm High Level
+98,Head Temp: Alarm Low Level
+99,PF1 Powder Low
+100,PF1 Powder Low: Warning Enabled
+101,PF1 Powder Low: Alarm Enabled
+102,PF2 Powder Low
+103,PF2 Powder Low: Warning Enabled
+104,PF2 Powder Low: Alarm Enabled
+105,PF3 Powder Low
+106,PF3 Powder Low: Warning Enabled
+107,PF3 Powder Low: Alarm Enabled
+108,PF4 Powder Low
+109,PF4 Powder Low: Warning Enabled
+110,PF4 Powder Low: Alarm Enabled
+111,Box Pressure
+112,PF1 Top Pressure
+113,PF1 Bottom Pressure
+114,PF1 Bottom Pressure: Warning Tolerance Level
+115,PF1 Bottom Pressure : Warning High Level
+116,PF1 Bottom Pressure : Warning Low Level
+117,Dust Collector Diff Pressure
+118,PF2 Top Pressure
+119,PF2 Bottom Pressure
+120,Powder Manifold Pressure Sensor
+121,PF3 Top Pressure
+122,PF3 Bottom Pressure
+123,PF4 Top Pressure
+124,PF4 Bottom Pressure
+125,Optics Box Pressure Sensor
+126,Laser On
+127,Dryrun Mode
+128,Laser Setpoint
+129,Laser Power (from laser)
+130,Laser Water Flow (L/min)
+131,Laser Water Temp (°C)
+132,DI Water Temp (°C)
+133,Laser On Time (ms)
+134,Feed Fiber FFBD (mV)
+135,Process Fiber FFBD (mV)
+136,Power From Meter
+137,Beam Size From Meter (inch)
+138,Beam Pos X From Meter (inch)
+139,Beam Pos Y From Meter (inch)
+140,Power From Meter (uncompensated)
+141,Beam Flags From Meter
+142,Camera Temp(°F)
+143,Melt Pool Area
+144,Melt Pool Area: Valid Value
+145,Layer #
+146,Contour Override
+147,Hatch Override
+148,Path Setpoint Velocity(inch/min)
+149,Cmd Mode
+150,Toolcode Execution Time

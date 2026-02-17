@@ -11,7 +11,6 @@ import csv
 import os
 
 
-
 #%%
 # --- Load data and get column values ---
 os.chdir(r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV")
@@ -20,38 +19,42 @@ df = pd.read_csv("dlog_2023-08-09_1106_purge testing.csv", low_memory=False)
 #%%
 # --- Get column names and Laser on timestamp ---
 columns = df.columns 
-column_names = df.columns.tolist()
+column_names1 = df.columns.tolist()
+print(column_names1)
+column_names = pd.Series(df.columns)
+column_names.to_csv("RPMI_column_names.csv", index=False, header=False)
+
+#%%
 
 '''need to add timestamp, set to UTC. timestamp once the folder is available. 
 If available and the laser is on, create a string saying Good to start reading, then create a timestamp. 
 When the laser is turned off - check laser on time - then timestamp the folder that process has ended 
 Maybe, we do not need to cleanup the rows for later?'''
 
-#Create laser on time stamp function 
+#Create laser on time stamp function, event = LaserOn
 def find_laser_timeframe(df):
 
-    df["TimeStamp"] = pd.to_datetime(df["TimeStamp"], format="%Y-%m-%d %H:%M:%S", errors="coerce")  #pd.to_datetime(...), converts strings into real datetime objects. Can perform subtraction
-    df = df.dropna(subset=["TimeStamp"]).reset_index(drop=True)
+    #pd.to_datetime(...), converts strings into real datetime objects. Can perform subtraction. errors = "coerce" will convert unparseable strings to NaT (Not a Time) 
+    df["TimeStamp"] = pd.to_datetime(df["TimeStamp"], format="%Y-%m-%d %H:%M:%S", errors="coerce")  
+    df = df.dropna(subset=["TimeStamp"]).reset_index(drop=True) #removes rows were TimeStamp is missing
     df["TimeStamp"] = df["TimeStamp"].dt.tz_convert("UTC")  # .dt access datetime proprties, UTC will attatch UTC timezone
     
-    print(df["TimeStamp"])
     
-    # Find first index where Laser On is not zero
-    laser_on_indices = df.index[df["Laser On"] != 0]
+    laser_on_indices = df.index[df["Laser On"] != 0]  # Find first index where Laser On is not zero
 
     if len(laser_on_indices) == 0:
-        return None, 0
+        return None, 0     #if laser is never on, return None and 0 duration
 
     first_on_idx = laser_on_indices[0]
 
-    if first_on_idx > 0:
-        reference_idx = first_on_idx - 1
+    if first_on_idx > 0:    
+        reference_idx = first_on_idx - 1  #pick row just before laser turns on as a reference timestamp
     else:
         reference_idx = first_on_idx
 
     reference_timestamp = df.loc[reference_idx, "TimeStamp"]
 
-    last_on_idx = laser_on_indices[-1]
+    last_on_idx = laser_on_indices[-1]  # Find last index where Laser On is not zero
     final_timestamp = df.loc[last_on_idx, "TimeStamp"]
 
     laser_on_duration = final_timestamp - reference_timestamp
