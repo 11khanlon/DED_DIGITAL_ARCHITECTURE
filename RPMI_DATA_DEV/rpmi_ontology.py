@@ -13,7 +13,9 @@ print(f"Original data shape: {original_shape}")
 
 #%%
 # --- Columns to drop ---
-#Assume rotate and tilt with their respective velocities are 0, drop redundant warnings
+
+#maybe store these in a simple file with their respective data. Do not need a relational databse
+
 columns_to_drop = [
     "Assum Pos Z(inch)",
     "Pos Tilt",
@@ -23,9 +25,9 @@ columns_to_drop = [
     "Pho Z(inch)",
     "Pho Tilt",
     "Pho Rotate",
-    "Velocity Tilt",
-    "Velocity Rotate",
-    "PF1 Override",
+    "Velocity Tilt", #Assume rotate and tilt with their respective velocities are 0
+    "Velocity Rotate", 
+    "PF1 Override", , #drop redundant warnings
     "PF2 Override",
     "PF3 Override",
     "PF4 Override",
@@ -205,13 +207,21 @@ print("Parameter table created successfully.")
 # %%
 #--Create ontology table with parameter names and descriptions--
 
+'''An ontology needs 
+hierarchy: subsystem --> parameter. create domains and subtables 
+Type classification: sensor, control, state
+realtionships (measured_by_, controlled_by, part_of)
+queryable structure 
+'''
+
+
+#tables to be stored under kinematic data
 position_data = pd.DataFrame({
-    "parameter_name": ["Pos X(inch)", "Pos Y(inch)", "Pos Z(inch)", "Layer #"],
+    "parameter_name": ["Pos X(inch)", "Pos Y(inch)", "Pos Z(inch)"],
     "description": [
         "X position of the laser head in inches",
         "Y position of the laser head in inches",
-        "Z position of the laser head in inches",
-        "Current layer number"
+        "Z position of the laser head in inches"
     ]
 })
 
@@ -224,8 +234,20 @@ velocity_data = pd.DataFrame({
     ]
 })
 
-import pandas as pd
+kinematic_data = pd.DataFrame({position_data, velocity_data})
 
+'''
+The kinematic data includes the position and velocity of the laser head. 
+The position data consists of the X, Y, and Z coordinates of the laser head in inches, which indicate its location in 3D space. 
+The velocity data includes the X, Y, and Z velocities of the laser head in inches per second, which describe how fast the laser head is moving along each axis. This information is crucial for understanding the motion of the laser during the additive manufacturing process and can be used to analyze the relationship between the laser's movement and the resulting melt pool characteristics.
+'''
+
+#Spatiotemporal data
+
+timestamp_data = pd.DataFrame({"Layer #": "Current layer number", "TimeStamp": "Timestamp of the data point, converted to UTC"})
+spatiotemporal_data = pd.DataFrame({position_data, timestamp_data})
+
+#Laser data
 laser_data = pd.DataFrame({
     "parameter_name": [
         "Laser On",
@@ -278,8 +300,13 @@ machine_head_data = pd.DataFrame({
 })
 
 
+#%%
+#--machine hopper data--
+#hopper_machine_number --> PF data --> RPM, Argon flow, Pressure, Warnings, powder data 
+
+#Parent Table
 hopper_machine_number = pd.DataFrame({
-    "parameter_name": ["PF1", "PF2", "PF3", "PF4"],
+    "hopper_id": ["PF1", "PF2", "PF3", "PF4"],
     "description": [
         "Machine number for hopper 1",
         "Machine number for hopper 2",
@@ -287,10 +314,13 @@ hopper_machine_number = pd.DataFrame({
         "Machine number for hopper 4"
     ]
 })
+print(hopper_machine_number)
 
-
-PF1__data = pd.DataFrame({
+#Single Child table
+PF_data = pd.DataFrame({
     "parameter_name": [
+
+        #PF1 parameters
         "PF1 RPM",
         "PF1 RPM Setpoint",
         "PF1 Argon MFlow",
@@ -306,10 +336,78 @@ PF1__data = pd.DataFrame({
         "PF1 Bottom Pressure",
         "PF1 Bottom Pressure : Warning High Level",
         "PF1 Bottom Pressure : Warning Low Level"
-    ]
+         
+        #RF2 parameters
+        "PF2 RPM",
+        "PF2 RPM Setpoint",
+        "PF2 Argon MFlow",
+        "PF2 Argon: Warning High Level",
+        "PF2 Argon: Warning Low Level",
+        "PF2 Argon VFlow",
+        "PF2 Argon Temp(Â°F)",
+        "PF2 Argon Absolute Pressure",
+        "PF2 Powder Low",
+        "PF2 Powder Low: Warning Enabled",
+        "PF2 Powder Low: Alarm Enabled",
+        "PF2 Top Pressure",
+        "PF2 Bottom Pressure",
+        "PF2 Bottom Pressure : Warning High Level",
+        "PF2 Bottom Pressure : Warning Low Level"
+        
+        #PF3 parameters
+        "PF3 RPM",
+        "PF3 RPM Setpoint",
+        "PF3 Argon MFlow",
+        "PF3 Argon: Warning High Level",
+        "PF3 Argon: Warning Low Level",
+        "PF3 Argon VFlow",
+        "PF3 Argon Temp(Â°F)",
+        "PF3 Argon Absolute Pressure",
+        "PF3 Powder Low",
+        "PF3 Powder Low: Warning Enabled",
+        "PF3 Powder Low: Alarm Enabled",
+        "PF3 Top Pressure",
+        "PF3 Bottom Pressure",
+        "PF3 Bottom Pressure : Warning High Level",
+        "PF3 Bottom Pressure : Warning Low Level"
+
+        #PF4 parameters
+        "PF4 RPM",
+        "PF4 RPM Setpoint",
+        "PF4 Argon MFlow",
+        "PF4 Argon: Warning High Level",
+        "PF4 Argon: Warning Low Level",
+        "PF4 Argon VFlow",
+        "PF4 Argon Temp(Â°F)",
+        "PF4 Argon Absolute Pressure",
+        "PF4 Powder Low",
+        "PF4 Powder Low: Warning Enabled",
+        "PF4 Powder Low: Alarm Enabled",
+        "PF4 Top Pressure",
+        "PF4 Bottom Pressure",
+        "PF4 Bottom Pressure : Warning High Level",
+        "PF4 Bottom Pressure : Warning Low Level"
+          ]
 })
 
+PF_data["hopper_id"] = PF_data["parameter_name"].str.extract(r"(PF\d)")
+print(PF_data)
 
+RPM_data = PF_data[PF_data["parameter_name"].str.contains("RPM")].copy()
+
+argon_data = PF_data[PF_data["parameter_name"].str.contains("Argon")].copy()
+
+hopper_warnings = PF_data[PF_data["parameter_name"].str.contains("Warning|Alarm")].copy()
+
+powder_data = PF_data[ PF_data["parameter_name"].str.contains("Powder")].copy()
+
+print(powder_data)
+
+pressure_data = PF_data[PF_data["parameter_name"].str.contains("Pressure")].copy()
+
+
+
+#%%
 center_purge_data = pd.DataFrame({
     "parameter_name": [
         "Center Purge Argon MFlow",

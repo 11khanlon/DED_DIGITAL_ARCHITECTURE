@@ -48,64 +48,59 @@ parameter_id,parameter_name
 47,PF3 Argon Absolute Pressure
 48,PF4 Argon Absolute Pressure
 49,Center Purge Argon Absolute Pressure
-50,Center Purge Pressure: Warning High Level
-51,Center Purge Pressure: Warning Low Level
-52,H2O Sensor
-53,H2O Sensor: Warning High Level
-54,H2O Sensor: Warning Low Level
-55,O2 Sensor
-56,O2 Sensor: Warning High Level
-57,O2 Sensor: Warning Low Level
-58,Head Temperature (RTD 1)(°F)
-59,Head Temp: Warning High Level
-60,Head Temp: Warning Low Level
-61,PF1 Powder Low
-62,PF1 Powder Low: Warning Enabled
-63,PF1 Powder Low: Alarm Enabled
-64,PF2 Powder Low
-65,PF2 Powder Low: Warning Enabled
-66,PF2 Powder Low: Alarm Enabled
-67,PF3 Powder Low
-68,PF3 Powder Low: Warning Enabled
-69,PF3 Powder Low: Alarm Enabled
-70,PF4 Powder Low
-71,PF4 Powder Low: Warning Enabled
-72,PF4 Powder Low: Alarm Enabled
-73,Box Pressure
-74,PF1 Top Pressure
-75,PF1 Bottom Pressure
-76,PF1 Bottom Pressure : Warning High Level
-77,PF1 Bottom Pressure : Warning Low Level
-78,Dust Collector Diff Pressure
-79,PF2 Top Pressure
-80,PF2 Bottom Pressure
-81,Powder Manifold Pressure Sensor
-82,PF3 Top Pressure
-83,PF3 Bottom Pressure
-84,PF4 Top Pressure
-85,PF4 Bottom Pressure
-86,Optics Box Pressure Sensor
-87,Laser On
-88,Dryrun Mode
-89,Laser Setpoint
-90,Laser Power (from laser)
-91,Laser Water Flow (L/min)
-92,Laser Water Temp (°C)
-93,DI Water Temp (°C)
-94,Laser On Time (ms)
-95,Feed Fiber FFBD (mV)
-96,Process Fiber FFBD (mV)
-97,Power From Meter
-98,Beam Size From Meter (inch)
-99,Beam Pos X From Meter (inch)
-100,Beam Pos Y From Meter (inch)
-101,Power From Meter (uncompensated)
-102,Beam Flags From Meter
-103,Camera Temp(°F)
-104,Melt Pool Area
-105,Melt Pool Area: Valid Value
-106,Layer #
-107,Contour Override
-108,Hatch Override
-109,Path Setpoint Velocity(inch/min)
-110,Toolcode Execution Time
+50,H2O Sensor
+51,H2O Sensor: Warning High Level
+52,H2O Sensor: Warning Low Level
+53,O2 Sensor
+54,O2 Sensor: Warning High Level
+55,O2 Sensor: Warning Low Level
+56,Head Temperature (RTD 1)(°F)
+57,Head Temp: Warning High Level
+58,Head Temp: Warning Low Level
+59,PF1 Powder Low
+60,PF1 Powder Low: Warning Enabled
+61,PF1 Powder Low: Alarm Enabled
+62,PF2 Powder Low
+63,PF2 Powder Low: Warning Enabled
+64,PF2 Powder Low: Alarm Enabled
+65,PF3 Powder Low
+66,PF3 Powder Low: Warning Enabled
+67,PF3 Powder Low: Alarm Enabled
+68,PF4 Powder Low
+69,PF4 Powder Low: Warning Enabled
+70,PF4 Powder Low: Alarm Enabled
+71,Box Pressure
+72,PF1 Top Pressure
+73,PF1 Bottom Pressure
+74,PF1 Bottom Pressure : Warning High Level
+75,PF1 Bottom Pressure : Warning Low Level
+76,Dust Collector Diff Pressure
+77,PF2 Top Pressure
+78,PF2 Bottom Pressure
+79,Powder Manifold Pressure Sensor
+80,PF3 Top Pressure
+81,PF3 Bottom Pressure
+82,PF4 Top Pressure
+83,PF4 Bottom Pressure
+84,Optics Box Pressure Sensor
+85,Laser On
+86,Laser Setpoint
+87,Laser Power (from laser)
+88,Laser Water Flow (L/min)
+89,Laser Water Temp (°C)
+90,DI Water Temp (°C)
+91,Laser On Time (ms)
+92,Feed Fiber FFBD (mV)
+93,Process Fiber FFBD (mV)
+94,Power From Meter
+95,Beam Size From Meter (inch)
+96,Beam Pos X From Meter (inch)
+97,Beam Pos Y From Meter (inch)
+98,Power From Meter (uncompensated)
+99,Beam Flags From Meter
+100,Camera Temp(°F)
+101,Melt Pool Area
+102,Melt Pool Area: Valid Value
+103,Layer #
+104,Path Setpoint Velocity(inch/min)
+105,Toolcode Execution Time
