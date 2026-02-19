@@ -3,6 +3,7 @@
 import numpy as np
 import pandas as pd
 import os
+from IPython.display import display
 #%%
 
 substrate_properties = pd.DataFrame({
@@ -15,5 +16,5 @@ substrate_properties = pd.DataFrame({
     "parameter_value": [None]*5 
 })
 
-print(substrate_properties)
+display(substrate_properties)
 # %%

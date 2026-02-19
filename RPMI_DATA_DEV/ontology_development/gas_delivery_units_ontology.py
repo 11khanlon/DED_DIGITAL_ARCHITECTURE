@@ -2,6 +2,7 @@
 import numpy as np
 import pandas as pd
 import os
+from IPython.display import display
 
 #%%
 #--gas delivery unit data--
@@ -9,6 +10,14 @@ import os
 #gas_delivery_units --> hopper data --> RPM, Argon flow, Pressure, Warnings, powder data 
 #                   |--> centerpurge data   
 ##the parameters I use, not the names for the IDs, are directly from the RPMI source file
+
+'''
+The RPMI contains 5 gas delivery units: 4 powder feeder hoppers (PF1-PF4) and 1 central purge line (CP1). 
+Each unit has a unique set of parameters that are monitored during the build process.
+The center purge line includes parameters related to the argon flow and pressure in the central purge line to help with print and machine protection
+The four hoppers include parameters related to the powder feed rate, argon flow, and pressure for each of the four hoppers
+
+'''
 
 gas_delivery_units = pd.DataFrame({
     "unit_id": ["PF1", "PF2", "PF3", "PF4", "CP1"],
@@ -28,6 +37,7 @@ gas_delivery_units = pd.DataFrame({
     ]
 })
 
+display(gas_delivery_units)
 
 center_purge_data = pd.DataFrame({
     "parameter_name": [
@@ -39,15 +49,13 @@ center_purge_data = pd.DataFrame({
         "Center Purge Argon Absolute Pressure"
     ]
 })
+center_purge_data.insert(0, "unit_id", "CP1")
 
-center_purge_data["unit_id"] = "CP1"
-'''
-df["column_name"] access the a column
-so center_purge_data["unit_id"] will access column unit_id inside center_purge_data 
-but this column does not exist yet, so pandas will create it 
 
-'''
 
+display(center_purge_data)
+
+#also contains powder data, but its ID comes from gas delivery units...
 #Single Child table
 hopper_data = pd.DataFrame({
     "parameter_name": [
@@ -121,9 +129,36 @@ hopper_data = pd.DataFrame({
         "PF4 Bottom Pressure : Warning Low Level"
           ]
 })
-hopper_data["unit_id"] = hopper_data["parameter_name"].str.extract(r"(PF\d)")
+
+hopper_data.insert(0, "unit_id", hopper_data["parameter_name"].str.extract(r"(PF\d)"))
 
 
+
+#Create Subtables for each parameter type (RPM, Argon, Pressure, Warnings, Powder data)
+
+RPM_data = hopper_data[hopper_data["parameter_name"].str.contains("RPM")].copy()
+RPM_data.insert(1, "subsystem", "RPM")
+
+hopper_warnings = hopper_data[hopper_data["parameter_name"].str.contains("Warning|Alarm")].copy()
+hopper_warnings.insert(1, "subsystem", "Warnings")
+
+powder_data = hopper_data[ hopper_data["parameter_name"].str.contains("Powder")].copy()
+powder_data.insert(1, "subsystem", "Powder Data")
+
+pressure_data = hopper_data[hopper_data["parameter_name"].str.contains("Pressure")].copy()
+pressure_data.insert(1, "subsystem", "Pressure")
+
+argon_data = pd.concat([hopper_data[hopper_data["parameter_name"].str.contains("Argon")],
+                        center_purge_data], ignore_index=True)
+argon_data.insert(1, "subsystem", "Argon Data")
+
+all_parameters = pd.concat([RPM_data, hopper_warnings, powder_data, pressure_data, argon_data], ignore_index=True)
+
+print(all_parameters)
+
+
+
+# %%
 '''
 Pandas syntax:
 The pandas code is doing boolean filering, not an index lookup.
@@ -135,25 +170,10 @@ series.str --> pandas string accessor. It allows you to apply string operations 
 So instead of, give me item at index 0. Give me all rows where this condition is True
 df[df["col"].str.contains("x")]
 
+
+df["column_name"] access the a column
+so center_purge_data["unit_id"] will access column unit_id inside center_purge_data 
+but this column does not exist yet, so pandas will create it 
+
+
 '''
-
-
-#Create Subtables for each parameter type (RPM, Argon, Pressure, Warnings, Powder data)
-
-RPM_data = hopper_data[hopper_data["parameter_name"].str.contains("RPM")].copy()
-RPM_data["subsystem"] = "RPM"
-
-hopper_warnings = hopper_data[hopper_data["parameter_name"].str.contains("Warning|Alarm")].copy()
-hopper_warnings["subsystem"] = "Warnings"
-
-powder_data = hopper_data[ hopper_data["parameter_name"].str.contains("Powder")].copy()
-powder_data["subsystem"] = "Powder"
-
-pressure_data = hopper_data[hopper_data["parameter_name"].str.contains("Pressure")].copy()
-pressure_data["subsystem"] = "Pressure"
-
-argon_data = pd.concat([hopper_data[hopper_data["parameter_name"].str.contains("Argon")],
-                        center_purge_data], ignore_index=True)
-argon_data["subsystem"] = "Argon Flow"
-
-all_parameters = pd.concat([RPM_data, hopper_warnings, powder_data, pressure_data, argon_data], ignore_index=True)

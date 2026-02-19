@@ -2,9 +2,12 @@
 import numpy as np
 import pandas as pd
 import os
+from IPython.display import display
 # %%
 
 #This will be the assembly file
+
+#once you add all parameters, branch to create feature "add database schema"
 
 #--Create ontology table with parameter names and descriptions--
 
