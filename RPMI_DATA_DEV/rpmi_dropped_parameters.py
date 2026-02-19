@@ -5,7 +5,7 @@ import os
 
 #%%
 # --- Load data ---
-os.chdir(r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV")
+os.chdir(r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\output_files")
 df = pd.read_csv("dlog_2023-08-09_1106_purge testing.csv", low_memory=False)
 
 original_shape = df.shape
@@ -27,7 +27,7 @@ columns_to_drop = [
     "Pho Rotate",
     "Velocity Tilt", #Assume rotate and tilt with their respective velocities are 0
     "Velocity Rotate", 
-    "PF1 Override", , #drop redundant warnings
+    "PF1 Override",  #drop redundant warnings
     "PF2 Override",
     "PF3 Override",
     "PF4 Override",
@@ -198,7 +198,7 @@ parameter_table = pd.DataFrame({
 #%%
 # --- Save to CSV ---
 parameter_table.to_csv(
-    "RPMI_parameter_table.csv",
+    r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\output_files\RPMI_parameter_table.csv",
     index=False
 )
 

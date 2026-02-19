@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import os
 # %%
+
 #--Create ontology table with parameter names and descriptions--
 
 '''An ontology needs 
@@ -11,6 +12,9 @@ Type classification: sensor, control, state
 Realtionships (measured_by_, controlled_by, part_of)
 Queryable structure 
 '''
+#%%
+#Create metadata
+
 
 #%%
 
@@ -65,7 +69,6 @@ machine_head_configuration_data = pd.DataFrame({
     
 })
 
-
 machine_head_kinematic_types = pd.DataFrame({
     "kinematic_id": ["position", "velocity"],
     "subsystem_id": ["kinematic", "kinematic"],
@@ -98,7 +101,6 @@ velocity_data = pd.DataFrame({
     "kinematic_id": "velocity"
 })
 
-
 '''
 The kinematic data includes the position and velocity of the laser head. 
 The position data consists of the X, Y, and Z coordinates of the laser head in inches, which indicate its location in 3D space. 
@@ -106,6 +108,8 @@ The velocity data includes the X, Y, and Z velocities of the laser head in inche
 This information is crucial for understanding the motion of the laser during the additive manufacturing process 
 and can be used to analyze the relationship between the laser's movement and the resulting melt pool characteristics.
 '''
+
+#%%
 #Spatiotemporal data
 timestamp_data = pd.DataFrame({
     "parameter_name": ["Layer #", "Timestamp"],
@@ -116,7 +120,6 @@ timestamp_data = pd.DataFrame({
     "subsystem_id": "kinematic"
 })
 
-
 #Create subtables
 spatiotemporal_data = pd.concat(
     [timestamp_data, machine_head_position_data, velocity_data],
@@ -125,12 +128,10 @@ spatiotemporal_data = pd.concat(
 
 print(spatiotemporal_data)
 
-#overlapping x data with kinematic data though
 
 #%%
+
 #--Optics---
-
-
 optics_unit = pd.DataFrame({
     "optics_unit_id": ["OPT1"],
     "description": ["Laser optics assembly"]
@@ -216,9 +217,7 @@ all_optics_parameters = pd.concat([
     beam_monitor_data,
     fiber_diagnostics_data,
     optics_environment_data,
-    alps_data
-], ignore_index=True)
-
+    alps_data], ignore_index=True)
 
 
 #%%
@@ -358,16 +357,22 @@ df[df["col"].str.contains("x")]
 #Create Subtables for each parameter type (RPM, Argon, Pressure, Warnings, Powder data)
 
 RPM_data = hopper_data[hopper_data["parameter_name"].str.contains("RPM")].copy()
+RPM_data["subsystem"] = "RPM"
 
 hopper_warnings = hopper_data[hopper_data["parameter_name"].str.contains("Warning|Alarm")].copy()
+hopper_warnings["subsystem"] = "Warnings"
 
 powder_data = hopper_data[ hopper_data["parameter_name"].str.contains("Powder")].copy()
+powder_data["subsystem"] = "Powder"
 
 pressure_data = hopper_data[hopper_data["parameter_name"].str.contains("Pressure")].copy()
+pressure_data["subsystem"] = "Pressure"
 
 argon_data = pd.concat([hopper_data[hopper_data["parameter_name"].str.contains("Argon")],
                         center_purge_data], ignore_index=True)
+argon_data["subsystem"] = "Argon Flow"
 
+all_parameters = pd.concat([RPM_data, hopper_warnings, powder_data, pressure_data, argon_data], ignore_index=True)
 
 
 #%%
@@ -441,4 +446,5 @@ substrate_properties = pd.DataFrame({
     ]
 })
 
-#%%
+
+# %%

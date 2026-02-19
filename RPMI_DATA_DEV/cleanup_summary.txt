@@ -1,5 +1,0 @@
-Original file shape: 7246 rows, 265 columns
-Cleaned file shape:  7218 rows, 64 columns
-Columns removed:     201
-Rows removed:        28
-A2–A6 exported columns: None found

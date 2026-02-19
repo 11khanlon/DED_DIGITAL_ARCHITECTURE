@@ -13,7 +13,7 @@ import os
 
 #%%
 # --- Load data and get column values ---
-os.chdir(r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV")
+os.chdir(r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\output_files")
 df = pd.read_csv("dlog_2023-08-09_1106_purge testing.csv", low_memory=False)
 
 #%%

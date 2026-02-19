@@ -141,7 +141,7 @@ def write_streaming_data(output_file, num_layers=10, points_per_layer=1000,
 
 
 if __name__ == "__main__":
-    output_file = "rpmi_machine_data.csv"
+    output_file = r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\\output_files\rpmi_machine_data.csv"
     
     write_streaming_data(
         output_file=output_file,
