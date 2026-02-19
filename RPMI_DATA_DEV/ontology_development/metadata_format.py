@@ -14,9 +14,11 @@ print_metadata = pd.DataFrame({
     "file_name": ["PRINT_20260219_01.csv", "PRINT_20260219_02.csv"],
     "operator": ["Kayleigh Hanlon", "Kayleigh Hanlon"],
     "timestamp": [datetime.now().isoformat(), datetime.now().isoformat()],
-    "material_type": ["Fe-Co Alloy", "Fe-Co Alloy"],
-    "material_lot": ["LOT_12345", "LOT_12346"],
+    "material_type": ["SS 316L", "SS 316L"],
     "machine_id": ["RPMI_01", "RPMI_01"],
+    "status": ["Completed", "Completed"],
+
+    #once final ontology is developed, insert all parent ids
     "hopper_ids": ["PF1, PF2", "PF3, PF4"],
     "center_purge_unit": ["CP1", "CP1"],
     "layer_count": [50, 60],
