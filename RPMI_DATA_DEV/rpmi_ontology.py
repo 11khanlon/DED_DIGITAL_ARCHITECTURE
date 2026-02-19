@@ -208,12 +208,15 @@ print("Parameter table created successfully.")
 #--Create ontology table with parameter names and descriptions--
 
 '''An ontology needs 
-hierarchy: subsystem --> parameter. create domains and subtables 
+Hierarchy: subsystem --> parameter. create domains and subtables 
 Type classification: sensor, control, state
-realtionships (measured_by_, controlled_by, part_of)
-queryable structure 
+Realtionships (measured_by_, controlled_by, part_of)
+Queryable structure 
 '''
 
+kinematic_data = pd.DataFrame({
+    "kinematic_id": ["position_id", "velocity_id"],
+})
 
 #tables to be stored under kinematic data
 position_data = pd.DataFrame({
@@ -224,6 +227,7 @@ position_data = pd.DataFrame({
         "Z position of the laser head in inches"
     ]
 })
+position_data["kinematic_id"] = "position"
 
 velocity_data = pd.DataFrame({
     "parameter_name": ["Velocity X", "Velocity Y", "Velocity Z"],    
@@ -233,19 +237,25 @@ velocity_data = pd.DataFrame({
         "Z velocity of the laser head in inches per second"
     ]
 })
+velocity_data["kinematic_id"] = "velocity"  
 
-kinematic_data = pd.DataFrame({position_data, velocity_data})
 
 '''
 The kinematic data includes the position and velocity of the laser head. 
 The position data consists of the X, Y, and Z coordinates of the laser head in inches, which indicate its location in 3D space. 
-The velocity data includes the X, Y, and Z velocities of the laser head in inches per second, which describe how fast the laser head is moving along each axis. This information is crucial for understanding the motion of the laser during the additive manufacturing process and can be used to analyze the relationship between the laser's movement and the resulting melt pool characteristics.
+The velocity data includes the X, Y, and Z velocities of the laser head in inches per second, which describe how fast the laser head is moving along each axis. 
+This information is crucial for understanding the motion of the laser during the additive manufacturing process 
+and can be used to analyze the relationship between the laser's movement and the resulting melt pool characteristics.
 '''
 
 #Spatiotemporal data
 
 timestamp_data = pd.DataFrame({"Layer #": "Current layer number", "TimeStamp": "Timestamp of the data point, converted to UTC"})
 spatiotemporal_data = pd.DataFrame({position_data, timestamp_data})
+
+#%%
+#--Optics---
+'''optics_units'''
 
 #Laser data
 laser_data = pd.DataFrame({
@@ -289,35 +299,51 @@ laser_data = pd.DataFrame({
     ]
 })
 
-
-machine_head_data = pd.DataFrame({
-    "parameter_name": [
-        "Motion Compensation Active",
-        "Head Temperature (RTD 1)(Â°F)",
-        "Head Temp: Warning High Level",
-        "Head Temp: Warning Low Level"
-    ]
-})
+print(laser_data)
 
 
 #%%
-#--machine hopper data--
-#hopper_machine_number --> PF data --> RPM, Argon flow, Pressure, Warnings, powder data 
+#--gas delivery unit data--
+#lol just make a diagram in drawio
+#gas_delivery_units --> hopper data --> RPM, Argon flow, Pressure, Warnings, powder data 
+#                   |--> centerpurge data   
 
-#Parent Table
-hopper_machine_number = pd.DataFrame({
-    "hopper_id": ["PF1", "PF2", "PF3", "PF4"],
+gas_delivery_units = pd.DataFrame({
+    "unit_id": ["PF1", "PF2", "PF3", "PF4", "CP1"],
+    "unit_type": [
+        "hopper",
+        "hopper",
+        "hopper",
+        "hopper",
+        "center_purge_line"
+    ],
     "description": [
-        "Machine number for hopper 1",
-        "Machine number for hopper 2",
-        "Machine number for hopper 3",
-        "Machine number for hopper 4"
+        "Powder feeder hopper 1",
+        "Powder feeder hopper 2",
+        "Powder feeder hopper 3",
+        "Powder feeder hopper 4",
+        "Central purge argon supply line"
     ]
 })
-print(hopper_machine_number)
+
+
+center_purge_data = pd.DataFrame({
+    "parameter_name": [
+        "Center Purge Argon MFlow",
+        "Center Purge Argon: Warning High Level",
+        "Center Purge Argon: Warning Low Level",
+        "Center Purge Argon VFlow",
+        "Center Purge Argon Temp(Â°F)",
+        "Center Purge Argon Absolute Pressure"
+    ]
+})
+
+center_purge_data["unit_id"] = "CP1"
+
+
 
 #Single Child table
-PF_data = pd.DataFrame({
+hopper_data = pd.DataFrame({
     "parameter_name": [
 
         #PF1 parameters
@@ -389,55 +415,48 @@ PF_data = pd.DataFrame({
         "PF4 Bottom Pressure : Warning Low Level"
           ]
 })
+hopper_data["unit_id"] = hopper_data["parameter_name"].str.extract(r"(PF\d)")
 
-PF_data["hopper_id"] = PF_data["parameter_name"].str.extract(r"(PF\d)")
-print(PF_data)
 
-RPM_data = PF_data[PF_data["parameter_name"].str.contains("RPM")].copy()
+'''
+Pandas syntax:
+The pandas code is doing boolean filering, not an index lookup.
+PF_data["parameter_name"] returns a series of all the parameter names in that table. 
+series.str --> pandas string accessor. It allows you to apply string operations to an entire column of a DataFrame
+.str means apply string operations to each element in the series 
+.str.contains("RPM") searches each string and will return only rows where the condition is true or RPM is found
 
-argon_data = PF_data[PF_data["parameter_name"].str.contains("Argon")].copy()
+So instead of, give me item at index 0. Give me all rows where this condition is True
+df[df["col"].str.contains("x")]
 
-hopper_warnings = PF_data[PF_data["parameter_name"].str.contains("Warning|Alarm")].copy()
+'''
 
-powder_data = PF_data[ PF_data["parameter_name"].str.contains("Powder")].copy()
 
-print(powder_data)
 
-pressure_data = PF_data[PF_data["parameter_name"].str.contains("Pressure")].copy()
+#Create Subtables for each parameter type (RPM, Argon, Pressure, Warnings, Powder data)
 
+RPM_data = hopper_data[hopper_data["parameter_name"].str.contains("RPM")].copy()
+
+hopper_warnings = hopper_data[hopper_data["parameter_name"].str.contains("Warning|Alarm")].copy()
+
+powder_data = hopper_data[ hopper_data["parameter_name"].str.contains("Powder")].copy()
+
+pressure_data = hopper_data[hopper_data["parameter_name"].str.contains("Pressure")].copy()
+
+argon_data = pd.concat([hopper_data[hopper_data["parameter_name"].str.contains("Argon")],
+                        center_purge_data], ignore_index=True)
 
 
 #%%
-center_purge_data = pd.DataFrame({
+
+machine_head_data = pd.DataFrame({
     "parameter_name": [
-        "Center Purge Argon MFlow",
-        "Center Purge Argon: Warning High Level",
-        "Center Purge Argon: Warning Low Level",
-        "Center Purge Argon VFlow",
-        "Center Purge Argon Temp(Â°F)",
-        "Center Purge Argon Absolute Pressure"
+        "Motion Compensation Active",
+        "Head Temperature (RTD 1)(Â°F)",
+        "Head Temp: Warning High Level",
+        "Head Temp: Warning Low Level"
     ]
 })
-
-
-H20_Sensor_data = pd.DataFrame({
-    "parameter_name": [
-        "H2O Sensor",
-        "H2O Sensor: Warning High Level",
-        "H2O Sensor: Warning Low Level"
-    ]
-})
-
-
-O2_Sensor_data = pd.DataFrame({
-    "parameter_name": [
-        "O2 Sensor",
-        "O2 Sensor: Warning High Level",
-        "O2 Sensor: Warning Low Level"
-    ]
-})
-
-
 RPMI_machine_data = pd.DataFrame({
     "parameter_name": [
         "Box Pressure",
@@ -448,6 +467,8 @@ RPMI_machine_data = pd.DataFrame({
     ]
 })
 
+#%%
+#external sensor data
 
 melt_pool_data = pd.DataFrame({
     "parameter_name": [
@@ -456,4 +477,67 @@ melt_pool_data = pd.DataFrame({
         "Melt Pool Area: Valid Value"
     ]
 })
+#%%
 
+RPMI_sensor_data = pd.DataFrame({
+    "sensor_id": ["H2O Sensor", "O2 Sensor"]
+
+})
+
+H20_Sensor_data = pd.DataFrame({
+    "parameter_name": [
+        "H2O Sensor",
+        "H2O Sensor: Warning High Level",
+        "H2O Sensor: Warning Low Level"
+    ]
+})
+H20_Sensor_data["sensor_id"] = "H2O Sensor"
+
+O2_Sensor_data = pd.DataFrame({
+    "parameter_name": [
+        "O2 Sensor",
+        "O2 Sensor: Warning High Level",
+        "O2 Sensor: Warning Low Level"
+    ]
+})
+O2_Sensor_data["sensor_id"] = "O2 Sensor"
+
+
+
+
+
+#%%
+#--Powder Characteristics-- 
+
+'''
+things like powder characteristics might make sense to separate as its own material table,
+since in theory you can use the same batch of powder for multiple builds/parts etc.
+So then when you are doing a build you just need to link the build to the material record
+Information like external factors will be heavily manual to link. "here is a spreadsheet operators add records to"
+
+'''
+powder_characteristics = pd.DataFrame({
+    "parameter_name": []
+
+})
+
+#%%
+
+print_parameters = pd.DataFrame({
+
+
+})
+
+#%%
+
+substrate_properties = pd.DataFrame({
+    "parameter_name": [
+        "Substrate Thickness",
+        "Substrate Geometry",
+        "Substrate Material",
+        "Substrate Density",
+        "Substrate Thermal Conductivity",
+    ]
+})
+
+#%%
