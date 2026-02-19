@@ -6,11 +6,14 @@ import os
 #%%
 
 substrate_properties = pd.DataFrame({
-    "parameter_name": [
+    "parameter_name":[
         "Substrate Thickness",
         "Substrate Geometry",
         "Substrate Material",
         "Substrate Density",
-        "Substrate Thermal Conductivity",
-    ]
+        "Substrate Thermal Conductivity"],
+    "parameter_value": [None]*5 
 })
+
+print(substrate_properties)
+# %%

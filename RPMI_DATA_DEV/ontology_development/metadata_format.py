@@ -2,12 +2,18 @@
 import numpy as np
 import pandas as pd
 import os
+from IPython.display import display
+import time 
+from datetime import datetime 
+
+#%%
 #Create metadata
 
 print_metadata = pd.DataFrame({
     "print_id": ["PRINT_20260219_01", "PRINT_20260219_02"],
+    "file_name": ["PRINT_20260219_01.csv", "PRINT_20260219_02.csv"],
     "operator": ["Kayleigh Hanlon", "Kayleigh Hanlon"],
-    "date": ["2026-02-19", "2026-02-19"],
+    "timestamp": [datetime.now().isoformat(), datetime.now().isoformat()],
     "material_type": ["Fe-Co Alloy", "Fe-Co Alloy"],
     "material_lot": ["LOT_12345", "LOT_12346"],
     "machine_id": ["RPMI_01", "RPMI_01"],
@@ -25,4 +31,5 @@ print_metadata = pd.DataFrame({
 })
 
 # Print the DataFrame
-print(print_metadata)
+display(print_metadata)
+# %%

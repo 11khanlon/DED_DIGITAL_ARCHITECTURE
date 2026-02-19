@@ -1,5 +1,10 @@
 #%%
+import numpy as np
+import pandas as pd
+import os
+#%%
 #--Powder Characteristics-- 
+#not from RPMI data, the user must input these themselves
 
 '''
 things like powder characteristics might make sense to separate as its own material table,
@@ -9,6 +14,10 @@ Information like external factors will be heavily manual to link. "here is a spr
 
 '''
 powder_characteristics = pd.DataFrame({
-    "parameter_name": []
-
+    "parameter_name": ["Supplier, Order Number,"
+    " Package Size, Material, Base_composition, Particle Size, "
+    "Manufacturing Method, Morphology, Chemical Composition, Apparent density, Solidus, "
+    "Liquidus, Flowwability "],
+    "parameter_value": [None]*15
+    
 })
