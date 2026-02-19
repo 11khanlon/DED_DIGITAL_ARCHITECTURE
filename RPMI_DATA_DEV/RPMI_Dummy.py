@@ -9,6 +9,8 @@ import os
 os.chdir(r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV")
 df = pd.read_csv("dlog_2023-08-09_1106_purge testing.csv", low_memory=False)
 
+
+
 #%%
 
 rng = np.random.default_rng(seed=42) 
@@ -81,7 +83,7 @@ def generate_sensor_data():
     temp2 = 200 + rng.normal(0,5) 
     temp3 = 200 + rng.normal(0,5)
     temp4 = 200 + rng.normal(0,5) 
-    
+
 #%%
 def write_streaming_data(output_file, num_layers= 5, points_per_layer = 1000, freq = 1, build_plate_size = 12):
     
