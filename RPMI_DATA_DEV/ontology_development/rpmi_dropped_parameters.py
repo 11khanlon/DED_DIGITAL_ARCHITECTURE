@@ -183,6 +183,20 @@ columns_to_drop = [
 ]
 
 #%%
+
+'''RPMI_machine_data = pd.DataFrame({
+    "parameter_name": [
+        "Box Pressure",
+        "Dust Collector Diff Pressure",
+        "Powder Manifold Pressure Sensor",
+        "Path Setpoint Velocity(inch/min)",
+        "Toolcode Execution Time"
+    ]
+})
+
+ variables that are helpful for RPMI, but I won't know until I print'''
+
+#%%
 # --- Filter column names ---
 filtered_columns = df.drop(columns=columns_to_drop, errors='ignore').columns.tolist()
 final_shape = (df.shape[0], len(filtered_columns))
