@@ -193,6 +193,10 @@ columns_to_drop = [
         "Toolcode Execution Time"
     ]
 })
+Path setpoint velocity is the set federate / print speed.
+Dust collector is the filtration pressure differential. 
+Powder manifold is I think some pressure difference between top and bottom hopper. 
+Toolcode Execution time is either the time spent running or th etime estimated I believe
 
  variables that are helpful for RPMI, but I won't know until I print'''
 
