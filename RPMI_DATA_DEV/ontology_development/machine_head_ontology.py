@@ -17,6 +17,13 @@ Queryable structure '''
 #%%
 
 #---machine head data---
+'''
+The kinematic data includes the position and velocity of the laser head. 
+The position data consists of the X, Y, and Z coordinates of the laser head in inches, which indicate its location in 3D space. 
+The velocity data includes the X, Y, and Z velocities of the laser head in inches per second, which describe how fast the laser head is moving along each axis. 
+This information is crucial for understanding the motion of the laser during the additive manufacturing process 
+and can be used to analyze the relationship between the laser's movement and the resulting melt pool characteristics.
+'''
 
 machine_head = pd.DataFrame({
     "machine_head_id": ["MH1"],
@@ -85,13 +92,6 @@ velocity_data = pd.DataFrame({
     "kinematic_id": "velocity"
 })
 
-'''
-The kinematic data includes the position and velocity of the laser head. 
-The position data consists of the X, Y, and Z coordinates of the laser head in inches, which indicate its location in 3D space. 
-The velocity data includes the X, Y, and Z velocities of the laser head in inches per second, which describe how fast the laser head is moving along each axis. 
-This information is crucial for understanding the motion of the laser during the additive manufacturing process 
-and can be used to analyze the relationship between the laser's movement and the resulting melt pool characteristics.
-'''
 
 #%%
 #Spatiotemporal data

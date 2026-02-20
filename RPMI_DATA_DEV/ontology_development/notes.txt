@@ -15,3 +15,37 @@ df["column_name"] access the a column
 so center_purge_data["unit_id"] will access column unit_id inside center_purge_data 
 but this column does not exist yet, so pandas will create it 
 '''
+
+os.path.join safely combines folder and filename into a proper path 
+avoids the problem of backslash problems
+
+
+#explaning xml format
+import xml.etree.ElementTree as ET
+built in xml parser 
+whole xml file = tree 
+root tag = root 
+each tag = element object 
+
+root = tree.getroot()
+this means "give me the top-level tag of the XML" 
+for me this would be <GasDeliverySystem> for example 
+
+each <unit> has attriubutes: 
+<Unit unit_id="PF1" unit_type="hopper">
+but in python unit.atrib is a dictionary 
+{
+    "unit_id": "PF1",
+    "unit_type": "hopper"
+}
+
+unit.atrib.get("unit_id") --> get me the value of the attribute name unit id (PF1 in this case)
+
+unit.find("Parameters"), find the child tag called parameters under unit
+if there isn't one, return none. if there is, loop over all parameter tags
+
+
+What is graphviz doing 
+dot.node --> create a node in a graph 
+dot.edge --> draw a line between those nodes 
+dot.render --> this will make an svg, delete intermediate .dot file 

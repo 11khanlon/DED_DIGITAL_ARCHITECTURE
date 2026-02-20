@@ -7,7 +7,7 @@
         <Parameter name="PF1 Argon MFlow" />
         <Parameter name="PF1 Powder Low" />
         <Parameter name="PF1 Bottom Pressure" />
-        <Parameter name="PF1 Argon: Warning High Level" />
+        <Parameter name="PF4 Argon VFlow" />
       </Parameters>
     </Unit>
     <Unit unit_id="PF2" unit_type="hopper" description="Powder feeder hopper 2" />
@@ -16,7 +16,7 @@
     <Unit unit_id="CP1" unit_type="center_purge_line" description="Central purge argon supply line">
       <Parameters>
         <Parameter name="Center Purge Argon MFlow" />
-        <Parameter name="Center Purge Argon: Warning High Level" />
+        <Parameter name="Center Purge Argon Absolute Pressure" />
         <Parameter name="Center Purge Argon VFlow" />
       </Parameters>
     </Unit>

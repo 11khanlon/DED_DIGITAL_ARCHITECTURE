@@ -179,12 +179,12 @@ ET.SubElement(pf1_params, "Parameter", attrib={"name": "PF1 RPM"})
 ET.SubElement(pf1_params, "Parameter", attrib={"name": "PF1 Argon MFlow"})
 ET.SubElement(pf1_params, "Parameter", attrib={"name": "PF1 Powder Low"})
 ET.SubElement(pf1_params, "Parameter", attrib={"name": "PF1 Bottom Pressure"})
-ET.SubElement(pf1_params, "Parameter", attrib={"name": "PF1 Argon: Warning High Level"})
+ET.SubElement(pf1_params, "Parameter", attrib={"name": "PF4 Argon VFlow"})
 
 # --- Parameters for Center Purge Line ---
 cp_params = ET.SubElement(unit5, "Parameters")
 ET.SubElement(cp_params, "Parameter", attrib={"name": "Center Purge Argon MFlow"})
-ET.SubElement(cp_params, "Parameter", attrib={"name": "Center Purge Argon: Warning High Level"})
+ET.SubElement(cp_params, "Parameter", attrib={"name": "Center Purge Argon Absolute Pressure"})
 ET.SubElement(cp_params, "Parameter", attrib={"name": "Center Purge Argon VFlow"})
 
 # --- Generate XML string ---
@@ -192,7 +192,7 @@ tree = ET.ElementTree(root)
 #tree.write("gas_delivery_ontology.xml", encoding="utf-8", xml_declaration=True)
 
 output_folder = r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\ontology_development\ontology_output"
-output_file = f"{output_folder}\gas_delivery_ontology_pretty.xml"
+output_file = os.path.join(output_folder, "gas_delivery_ontology.xml")
 
 # Optional: print it nicely
 ET.indent(tree, space="  ")
@@ -204,7 +204,7 @@ display(tree)
 #%%
 
 # Load your XML file
-tree = ET.parse("gas_delivery_ontology.xml")
+tree = ET.parse(output_file)
 root = tree.getroot()
 
 dot = Digraph(comment="Gas Delivery System")
@@ -233,10 +233,11 @@ for unit in root.findall(".//Unit"):
             dot.edge(unit_id, param_id)
 
 
-output_folder2 = r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\ontology_development\ontology_output"
-output_file2 = f"{output_folder2}\\gas_delivery_diagram.svg"
+output_file2 = os.path.join(output_folder, "gas_delivery_ontology" )
 
 # Render to SVG
 dot.render(output_file2, format="svg", cleanup=True)
 
 print("SVG generated: gas_delivery_diagram.svg")
+
+# %%
