@@ -9,6 +9,13 @@ from IPython.display import display
 
 #maybe change to sensor_name? This framework makes it easy to add more auxiliary sensors
 
+'''
+The printing process is monitored by two external sensors: a melt pool monitoring camera and a thermocouple array
+These sensors have certain characteritics that should be noted before printing to understand the data they produce
+Each sensor produces a unique set of parameters that are monitored during the build process. These paraemters are either bool, float or datetime data types.
+
+'''
+
 external_sensors = pd.DataFrame({
     "sensor_id": ["CAM_01", "TC"],
     "sensor_type": ["optical_camera", "thermocouple"],
@@ -89,5 +96,3 @@ sensor_data_long = pd.DataFrame({
     "parameter_name": [],
     "value": []
 })
-
-# %%

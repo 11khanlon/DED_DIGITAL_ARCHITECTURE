@@ -1,0 +1,36 @@
+// Gas Delivery System
+digraph {
+	rankdir=LR
+	GasDeliverySystem [label="Gas Delivery System" shape=box]
+	PF1 [label="PF1
+(hopper)" shape=box]
+	GasDeliverySystem -> PF1
+	"PF1_PF1 RPM" [label="PF1 RPM" shape=ellipse]
+	PF1 -> "PF1_PF1 RPM"
+	"PF1_PF1 Argon MFlow" [label="PF1 Argon MFlow" shape=ellipse]
+	PF1 -> "PF1_PF1 Argon MFlow"
+	"PF1_PF1 Powder Low" [label="PF1 Powder Low" shape=ellipse]
+	PF1 -> "PF1_PF1 Powder Low"
+	"PF1_PF1 Bottom Pressure" [label="PF1 Bottom Pressure" shape=ellipse]
+	PF1 -> "PF1_PF1 Bottom Pressure"
+	"PF1_PF1 Argon: Warning High Level" [label="PF1 Argon: Warning High Level" shape=ellipse]
+	PF1 -> "PF1_PF1 Argon":" Warning High Level"
+	PF2 [label="PF2
+(hopper)" shape=box]
+	GasDeliverySystem -> PF2
+	PF3 [label="PF3
+(hopper)" shape=box]
+	GasDeliverySystem -> PF3
+	PF4 [label="PF4
+(hopper)" shape=box]
+	GasDeliverySystem -> PF4
+	CP1 [label="CP1
+(center_purge_line)" shape=box]
+	GasDeliverySystem -> CP1
+	"CP1_Center Purge Argon MFlow" [label="Center Purge Argon MFlow" shape=ellipse]
+	CP1 -> "CP1_Center Purge Argon MFlow"
+	"CP1_Center Purge Argon: Warning High Level" [label="Center Purge Argon: Warning High Level" shape=ellipse]
+	CP1 -> "CP1_Center Purge Argon":" Warning High Level"
+	"CP1_Center Purge Argon VFlow" [label="Center Purge Argon VFlow" shape=ellipse]
+	CP1 -> "CP1_Center Purge Argon VFlow"
+}

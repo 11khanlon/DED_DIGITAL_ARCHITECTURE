@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<GasDeliverySystem>
+  <GasDeliveryUnits>
+    <Unit unit_id="PF1" unit_type="hopper" description="Powder feeder hopper 1">
+      <Parameters>
+        <Parameter name="PF1 RPM" />
+        <Parameter name="PF1 Argon MFlow" />
+        <Parameter name="PF1 Powder Low" />
+        <Parameter name="PF1 Bottom Pressure" />
+        <Parameter name="PF1 Argon: Warning High Level" />
+      </Parameters>
+    </Unit>
+    <Unit unit_id="PF2" unit_type="hopper" description="Powder feeder hopper 2" />
+    <Unit unit_id="PF3" unit_type="hopper" description="Powder feeder hopper 3" />
+    <Unit unit_id="PF4" unit_type="hopper" description="Powder feeder hopper 4" />
+    <Unit unit_id="CP1" unit_type="center_purge_line" description="Central purge argon supply line">
+      <Parameters>
+        <Parameter name="Center Purge Argon MFlow" />
+        <Parameter name="Center Purge Argon: Warning High Level" />
+        <Parameter name="Center Purge Argon VFlow" />
+      </Parameters>
+    </Unit>
+  </GasDeliveryUnits>
+</GasDeliverySystem>

@@ -1,0 +1,17 @@
+# %%
+'''
+Pandas syntax:
+The pandas code is doing boolean filering, not an index lookup.
+PF_data["parameter_name"] returns a series of all the parameter names in that table. 
+series.str --> pandas string accessor. It allows you to apply string operations to an entire column of a DataFrame
+.str means apply string operations to each element in the series 
+.str.contains("RPM") searches each string and will return only rows where the condition is true or RPM is found
+
+So instead of, give me item at index 0. Give me all rows where this condition is True
+df[df["col"].str.contains("x")]
+
+
+df["column_name"] access the a column
+so center_purge_data["unit_id"] will access column unit_id inside center_purge_data 
+but this column does not exist yet, so pandas will create it 
+'''

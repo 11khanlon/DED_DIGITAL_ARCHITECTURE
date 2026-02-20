@@ -3,13 +3,15 @@ import numpy as np
 import pandas as pd
 import os
 from IPython.display import display
+import xml.etree.ElementTree as ET
+from graphviz import Digraph
 
 #%%
 #--gas delivery unit data--
 #lol just make a diagram in drawio
 #gas_delivery_units --> hopper data --> RPM, Argon flow, Pressure, Warnings, powder data 
 #                   |--> centerpurge data   
-##the parameters I use, not the names for the IDs, are directly from the RPMI source file
+#the parameters I use, not the names for the IDs, are directly from the RPMI source file
 
 '''
 The RPMI contains 5 gas delivery units: 4 powder feeder hoppers (PF1-PF4) and 1 central purge line (CP1). 
@@ -148,8 +150,7 @@ powder_data.insert(1, "subsystem", "Powder Data")
 pressure_data = hopper_data[hopper_data["parameter_name"].str.contains("Pressure")].copy()
 pressure_data.insert(1, "subsystem", "Pressure")
 
-argon_data = pd.concat([hopper_data[hopper_data["parameter_name"].str.contains("Argon")],
-                        center_purge_data], ignore_index=True)
+argon_data = pd.concat([hopper_data[hopper_data["parameter_name"].str.contains("Argon")], center_purge_data], ignore_index=True)
 argon_data.insert(1, "subsystem", "Argon Data")
 
 all_parameters = pd.concat([RPM_data, hopper_warnings, powder_data, pressure_data, argon_data], ignore_index=True)
@@ -157,23 +158,85 @@ all_parameters = pd.concat([RPM_data, hopper_warnings, powder_data, pressure_dat
 print(all_parameters)
 
 
+#%%
 
-# %%
-'''
-Pandas syntax:
-The pandas code is doing boolean filering, not an index lookup.
-PF_data["parameter_name"] returns a series of all the parameter names in that table. 
-series.str --> pandas string accessor. It allows you to apply string operations to an entire column of a DataFrame
-.str means apply string operations to each element in the series 
-.str.contains("RPM") searches each string and will return only rows where the condition is true or RPM is found
+# Create the root element
+root = ET.Element("GasDeliverySystem")
 
-So instead of, give me item at index 0. Give me all rows where this condition is True
-df[df["col"].str.contains("x")]
+# --- Gas Delivery Units ---
+gas_units = ET.SubElement(root, "GasDeliveryUnits")
+
+# Define each unit
+unit1 = ET.SubElement(gas_units, "Unit", attrib={"unit_id": "PF1", "unit_type": "hopper", "description": "Powder feeder hopper 1"})
+unit2 = ET.SubElement(gas_units, "Unit", attrib={"unit_id": "PF2", "unit_type": "hopper", "description": "Powder feeder hopper 2"})
+unit3 = ET.SubElement(gas_units, "Unit", attrib={"unit_id": "PF3", "unit_type": "hopper", "description": "Powder feeder hopper 3"})
+unit4 = ET.SubElement(gas_units, "Unit", attrib={"unit_id": "PF4", "unit_type": "hopper", "description": "Powder feeder hopper 4"})
+unit5 = ET.SubElement(gas_units, "Unit", attrib={"unit_id": "CP1", "unit_type": "center_purge_line", "description": "Central purge argon supply line"})
+
+# --- Parameters for PF1 ---
+pf1_params = ET.SubElement(unit1, "Parameters")
+ET.SubElement(pf1_params, "Parameter", attrib={"name": "PF1 RPM"})
+ET.SubElement(pf1_params, "Parameter", attrib={"name": "PF1 Argon MFlow"})
+ET.SubElement(pf1_params, "Parameter", attrib={"name": "PF1 Powder Low"})
+ET.SubElement(pf1_params, "Parameter", attrib={"name": "PF1 Bottom Pressure"})
+ET.SubElement(pf1_params, "Parameter", attrib={"name": "PF1 Argon: Warning High Level"})
+
+# --- Parameters for Center Purge Line ---
+cp_params = ET.SubElement(unit5, "Parameters")
+ET.SubElement(cp_params, "Parameter", attrib={"name": "Center Purge Argon MFlow"})
+ET.SubElement(cp_params, "Parameter", attrib={"name": "Center Purge Argon: Warning High Level"})
+ET.SubElement(cp_params, "Parameter", attrib={"name": "Center Purge Argon VFlow"})
+
+# --- Generate XML string ---
+tree = ET.ElementTree(root)
+#tree.write("gas_delivery_ontology.xml", encoding="utf-8", xml_declaration=True)
+
+output_folder = r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\ontology_development\ontology_output"
+output_file = f"{output_folder}\gas_delivery_ontology_pretty.xml"
+
+# Optional: print it nicely
+ET.indent(tree, space="  ")
+tree.write(output_file, encoding="utf-8", xml_declaration=True)
 
 
-df["column_name"] access the a column
-so center_purge_data["unit_id"] will access column unit_id inside center_purge_data 
-but this column does not exist yet, so pandas will create it 
+display(tree)
+
+#%%
+
+# Load your XML file
+tree = ET.parse("gas_delivery_ontology.xml")
+root = tree.getroot()
+
+dot = Digraph(comment="Gas Delivery System")
+dot.attr(rankdir="LR")  # left to right layout
+
+# Add system node
+dot.node("GasDeliverySystem", "Gas Delivery System", shape="box")
+
+# Loop through units
+for unit in root.findall(".//Unit"):
+    unit_id = unit.attrib.get("unit_id")
+    unit_type = unit.attrib.get("unit_type")
+
+    unit_label = f"{unit_id}\n({unit_type})"
+    dot.node(unit_id, unit_label, shape="box")
+    dot.edge("GasDeliverySystem", unit_id)
+
+    # Add parameters
+    parameters = unit.find("Parameters")
+    if parameters is not None:
+        for param in parameters.findall("Parameter"):
+            param_name = param.attrib.get("name")
+            param_id = f"{unit_id}_{param_name}"
+
+            dot.node(param_id, param_name, shape="ellipse")
+            dot.edge(unit_id, param_id)
 
 
-'''
+output_folder2 = r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\ontology_development\ontology_output"
+output_file2 = f"{output_folder2}\\gas_delivery_diagram.svg"
+
+# Render to SVG
+dot.render(output_file2, format="svg", cleanup=True)
+
+print("SVG generated: gas_delivery_diagram.svg")
