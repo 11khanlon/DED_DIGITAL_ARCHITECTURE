@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8'?>
+<MachineOptics>
+  <OpticsSubsystem optics_unit_id="OPT1" subsystem_id="laser_core" description="Laser emission and control">
+    <Parameters>
+      <Parameter name="Laser On" />
+      <Parameter name="Laser Setpoint" />
+      <Parameter name="Laser Power (from laser)" />
+      <Parameter name="Laser On Time (ms)" />
+    </Parameters>
+  </OpticsSubsystem>
+  <OpticsSubsystem optics_unit_id="OPT1" subsystem_id="cooling_system" description="Laser cooling and water system">
+    <Parameters>
+      <Parameter name="Laser Water Flow (L/min)" />
+      <Parameter name="Laser Water Temp (°C)" />
+    </Parameters>
+  </OpticsSubsystem>
+  <OpticsSubsystem optics_unit_id="OPT1" subsystem_id="beam_monitor" description="Beam measurement and metrology">
+    <Parameters>
+      <Parameter name="Power From Meter" />
+      <Parameter name="Power From Meter (uncompensated)" />
+      <Parameter name="Beam Size From Meter (inch)" />
+      <Parameter name="Beam Pos X From Meter (inch)" />
+      <Parameter name="Beam Pos Y From Meter (inch)" />
+      <Parameter name="Beam Flags From Meter" />
+    </Parameters>
+  </OpticsSubsystem>
+  <OpticsSubsystem optics_unit_id="OPT1" subsystem_id="fiber_diagnostics" description="Fiber back reflection diagnostics">
+    <Parameters>
+      <Parameter name="Feed Fiber FFBD (mV)" />
+      <Parameter name="Process Fiber FFBD (mV)" />
+    </Parameters>
+  </OpticsSubsystem>
+  <OpticsSubsystem optics_unit_id="OPT1" subsystem_id="optics_environment" description="Optics enclosure environmental monitoring">
+    <Parameters>
+      <Parameter name="Optics Box Pressure Sensor" />
+    </Parameters>
+  </OpticsSubsystem>
+  <OpticsSubsystem optics_unit_id="OPT1" subsystem_id="alps_positioning" description="ALPS beam positioning system">
+    <Parameters>
+      <Parameter name="Pos Alps (inch)" />
+      <Parameter name="Alps Spot Size (inch)" />
+    </Parameters>
+  </OpticsSubsystem>
+</MachineOptics>

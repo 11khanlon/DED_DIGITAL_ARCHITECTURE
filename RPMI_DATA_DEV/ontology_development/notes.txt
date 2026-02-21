@@ -49,3 +49,13 @@ What is graphviz doing
 dot.node --> create a node in a graph 
 dot.edge --> draw a line between those nodes 
 dot.render --> this will make an svg, delete intermediate .dot file 
+
+
+what does iterrows() return? 
+when you call external_sensors.iterrows()
+each loop gives you two things (index, row) 
+for index, row in external_sensors.iterrows():
+you loop over the rows with the given index 
+
+
+How to make vscode more pretttttyyyyy

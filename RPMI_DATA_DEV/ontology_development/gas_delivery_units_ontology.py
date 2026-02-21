@@ -135,7 +135,7 @@ hopper_data = pd.DataFrame({
 hopper_data.insert(0, "unit_id", hopper_data["parameter_name"].str.extract(r"(PF\d)"))
 
 
-
+#%%
 #Create Subtables for each parameter type (RPM, Argon, Pressure, Warnings, Powder data)
 
 RPM_data = hopper_data[hopper_data["parameter_name"].str.contains("RPM")].copy()
@@ -159,6 +159,8 @@ print(all_parameters)
 
 
 #%%
+
+#---Create XML structure based on python tables---
 
 # Create the root element
 root = ET.Element("GasDeliverySystem")
@@ -194,7 +196,7 @@ tree = ET.ElementTree(root)
 output_folder = r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\ontology_development\ontology_output"
 output_file = os.path.join(output_folder, "gas_delivery_ontology.xml")
 
-# Optional: print it nicely
+# print it out nicely
 ET.indent(tree, space="  ")
 tree.write(output_file, encoding="utf-8", xml_declaration=True)
 
