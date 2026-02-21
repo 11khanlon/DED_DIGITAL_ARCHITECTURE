@@ -23,6 +23,8 @@ each attribute is a column after the sensor id
 so far this one is the best structured
 
 '''
+
+#Eventually create on big sensor table with the external sensors being a child to entity SENSOR
 #%%
 
 external_sensors = pd.DataFrame({
@@ -213,9 +215,8 @@ for sensor in root.findall("Sensor"):
     dot.node(sensor_id, sensor_label, shape="box")
     dot.edge("ExternalSensors", sensor_id)
 
-    # -------------------------
+   
     # Characteristics Node
-    # -------------------------
     char_node_id = f"{sensor_id}_Characteristics"
     dot.node(char_node_id, "Characteristics", shape="diamond")
     dot.edge(sensor_id, char_node_id)
@@ -227,9 +228,7 @@ for sensor in root.findall("Sensor"):
             dot.node(param_node_id, element.tag, shape="ellipse")
             dot.edge(char_node_id, param_node_id)
 
-    # -------------------------
     # Data Node
-    # -------------------------
     data_node_id = f"{sensor_id}_Data"
     dot.node(data_node_id, "Data", shape="diamond")
     dot.edge(sensor_id, data_node_id)

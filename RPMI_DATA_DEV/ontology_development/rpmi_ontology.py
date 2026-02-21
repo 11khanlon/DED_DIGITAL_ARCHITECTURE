@@ -17,3 +17,8 @@ Type classification: sensor, control, state
 Realtionships (measured_by_, controlled_by, part_of)
 Queryable structure 
 '''
+
+#%%
+#----Create Graph Assembly Function---
+
+

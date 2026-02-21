@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<MachineHead machine_head_id="MH1" description="Laser machine head assembly">
+  <Features feature_id="temp" description="Temperature monitoring system">
+    <Parameter name="Head Temperature (RTD 1)(°F)" />
+    <Parameter name="Head Temp: Warning High Level" />
+    <Parameter name="Head Temp: Warning Low Level" />
+  </Features>
+  <Features feature_id="kinematic" description="Motion and spatial system">
+    <KinematicData feature_id="kinematic" position_data="Pos X (inch)" velocity_data="Velocity X" />
+    <KinematicData feature_id="kinematic" position_data="Pos Y (inch)" velocity_data="Velocity Y" />
+    <KinematicData feature_id="kinematic" position_data="Pos Z (inch)" velocity_data="Velocity Z" />
+  </Features>
+  <Features feature_id="config" description="Operational configuration settings">
+    <Parameter name="Motion Compensation Active" />
+  </Features>
+</MachineHead>

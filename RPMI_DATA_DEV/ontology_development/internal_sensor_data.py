@@ -4,7 +4,7 @@ import pandas as pd
 import os
 #%%
 
-RPMI_sensor_data = pd.DataFrame({
+internal_sensor_data = pd.DataFrame({
     "sensor_id": ["H2O Sensor", "O2 Sensor"]
 
 })

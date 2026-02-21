@@ -1,3 +1,11 @@
+'''An ontology needs 
+Hierarchy: subsystem --> parameter. create domains and subtables 
+Type classification: sensor, control, state
+Realtionships (measured_by_, controlled_by, part_of)
+Queryable structure '''
+
+
+
 # %%
 '''
 Pandas syntax:
@@ -51,11 +59,32 @@ dot.edge --> draw a line between those nodes
 dot.render --> this will make an svg, delete intermediate .dot file 
 
 
+
+************************
+iterrows() turns dataframe into a series 
 what does iterrows() return? 
 when you call external_sensors.iterrows()
 each loop gives you two things (index, row) 
 for index, row in external_sensors.iterrows():
 you loop over the rows with the given index 
+
+another example: 
+for index, subsystem_row in optics_subsystems.iterrows():
+index --> just a row number, just a number usually or can be ignored with _ 
+subsystem_row --> a pandas series 
+for example, 
+| optics_unit_id | subsystem_id | description  |
+| -------------- | ------------ | ------------ |
+| OU1            | laser_core   | Laser system |
+
+then subsystem row would look like:
+optics_unit_id     OU1
+subsystem_id       laser_core
+description        Laser system
+Name: 0, dtype: object
+
+and you can call what you want with dictionary["key"] format
+
 
 
 How to make vscode more pretttttyyyyy
