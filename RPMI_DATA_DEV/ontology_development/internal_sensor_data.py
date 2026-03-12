@@ -26,3 +26,6 @@ O2_Sensor_data = pd.DataFrame({
     ]
 })
 O2_Sensor_data["sensor_id"] = "O2 Sensor"
+
+
+# %%

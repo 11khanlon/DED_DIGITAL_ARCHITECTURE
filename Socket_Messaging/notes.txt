@@ -1,0 +1,42 @@
+socket - lets python communicate over a network using TCP/UDP 
+csv - reads RPMI output .csv file 
+
+HOST = "0.0.0.0" -- This means that is listens on all network interfaces. It becomes a server that any device on the network can connect to
+PORT = 5000 a port is a communication channel. this is my own custom program, so i need a custom port. 
+
+def read_rpmi_csv(filepath): --> this function simply opens the RPMI csv file and prints each row 
+
+with open(filepath, 'r') as f:   with ensures the file autmatically closes 
+
+
+3. Creating a CSV reader:
+reader = csv.reader(f) 
+this converts rows like timestamp, temperature, laser_power 
+into python lists such as ["timestamp", "temperature", "laser_power"]
+
+Looping through rows:
+for row in reader:
+    print(row) 
+
+this ensures that each row gets printed. For example, the output is:
+['0.01', '1200', '450']   row 1
+['0.02', '1203', '452']   row 2
+['0.03', '1205', '455']   row 3
+
+4. Start the server
+def start_server():  --> this function creates the socket server 
+
+5. Create TCP Socket
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+AF_INET --> use IPv4. an example for this is 192.168.1.10
+SOCK_STREAM --> this means to use TCP, which provides reliable delivery, ordered packets, retransmission
+
+6. Bind the Socket 
+server.bind((HOST, PORT)) 
+this tells the operating system: 
+run this server on: 
+0.0.0.0:5000
+
+7. Start Listening or Waiting for connections 
+server.listen(1) --> now the server waits for connections 
+1 means to allow one connection in the queue

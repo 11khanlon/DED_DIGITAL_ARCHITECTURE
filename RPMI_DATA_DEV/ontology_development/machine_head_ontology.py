@@ -10,7 +10,6 @@ from graphviz import Digraph
 #the parameters I use, not the names for the IDs, are directly from the RPMI source file
 #in development, i will know how to strucuture this more after printing
 
-
 #%%
 
 #--Create ontology table with parameter names and descriptions--
@@ -31,6 +30,7 @@ machine_head_kinematic_types = pd.DataFrame({
         "Velocity data"
     ]
 })'''
+
 
 machine_head = pd.DataFrame({
     "machine_head_id": ["MH1"],
