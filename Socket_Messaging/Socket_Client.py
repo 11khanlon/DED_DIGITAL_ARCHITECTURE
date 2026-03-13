@@ -1,6 +1,8 @@
 import socket
 import time
 
+#need a script for the raspberry pi and the controller 
+
 HOST = "192.168.1.100"
 PORT = 5000
 
