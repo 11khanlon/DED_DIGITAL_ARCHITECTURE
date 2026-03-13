@@ -8,170 +8,31 @@ def read_rpmi_csv(filepath): --> this function simply opens the RPMI csv file an
 
 with open(filepath, 'r') as f:   with ensures the file autmatically closes 
 
+-----STRUCTURE: ----- 
 
-3. Creating a CSV reader:
-reader = csv.reader(f) 
-this converts rows like timestamp, temperature, laser_power 
-into python lists such as ["timestamp", "temperature", "laser_power"]
+1. CSV manipulation and establishing a server 
+Host handles:
+CSV reading
+laser detection
+timestamps
+data filtering
+data aggregation
 
-Looping through rows:
-for row in reader:
-    print(row) 
-
-this ensures that each row gets printed. For example, the output is:
-['0.01', '1200', '450']   row 1
-['0.02', '1203', '452']   row 2
-['0.03', '1205', '455']   row 3
-
-4. Start the server
-def start_server():  --> this function creates the socket server 
-
-5. Create TCP Socket
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
-AF_INET --> use IPv4. an example for this is 192.168.1.10
-SOCK_STREAM --> this means to use TCP, which provides reliable delivery, ordered packets, retransmission
-
-6. Bind the Socket 
-server.bind((HOST, PORT)) 
-this tells the operating system: 
-run this server on: 
-0.0.0.0:5000
-
-7. Start Listening or Waiting for connections 
-server.listen(1) --> now the server waits for connections 
-1 means to allow one connection in the queue
-
-8. Accept a client connection 
-conn, addr = server.accept() --> this line blocks until a client connections
-conn = connection object
-addr = client address  
-
-Example: 
-addr = ('192.168.1.55', 43021) 
-client IP = 192.168.1.55
-client port = 43021
-
-9. Create the message loop 
-while True:
-this allows the server to continuosly wait for messages from the client 
-
-10. Recieve data 
-data = conn.recv(1024).decode() 
-recv(1024)
-Receive up to 1024 bytes 
-decode() converts bytes --> string 
-
-11. detect client disconnect 
-if not data:
-    break
-if the client disconnects, recv() return nothing. so the loop exits 
-
-12. Command handling 
-Your custom application procol starts here. Steps 1-11 were establishing connection rules 
-
----START COMMAND---
-if data == "START":   --> this means that the client told esrver to begin logging 
-
-Then: 
-print("Starting logging")  --> create print message 
-read_rpmi_csv("run_file.csv")  --> reads RPMI CSV 
-
----STOP Command ---
-elif data == "STOP":   stop reading csv 
-
----PING COMMAND ---
-elif data == "PING":
-    conn.send("ALIVE".encode())
-thigs helps detects server crashing and lost connections 
-Client sends PING command 
-Server responds with ALIVE 
-
-14. Close connection 
-After the loop ends 
-conn.close() 
-this releases the socket 
-
-15. Run the server 
-start_server() 
-
-16. OSI Model 
-OSI Layer:	Technology
-Application	custom:  START/STOP protocol
-Presentation:	string encoding
-Session:	TCP socket connection
-Transport:	TCP
-Network:	IPv4
-Data Link:	Ethernet
-Physical:	cable
+2. Commanding, visualization and control 
+Client handles: 
+commands
+visualization
+experiment control
 
 
--------------------------------------------------------------------
-Need real time csv monitoring and you can list oldest to newest csv 
+1. Final OSI Model for the RPMI Socket System
 
-1. Find new csv and sort csv 
-
-def get_latest_csv(folder):
-
-    files = [f for f in os.listdir(folder) if f.endswith(".csv")]
-    files.sort(key=lambda x: os.path.getmtime(os.path.join(folder,x)))
-
-    return os.path.join(folder, files[-1])
-
---> files = [f for f in os.listdir(folder) if f.endswith(".csv")] 
-Example result:
-[
-dlog_2023-08-09_1106.csv
-dlog_2023-08-09_1112.csv
-dlog_2023-08-09_1115.csv
-]          
-
---> files.sort(key=lambda x: os.path.getmtime(os.path.join(folder,x)))
-this sorts files by last modified time 
-newest file become last
-
---> return os.path.join(folder, files[-1]) 
-this will return the newest file
-Example: dlog_2023-08-09_1115.csv
-
-
-
-open file
-↓
-read existing rows
-↓
-wait for new rows
-↓
-read new rows
-↓
-repeat
-
-this is called file tailing. you continuosly read the file after new information is introduced per row 
-
-
-when the run begins: 
-Client
-   ↓
-START command
-   ↓
-Host Server
-   ↓
-Locate newest RPMI CSV
-   ↓
-Start real-time monitoring
-
-Flow during streaming: 
-RPMI
-   ↓
-writes CSV rows
-   ↓
-Host Python server
-   ↓
-reads rows in real time
-   ↓
-logs / processes data
-   ↓
-sends results to client
-
-
-
+OSI Layer	                          Implementation in Your System	                                                        Role
+7. Application	       Custom Python socket protocol (START, STOP, PING, LASER_ON, LASER_OFF)	               Defines how the client and host communicate
+6. Presentation	       UTF-8 string encoding, CSV formatting, timestamp conversion (UTC)	                   Formats and interprets data
+5. Session	           Persistent TCP socket connection between client and host	                               Manages connection lifecycle
+4. Transport	       TCP	                                                                                   Reliable ordered delivery of messages
+3. Network	           IPv4	                                                                                   Routes packets between machines
+2. Data Link	                   Ethernet (LAN)	                                                           Local network communication
+1. Physical	           Ethernet cable / network hardware	                                                   Physical transmission of bits
 

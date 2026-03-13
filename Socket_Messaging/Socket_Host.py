@@ -15,16 +15,56 @@ import sqlite3
 
 
 #%%
-'''
-START_RUN = begin logging
-STOP_RUN = end logging
-PING = check connection 
-RUN_COMPLETE  = host finished logging
-'''
-#%%
 #Host Server Structure 
-HOST = "0.0.0.0"
-PORT = 5000
+HOST = "0.0.0.0"    #insert IP
+PORT = 5000         #create port for custom protocol
+
+RPMI_FOLDER = r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\output_files"   #INSERT ACTUAL FILE PATH
+
+running = False
+#%% Find latest CSV produced by RPMI
+def get_latest_csv(folder):
+
+    files = [f for f in os.listdir(folder) if f.endswith(".csv")]
+
+    if not files:
+        return None
+
+    files.sort(key=lambda x: os.path.getmtime(os.path.join(folder, x)))
+
+    return os.path.join(folder, files[-1])
+
+#%% Laser detection logic (adapted from your function)
+def process_row(row, previous_laser_state):
+
+    try:
+
+        timestamp = pd.to_datetime(row["TimeStamp"], errors="coerce")
+
+        if pd.isna(timestamp):
+            return previous_laser_state
+
+        if timestamp.tzinfo is None:
+            timestamp = timestamp.tz_localize("UTC")
+
+        laser_state = float(row["Laser On"])
+
+    except Exception:
+        return previous_laser_state
+
+    # Laser OFF → ON
+    if previous_laser_state == 0 and laser_state != 0:
+
+        print("LASER ON DETECTED")
+        print("Start timestamp:", timestamp)
+
+    # Laser ON → OFF
+    if previous_laser_state != 0 and laser_state == 0:
+
+        print("LASER OFF DETECTED")
+        print("Stop timestamp:", timestamp)
+
+    return laser_state
 
 
 def read_rpmi_csv(filepath):
@@ -33,61 +73,102 @@ def read_rpmi_csv(filepath):
         for row in reader:
             print(row)
 
+#%% Real-time CSV monitoring
+def tail_csv(filepath):
+
+    global running
+
+    print("Monitoring CSV:", filepath)
+
+    previous_laser_state = 0
+
+    with open(filepath, "r") as f:
+
+        reader = csv.DictReader(f)
+
+        # Process existing rows first
+        for row in reader:
+
+            previous_laser_state = process_row(row, previous_laser_state)
+
+        # Monitor new rows written by RPMI
+        while running:
+
+            position = f.tell()
+            line = f.readline()
+
+            if not line:
+                time.sleep(0.2)
+                f.seek(position)
+
+            else:
+
+                values = line.strip().split(",")
+
+                row = dict(zip(reader.fieldnames, values))
+
+                previous_laser_state = process_row(row, previous_laser_state)
+
+
+#%% Socket Server
 def start_server():
 
+    global running
+
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
     server.bind((HOST, PORT))
+
     server.listen(1)
 
     print("Server waiting for connection...")
 
     conn, addr = server.accept()
+
     print("Connected by", addr)
 
     while True:
 
-        data = conn.recv(1024).decode()
+        data = conn.recv(1024).decode().strip()
 
         if not data:
             break
 
+        print("Received:", data)
+
         if data == "START":
-            print("Starting logging")
-            read_rpmi_csv("run_file.csv")
+
+            print("Starting RPMI monitoring")
+
+            latest_file = get_latest_csv(RPMI_FOLDER)
+
+            if latest_file is None:
+
+                print("No CSV files found")
+                continue
+
+            running = True
+
+            tail_csv(latest_file)
 
         elif data == "STOP":
-            print("Stopping run")
+
+            print("Stopping monitoring")
+
+            running = False
 
         elif data == "PING":
+
             conn.send("ALIVE".encode())
 
     conn.close()
 
+
+#%% Run server
 start_server()
 
 
 #%%
-# --- Load data and get column values ---
-os.chdir(r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\output_files")
-df = pd.read_csv("dlog_2023-08-09_1106_purge testing.csv", low_memory=False)
-
-#%%
-# --- Get column names and Laser on timestamp ---
-columns = df.columns 
-column_names1 = df.columns.tolist()
-print(column_names1)
-column_names = pd.Series(df.columns)
-column_names.to_csv("RPMI_column_names.csv", index=False, header=False)
-
-#%%
-
-'''need to add timestamp, set to UTC. timestamp once the folder is available. 
-If available and the laser is on, create a string saying Good to start reading, then create a timestamp. 
-When the laser is turned off - check laser on time - then timestamp the folder that process has ended 
-Maybe, we do not need to cleanup the rows for later?
-Compile data on host computer, then send to client to avoid lag. 
-Maybe look into python watchdog import
-'''
 
 #Create laser on time stamp function, event = LaserOn
 def find_laser_timeframe(df):
