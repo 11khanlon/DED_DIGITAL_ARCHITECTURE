@@ -36,3 +36,25 @@ OSI Layer	                          Implementation in Your System	              
 2. Data Link	                   Ethernet (LAN)	                                                           Local network communication
 1. Physical	           Ethernet cable / network hardware	                                                   Physical transmission of bits
 
+
+----First Function----
+def get_latest_csv(folder)
+
+import os --> os gives python access to operating system functionality such as: 
+os.listdir()	list files in a folder
+os.path.getmtime()	get file modification time
+os.path.join()	safely construct file paths
+
+folder --> this is a function argument 
+ex. get_latest_csv("C:/RPMI/output_files")
+the function will search folder path you pass in 
+
+os.listdir(folder) --> this will list everything in the directory 
+[
+"dlog_2023-08-09_1106.csv",
+"dlog_2023-08-09_1110.csv",
+"notes.txt",
+"config.json"
+]
+
+

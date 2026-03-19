@@ -19,13 +19,19 @@ import sqlite3
 HOST = "0.0.0.0"    #insert IP
 PORT = 5000         #create port for custom protocol
 
-RPMI_FOLDER = r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\output_files"   #INSERT ACTUAL FILE PATH
-
 running = False
+print("SCRIPT STARTED")
 #%% Find latest CSV produced by RPMI
+
 def get_latest_csv(folder):
 
-    files = [f for f in os.listdir(folder) if f.endswith(".csv")]
+    #files = [f for f in os.listdir(folder) if f.endswith(".csv")]
+    files = []
+
+    for f in os.listdir(folder):
+
+        if f.endswith(".csv"):
+            files.append(f)
 
     if not files:
         return None
@@ -34,7 +40,13 @@ def get_latest_csv(folder):
 
     return os.path.join(folder, files[-1])
 
-#%% Laser detection logic (adapted from your function)
+folder = r"C:\\Users\\Kayleigh\\DIGITAL_ARCH_REPO\\RPMI_DATA_DEV\\random_data"   #INSERT ACTUAL FILE PATH
+files2 = get_latest_csv(folder)
+print(files2)
+print("All CSV files:", files2)
+#Note this is a function because we do not know the filepath that the RPMI saves yet
+
+#%% Laser detection logic 
 def process_row(row, previous_laser_state):
 
     try:
@@ -66,12 +78,15 @@ def process_row(row, previous_laser_state):
 
     return laser_state
 
-
+#%% Real Time Engine -- This function writes the CSV file continuosly
+#how does this work with the past funciton?
 def read_rpmi_csv(filepath):
     with open(filepath, 'r') as f:
         reader = csv.reader(f)
         for row in reader:
             print(row)
+
+
 
 #%% Real-time CSV monitoring
 def tail_csv(filepath):
