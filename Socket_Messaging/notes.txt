@@ -58,3 +58,93 @@ os.listdir(folder) --> this will list everything in the directory
 ]
 
 
+if "file.csv".endswith(".csv"): 
+this just means it is looking for files with a .csv file 
+It will list files such as 
+[
+"dlog_2023-08-09_1106.csv",
+"dlog_2023-08-09_1110.csv"
+]
+
+Now you need to sort by modification time -- files.sort(key=lambda x: os.path.getmtime(os.path.join(folder, x)))
+file.sort() this normally sorts alphabettically, but here we have to add rules 
+"key = " This tells python sort using this function instead of deafult alphabetical sorting 
+
+lambda: This creates a small anonymous function so you don't have to fully write out the function 
+for example this is the equivalent long form:
+def get_time(x):
+    return os.path.getmtime(os.path.join(folder, x))
+
+os.path.join(folder, x): builds a full path 
+Ex. 
+folder = C:/RPMI/output_files
+x = log1.csv
+Result: C:/RPMI/output_files/log1.csv
+We used this previously in the ontology section. This puts the second term wihting the folder path 
+
+
+os.path.getmtime(): 
+returns: file last modification timestamp 
+the most recently modified file has the largest timestamp 
+the function sorts from oldest to newest because the unix time number is greatest for newest 
+since .sort() sorts in ascending order, the newest is always last
+
+Returning lastest file: 
+return os.path.join(folder, files[-1])
+newest always last 
+
+
+---Second Function--- 
+def process_row(row, previous_laser_state) 
+
+CSV file (RPMI writing)
+        ↓
+tail_csv()
+        ↓
+process_row()
+        ↓
+Laser ON/OFF detection
+        ↓
+timestamps printed in real time
+
+Instead of analyzing the file after the run, detect events as the machine runs 
+
+
+def process_row(row, previous_laser_state):
+row --> one row from the CSV (as a dictionary)
+previous_laser_state --> what the laser was doing before the current state 
+output: returns the current laser state so the next row can compare 
+
+Step 1 Parse Timestamp 
+
+Crash Safe Format:
+try:
+    ...
+except Exception:
+    return previous_laser_state
+Many possible errors could happen here --> Missing columns (row["Laser On"]) doesn’t exist, empty rows, bad timestamp/format
+Without try/except the program will crash but with it -- it can skip rows and such
+
+timestamp = pd.to_datetime(row["TimeStamp"], errors="coerce")
+string --> datetime object 
+take values from timestamp individually and convert to datetime object 
+
+
+Step 2: Convert To UTC 
+if timestamp.tzinfo is None:
+    timestamp = timestamp.tz_localize("UTC")
+.tzinfo = timezone info 
+if it doesn't have a timezone assign it to UTC 
+
+Step 3: Get Laser State 
+laser_state = float(row["Laser On"])
+this is int with either 0 or 1 
+'
+Step 4: Detect Transisitions 
+
+if previous_laser_state == 0 and laser_state != 0:
+laser was off and laser is now on then the event has started 
+
+if previous_laser_state != 0 and laser_state == 0:
+laser was ON and now is OFF --> stop event 
+

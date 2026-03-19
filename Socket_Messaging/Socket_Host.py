@@ -19,8 +19,9 @@ import sqlite3
 HOST = "0.0.0.0"    #insert IP
 PORT = 5000         #create port for custom protocol
 
+#folder = r"C:\\Users\\Kayleigh\\DIGITAL_ARCH_REPO\\RPMI_DATA_DEV\\data_csv_examples"   #INSERT ACTUAL FILE PATH
 running = False
-print("SCRIPT STARTED")
+
 #%% Find latest CSV produced by RPMI
 
 def get_latest_csv(folder):
@@ -40,10 +41,7 @@ def get_latest_csv(folder):
 
     return os.path.join(folder, files[-1])
 
-folder = r"C:\\Users\\Kayleigh\\DIGITAL_ARCH_REPO\\RPMI_DATA_DEV\\random_data"   #INSERT ACTUAL FILE PATH
-files2 = get_latest_csv(folder)
-print(files2)
-print("All CSV files:", files2)
+
 #Note this is a function because we do not know the filepath that the RPMI saves yet
 
 #%% Laser detection logic 
@@ -85,7 +83,6 @@ def read_rpmi_csv(filepath):
         reader = csv.reader(f)
         for row in reader:
             print(row)
-
 
 
 #%% Real-time CSV monitoring
@@ -181,40 +178,3 @@ def start_server():
 
 #%% Run server
 start_server()
-
-
-#%%
-
-#Create laser on time stamp function, event = LaserOn
-def find_laser_timeframe(df):
-
-    #pd.to_datetime(...), converts strings into real datetime objects. Can perform subtraction. errors = "coerce" will convert unparseable strings to NaT (Not a Time) 
-    df["TimeStamp"] = pd.to_datetime(df["TimeStamp"], format="%Y-%m-%d %H:%M:%S", errors="coerce")  
-    df = df.dropna(subset=["TimeStamp"]).reset_index(drop=True) #removes rows were TimeStamp is missing
-    df["TimeStamp"] = df["TimeStamp"].dt.tz_convert("UTC")  # .dt access datetime proprties, UTC will attatch UTC timezone
-    
-    
-    laser_on_indices = df.index[df["Laser On"] != 0]  # Find first index where Laser On is not zero
-
-    if len(laser_on_indices) == 0:
-        return None, 0     #if laser is never on, return None and 0 duration
-
-    first_on_idx = laser_on_indices[0]
-
-    if first_on_idx > 0:    
-        reference_idx = first_on_idx - 1  #pick row just before laser turns on as a reference timestamp
-    else:
-        reference_idx = first_on_idx
-
-    reference_timestamp = df.loc[reference_idx, "TimeStamp"]
-
-    last_on_idx = laser_on_indices[-1]  # Find last index where Laser On is not zero
-    final_timestamp = df.loc[last_on_idx, "TimeStamp"]
-
-    laser_on_duration = final_timestamp - reference_timestamp
-    laser_on_duration_seconds = laser_on_duration.total_seconds() 
-
-    return reference_timestamp, laser_on_duration_seconds
-
-reference_timestamp, laser_on_duration_seconds = find_laser_timeframe(df)
-print(reference_timestamp, laser_on_duration_seconds)
