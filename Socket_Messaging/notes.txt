@@ -113,11 +113,20 @@ Instead of analyzing the file after the run, detect events as the machine runs
 def process_row(row, previous_laser_state):
 row --> one row from the CSV (as a dictionary)
 previous_laser_state --> what the laser was doing before the current state 
-output: returns the current laser state so the next row can compare 
+output: returns the current laser_state so the next row can compare 
 
 Step 1 Parse Timestamp 
 
 Crash Safe Format:
+try:
+    # code that might cause an exception
+    line1
+    line2
+    line3
+except SomeException:
+    # what to do if an exception occurs
+    handle_exception()
+
 try:
     ...
 except Exception:
@@ -128,6 +137,11 @@ Without try/except the program will crash but with it -- it can skip rows and su
 timestamp = pd.to_datetime(row["TimeStamp"], errors="coerce")
 string --> datetime object 
 take values from timestamp individually and convert to datetime object 
+
+except Exception:
+return previous_laser_state 
+
+General form to say: catch any error that happens in that try block and continue iterating
 
 
 Step 2: Convert To UTC 
@@ -148,3 +162,184 @@ laser was off and laser is now on then the event has started
 if previous_laser_state != 0 and laser_state == 0:
 laser was ON and now is OFF --> stop event 
 
+These are both if statements not elif becuase they are independent events
+
+
+---Function 3----
+
+def tail_csv(filepath):
+Defines a function that takes the file path as input.
+
+global running: 
+uses a global variable "running" to control the loop 
+allows you to stop monitoring from outside the funciton by setting running = False 
+
+print("Monitoring CSV:", filepath )
+console message to show which file is being monitored 
+
+previous_laser_state = 0 
+keeps track of the last known laser state 
+0 = OFF, 1 = ON 
+
+with open(filepath, "r") as f: 
+Package --> built in python (open is part of Python core)
+Purpose: Opens a file for reading "r" , writing "w" or appending "a" 
+shorthand
+"with" keyword --> context manager that automatically closes the file when done 
+ensures no file handles are left open 
+This is telling to open the file in read mode 
+as f: 
+f is just a variable that represents the file object 
+you could call it anything (as file_obj) but as f is common 
+example equivalence:
+f = open("data.csv", "r")
+# do stuff
+f.close()
+
+DictReader(f) --> reads rows as dictionaries instead of lists 
+Keys = column names (header), Values = row values 
+You can remember columns by name instead of the column order manually. 
+Ex. csv.DictReader(f)
+{'TimeStamp': '2025-03-19 12:00:00', 'Laser On': '0'}
+{'TimeStamp': '2025-03-19 12:01:00', 'Laser On': '1'}
+
+csv.reader(f)
+['2025-03-19 12:00:00', '0']
+
+for row in reader 
+iterates over each existing row in CSV file 
+row is a dictionary from DictReader that you iterate through each time 
+previous_laser_state keeps track of whether the laser was ON and OFF in the previous row 
+
+Real-time monitoring loop 
+This loop runs continuously as long as the global variable running is True
+Designed for real-time monitoring while RPMI writes new CSV rows
+
+while running: 
+This loop until something sets running = False 
+Usually triggered by a manual interupt
+
+position = f.tell() 
+f.tell() gives the current file pointer position in bytes. Returns current position in the file 
+used to remember where we are in the file before trying to read new lines 
+
+line = f.readline() 
+reads one line at a time from the file 
+Moves the file pointer forward 
+if there's no new line (end of file) it returns an empty string
+
+if not line:
+    time.sleep(0.2)   --- wait 0.2 seconds
+    f.seek(position)  --- f.seek(position)
+
+
+Processing a new line
+
+line.strip().split(",")
+Removes leading/trailing whitespace (strip)
+Splits the CSV line into a list of values
+
+Example:
+line = "2025-03-19 12:01:00,1\n"
+line.strip().split(",") → ['2025-03-19 12:01:00', '1']
+
+previous_laser_state = process_row(row, previous_laser_state)
+Passes the new row and previous state to the laser detection function
+Updates previous_laser_state for the next iteration
+
+
+What is a global variable? 
+A global variable is a variable defined outside all functions accessible everywhere 
+For example:
+running = True #global variable, defined outside the function 
+def stop(): 
+    global running  #call the global variable
+    running = False  #you have to call the global variable first then change logic 
+
+
+---Function 4----
+start_server() = main host program 
+glocal running --> allows this function to control the loop inside tail_csv()
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+This is creating a TCP server socket 
+AF_INET --> IPv4 
+SOCK_STREAM --> TCP 
+
+Bind to address:
+server.bind((HOST, PORT))
+HOST = "0.0.0.0" → listen on all network interfaces
+PORT = 5000 → communication port
+
+Start listening for incoming connections: 
+server.listen(1) 
+Allows incoming connections 
+1 = max number of queued connections 
+
+Wait for client: 
+conn, addr = server.accept() 
+Blocking call --> waits until client connects 
+conn --> communication socket with that client 
+addr --> client's IP + port 
+example output: Connected by ('192.168.1.5', 54321)
+
+Main command loop: 
+while True:  --> This loop keeps the server running forever, handling commands
+
+Recieve data: 
+data = conn.recv(1024).decode().strip()
+conn.recv(1024) --> recieve up to 1024 bytes 
+.decode()  --> convert bytes to string 
+.strip()  --> remove whitespace/newlines 
+b"START\n" → "START"
+
+if not data: 
+    break 
+if client disconnects --> recv() returns empty 
+breaks the loop and closes connection 
+
+Command handling
+if data == "START" 
+
+latest_file = get_latest_csv(RPMI_FOLDER)
+returns newest .csv file  
+
+No file case, the file hasn't appeared yet 
+if latest_file is None:
+    print("No CSV files found")
+    continue
+
+Start Monitoring
+running = True
+tail_csv(latest_file)
+the server is now stuck inside tail_csv() until it finishes 
+
+
+
+STOP command
+elif data == "STOP":
+    print("Stopping monitoring")
+    running = False
+
+Sets running = False
+
+This is supposed to stop:
+
+while running:
+
+inside tail_csv()
+ But here’s the issue:
+
+Because tail_csv() is blocking, this code:
+ never executes while tail_csv is running
+
+
+
+PING command
+elif data == "PING":
+    conn.send("ALIVE".encode())
+
+Client sends "PING"
+Server responds "ALIVE"
+ Useful for:
+connection testing, heartbeat checks

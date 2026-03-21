@@ -5,9 +5,7 @@ from datetime import datetime
 import csv 
 import os
 
-#import requests
 import time
-#import xmltodict
 import json
 import socket 
 import threading 
@@ -19,10 +17,12 @@ import sqlite3
 HOST = "0.0.0.0"    #insert IP
 PORT = 5000         #create port for custom protocol
 
-#folder = r"C:\\Users\\Kayleigh\\DIGITAL_ARCH_REPO\\RPMI_DATA_DEV\\data_csv_examples"   #INSERT ACTUAL FILE PATH
 running = False
 
 #%% Find latest CSV produced by RPMI
+'''
+#Note this is a function because we do not know the filepath that the RPMI saves yet
+'''
 
 def get_latest_csv(folder):
 
@@ -41,10 +41,10 @@ def get_latest_csv(folder):
 
     return os.path.join(folder, files[-1])
 
+folder = r"C:\\Users\\Kayleigh\\DIGITAL_ARCH_REPO\\RPMI_DATA_DEV\\data_csv_examples"   #INSERT ACTUAL FILE PATH
+RPMI_FOLDER = get_latest_csv(folder)
 
-#Note this is a function because we do not know the filepath that the RPMI saves yet
-
-#%% Laser detection logic 
+#%% Laser detection logic, create timestamp
 def process_row(row, previous_laser_state):
 
     try:
@@ -76,36 +76,26 @@ def process_row(row, previous_laser_state):
 
     return laser_state
 
-#%% Real Time Engine -- This function writes the CSV file continuosly
-#how does this work with the past funciton?
-def read_rpmi_csv(filepath):
-    with open(filepath, 'r') as f:
-        reader = csv.reader(f)
-        for row in reader:
-            print(row)
-
 
 #%% Real-time CSV monitoring
+'''
+Need to find filepath later 
+
+'''
 def tail_csv(filepath):
-
     global running
-
     print("Monitoring CSV:", filepath)
-
     previous_laser_state = 0
 
     with open(filepath, "r") as f:
-
         reader = csv.DictReader(f)
 
         # Process existing rows first
         for row in reader:
-
             previous_laser_state = process_row(row, previous_laser_state)
 
         # Monitor new rows written by RPMI
         while running:
-
             position = f.tell()
             line = f.readline()
 
@@ -114,33 +104,25 @@ def tail_csv(filepath):
                 f.seek(position)
 
             else:
-
                 values = line.strip().split(",")
-
                 row = dict(zip(reader.fieldnames, values))
-
                 previous_laser_state = process_row(row, previous_laser_state)
 
 
 #%% Socket Server
+
 def start_server():
 
     global running
-
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
     server.bind((HOST, PORT))
-
     server.listen(1)
-
     print("Server waiting for connection...")
 
     conn, addr = server.accept()
-
     print("Connected by", addr)
 
     while True:
-
         data = conn.recv(1024).decode().strip()
 
         if not data:
@@ -149,28 +131,21 @@ def start_server():
         print("Received:", data)
 
         if data == "START":
-
             print("Starting RPMI monitoring")
-
             latest_file = get_latest_csv(RPMI_FOLDER)
 
             if latest_file is None:
-
                 print("No CSV files found")
                 continue
 
             running = True
-
             tail_csv(latest_file)
 
         elif data == "STOP":
-
             print("Stopping monitoring")
-
             running = False
 
         elif data == "PING":
-
             conn.send("ALIVE".encode())
 
     conn.close()
