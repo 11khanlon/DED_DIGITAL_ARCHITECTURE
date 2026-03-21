@@ -300,6 +300,12 @@ breaks the loop and closes connection
 
 Command handling
 if data == "START" 
+Problem:
+Server gets stuck inside tail_csv
+Cannot receive "STOP" or "PING"
+Without threading: START → tail_csv runs forever → server frozen
+With threading:  START → tail_csv runs in background → server STILL listens for commands
+
 
 latest_file = get_latest_csv(RPMI_FOLDER)
 returns newest .csv file  
@@ -391,3 +397,30 @@ Server side:
 Recieved --> START and then start RPMI monitoring 
 
 Then: tail_csv(latest_file)
+Now logging begins 
+
+Step 5: Data is processed 
+CSV is read in real time 
+Laer ON/OFF detected 
+Timestamps printed 
+
+Step 6 -- Stop logging 
+Client: STOP 
+Server: stopping monitoring 
+
+
+How does the server "wait" vs "start logging" 
+
+Idle state (before START)
+Waiting for connection
+Connected
+Waiting for command...
+
+Active state (after START)
+START received
+→ find latest CSV
+→ start tail_csv
+
+So the trigger is: 
+if data == "START" 
+that's what start everything 
