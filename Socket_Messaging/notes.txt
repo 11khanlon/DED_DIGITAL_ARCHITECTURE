@@ -343,3 +343,51 @@ Client sends "PING"
 Server responds "ALIVE"
  Useful for:
 connection testing, heartbeat checks
+
+
+
+----Socket Client Code-----
+Your Python code
+    ↓
+socket.send()
+    ↓
+TCP (Layer 4)
+    ↓
+IP packets (Layer 3)
+    ↓
+Ethernet frames (Layer 2)
+
+conn.send("START".encode()) 
+TCP turns that into: segments, packets, retransmissions. You never manually handle packets
+You are sending bytes here, sockets only send bytes here 
+
+UTF-8 
+A way to convert text (characters) into bytes 
+Example: 
+"START".encode() --> b'START' --> Networks only transmit bytes not characters
+
+Decode on socket host side 
+data = conn.recv(1024).decode()
+Converts bytes --> string 
+
+
+How to actually run the system: 
+Step 1: Start the server 
+Run: python socket_host.py 
+Output: Server waiting for connection... 
+Server is running, listening on port 5000 Doing nothhing else 
+
+Step 2: 
+RPMI starts writing CSV files 
+Your server is Not reading yet 
+
+Step 3: Run the client 
+python client.py 
+client connects --> server prints connected by ('192.168.x.x', port) 
+
+Step 4: Send START command 
+From client: START 
+Server side: 
+Recieved --> START and then start RPMI monitoring 
+
+Then: tail_csv(latest_file)

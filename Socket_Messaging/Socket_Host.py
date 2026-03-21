@@ -14,10 +14,11 @@ import sqlite3
 
 #%%
 #Host Server Structure 
+
 HOST = "0.0.0.0"    #insert IP
 PORT = 5000         #create port for custom protocol
 
-running = False
+running = False     #set global variable to false, not running yet
 
 #%% Find latest CSV produced by RPMI
 '''
