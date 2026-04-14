@@ -1,7 +1,9 @@
+import os
 import socket
 import threading
 from utils import get_latest_csv 
 from monitor import tail_csv
+import time
 
 HOST = "0.0.0.0" #insert host IP address here. RPMI computer 
 PORT = 5000      #create port for custom protocol
@@ -29,19 +31,30 @@ def start_server():
 
         if data == "START" and not running_flag["running"]:
 
-            print("Waiting for CSV...")
+            print("START received")
+
+            start_time = time.time()
+            running_flag["running"] = True
+
+            print("Waiting for NEW CSV after START...")
 
             while True:
+
                 latest = get_latest_csv(RPMI_FOLDER)
 
-                if latest:
-                    print("Found file:", latest)
+                if latest is None:
+                    time.sleep(0.2)
+                    continue
 
-                    running_flag["running"] = True
+                file_time = os.path.getmtime(latest)
+
+                if file_time >= start_time:
+
+                    print("Monitoring file:", latest)
 
                     threading.Thread(
                         target=tail_csv,
-                        args=(latest, running_flag),
+                        args=(latest, running_flag, conn),
                         daemon=True
                     ).start()
 

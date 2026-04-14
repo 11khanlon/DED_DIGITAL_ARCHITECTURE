@@ -4,10 +4,9 @@ import pandas as pd
 
 
 #%% Laser detection logic, create timestamp
-def process_row(row, previous_laser_state):
+def process_row(row, previous_laser_state, conn):
 
     try:
-
         timestamp = pd.to_datetime(row["TimeStamp"], errors="coerce")
 
         if pd.isna(timestamp):
@@ -21,40 +20,48 @@ def process_row(row, previous_laser_state):
     except Exception:
         return previous_laser_state
 
-    # Laser OFF → ON
+    # OFF → ON
     if previous_laser_state == 0 and laser_state != 0:
 
-        print("LASER ON DETECTED")
-        print("Start timestamp:", timestamp)
+        msg = f"LASER_ON,{timestamp}"
+        print(msg)
+        conn.send(msg.encode())
 
-    # Laser ON → OFF
+    # ON → OFF
     if previous_laser_state != 0 and laser_state == 0:
 
-        print("LASER OFF DETECTED")
-        print("Stop timestamp:", timestamp)
+        msg = f"LASER_OFF,{timestamp}"
+        print(msg)
+        conn.send(msg.encode())
 
     return laser_state
-
 
 #%% Real-time CSV monitoring
 '''
 Need to find filepath later 
 
 '''
-def tail_csv(filepath):
-    global running
+def tail_csv(filepath, running_flag, conn):
+
     print("Monitoring CSV:", filepath)
+
     previous_laser_state = 0
 
     with open(filepath, "r") as f:
+
         reader = csv.DictReader(f)
 
-        # Process existing rows first
+        # Process existing rows
         for row in reader:
-            previous_laser_state = process_row(row, previous_laser_state)
+            previous_laser_state = process_row(
+                row,
+                previous_laser_state,
+                conn
+            )
 
-        # Monitor new rows written by RPMI
-        while running:
+        # Real-time monitoring loop
+        while running_flag["running"]:
+
             position = f.tell()
             line = f.readline()
 
@@ -65,4 +72,9 @@ def tail_csv(filepath):
             else:
                 values = line.strip().split(",")
                 row = dict(zip(reader.fieldnames, values))
-                previous_laser_state = process_row(row, previous_laser_state)
+
+                previous_laser_state = process_row(
+                    row,
+                    previous_laser_state,
+                    conn
+                )
