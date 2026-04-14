@@ -1,8 +1,8 @@
 import os
 import socket
 import threading
-from utils import get_latest_csv 
-from monitor import tail_csv
+from Socket_Messaging.RPMIandClient.utils import get_latest_csv 
+from Socket_Messaging.RPMIandClient.monitor import tail_csv
 import time
 
 HOST = "0.0.0.0" #insert host IP address here. RPMI computer 
