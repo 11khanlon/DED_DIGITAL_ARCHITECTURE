@@ -5,7 +5,7 @@ from monitor import tail_csv
 
 HOST = "0.0.0.0" #insert host IP address here. RPMI computer 
 PORT = 5000      #create port for custom protocol
-RPMI_FOLDER = r"C:\your\folder\here"   #insert actual folder path where RPMI saves CSV files
+RPMI_FOLDER = r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\Mazak"   #insert actual folder path where RPMI saves CSV files
 
 running_flag = {"running": False}  #set global variable to false, not running yet
 

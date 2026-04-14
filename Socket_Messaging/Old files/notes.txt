@@ -1,3 +1,45 @@
+---Setup Steps---
+
+Step 1: Start the server on RPMI (terminal 1)
+open the cmd prompt on the RPMI and run python main.py 
+you should see "Server waiting for connection..." 
+what's going on here? 
+ther server is now blocking and waiting for an active client
+main.py --> start_server() --> socket created --> waiting at: conn, addr = server.accept()
+
+Step 2: Start the client connection (terminal 2)
+onen the cmd prompt on the client computer and run python client.py 
+you should see Command (START/STOP/PING/EXIT):
+on the server side (RPMI it should print Connected by ('192.168.x.x', port))
+
+Step 3: Client send START 
+in terminal 2 or client send START
+
+Step 4: 
+RPMI starts writing data continuously
+server thread behavior
+tail_csv():
+    read existing rows
+    then:
+        while running:
+            read new lines
+laser detection:
+Laser OFF → ON → print start timestamp
+Laser ON → OFF → print stop timestamp
+
+Step 5: operator send stop on client 
+Maybe disconenct automatically when laser turns off? 
+in client, send STOP
+this turns the global variable running to False again 
+tail_csv loop exits and monitoring stops cleanly 
+
+
+main.py --> starts program (on RPMI)
+server.py --> handles sockets  (on RPMI)
+monitor.py --> reads CSV   (on RPMI)
+utlis.py --> finds files (on RPMI)
+client.py --> client computer (external)
+
 socket - lets python communicate over a network using TCP/UDP protocol. In this script, use TCP for guranteed packet delivery
 csv - reads RPMI output .csv file 
 
@@ -37,7 +79,7 @@ OSI Layer	                          Implementation in Your System	              
 1. Physical	           Ethernet cable / network hardware	                                                   Physical transmission of bits
 
 
-----First Function----
+----Utils.py----
 def get_latest_csv(folder)
 
 import os --> os gives python access to operating system functionality such as: 
@@ -48,6 +90,7 @@ os.path.join()	safely construct file paths
 folder --> this is a function argument 
 ex. get_latest_csv("C:/RPMI/output_files")
 the function will search folder path you pass in 
+this will folder will be inputted in your server.py file 
 
 os.listdir(folder) --> this will list everything in the directory 
 [
@@ -94,7 +137,7 @@ return os.path.join(folder, files[-1])
 newest always last 
 
 
----Second Function--- 
+---Monitor.py--- 
 def process_row(row, previous_laser_state) 
 
 CSV file (RPMI writing)
@@ -165,7 +208,6 @@ laser was ON and now is OFF --> stop event
 These are both if statements not elif becuase they are independent events
 
 
----Function 3----
 
 def tail_csv(filepath):
 Defines a function that takes the file path as input.
@@ -257,7 +299,7 @@ def stop():
     running = False  #you have to call the global variable first then change logic 
 
 
----Function 4----
+---server.py----
 start_server() = main host program 
 glocal running --> allows this function to control the loop inside tail_csv()
 
@@ -361,7 +403,7 @@ connection testing, heartbeat checks
 
 
 
-----Socket Client Code-----
+----client.py-----
 Your Python code
     ↓
 socket.send()
@@ -433,3 +475,10 @@ START received
 So the trigger is: 
 if data == "START" 
 that's what start everything 
+
+
+----main.py --- 
+main.py is the entry point. this is the file you run to start everything 
+instead of running server.py directly, you run py main.py 
+if __name__=="__main__" --> this checks how the file is being used. 
+if you only ran start_server(), the server would start every time you import the file
