@@ -1,21 +1,19 @@
 import socket
 
-HOST = "192.168.1.100"
+HOST = "127.0.0.1"  #insert host IP address here RPMI computer
 PORT = 5000
 
 def run_client():
-
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect((HOST, PORT))
 
     while True:
-        cmd = input("Enter command (START / STOP / PING / EXIT): ")
+        cmd = input("Command (START/STOP/PING/EXIT): ")
 
         client.send(cmd.encode())
 
         if cmd == "PING":
-            response = client.recv(1024).decode()
-            print("Server:", response)
+            print(client.recv(1024).decode())
 
         if cmd == "EXIT":
             break

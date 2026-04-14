@@ -305,6 +305,15 @@ Server gets stuck inside tail_csv
 Cannot receive "STOP" or "PING"
 Without threading: START → tail_csv runs forever → server frozen
 With threading:  START → tail_csv runs in background → server STILL listens for commands
+BEFORE (your old logic)
+START → immediately try reading file
+
+Problem:
+file might not exist yet 
+AFTER (Option C)
+START → wait until file exists → THEN read
+Robust
+ Matches real RPMI behavior
 
 
 latest_file = get_latest_csv(RPMI_FOLDER)

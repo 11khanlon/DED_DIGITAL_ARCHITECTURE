@@ -1,0 +1,107 @@
+mtconnect_cleanup script: 
+
+Converting Long format (log style):
+Timestamp | Variable | Value
+
+to Wide format:
+Timestamp | xpostn | ypostn | zpostn | ...
+
+Each argument explained: 
+index = "Change Timestamp" 
+--> each unique timestamp becomes a row 
+columns="Variable"
+--> each varaible become a column 
+values = "New Value"
+--> fills table with the actual values 
+aggfunc="first" 
+--> if duplicates exist, take the first one 
+.rest_index() 
+--> turns timestamp back into a normal column (instead of index) 
+
+
+.loc vs .iloc (Pandas)
+
+-----------------------------
+.loc → label-based (names)
+-----------------------------
+
+Think:
+"I know the column name or label"
+
+Example 1: Get all xpostn values
+pivot_df.loc[:, "xpostn"]
+: means all rows
+"xpostn" is the column name
+
+Example 2: Get first row (by index label)
+pivot_df.loc[0]
+Works because reset_index() makes index 0,1,2,...
+
+Example 3: Filter by timestamp value
+pivot_df.loc[pivot_df["Change Timestamp"] == "2026-03-20T19:12:22Z"]
+
+Example 4: Get multiple columns
+pivot_df.loc[:, ["xpostn", "ypostn", "zpostn"]]
+
+Example 5: Modify a value
+pivot_df.loc[0, "xpostn"] = 999
+
+
+-----------------------------
+.iloc → position-based (numbers)
+-----------------------------
+
+Think:
+"I want row # and column #"
+
+Example 1: First row
+pivot_df.iloc[0]
+
+Example 2: First column
+pivot_df.iloc[:, 0]
+
+Example 3: Row 0, column 1
+pivot_df.iloc[0, 1]
+This gives xpostn value of first row
+
+Example 4: Slice rows
+pivot_df.iloc[0:3]
+
+Example 5: Select columns by position
+pivot_df.iloc[:, 1:4]
+This gets xpostn, ypostn, zpostn
+
+
+-----------------------------
+Side-by-side comparison
+-----------------------------
+
+Task                  | .loc                          | .iloc
+--------------------------------------------------------------
+First row             | df.loc[0]                     | df.iloc[0]
+Column by name        | df.loc[:, "xpostn"]           | not possible
+Column by index       | not possible                  | df.iloc[:, 1]
+Filter by condition   | yes                           | no
+Slice rows            | df.loc[0:2] (inclusive)       | df.iloc[0:3] (exclusive)
+
+
+-----------------------------
+In your workflow
+-----------------------------
+
+Use .loc when:
+- Filtering timestamps
+- Accessing columns by name
+- Cleaning data
+
+Example:
+pivot_df.loc[pivot_df["xlod"] > 0]
+
+Use .iloc when:
+- Looping through rows
+- Position-based access
+- Debugging structure
+
+Example:
+for i in range(len(pivot_df)):
+    print(pivot_df.iloc[i, 0])   # prints timestamp

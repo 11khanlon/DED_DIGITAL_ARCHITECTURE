@@ -42,8 +42,8 @@ def get_latest_csv(folder):
 
     return os.path.join(folder, files[-1])
 
-folder = r"C:\\Users\\Kayleigh\\DIGITAL_ARCH_REPO\\RPMI_DATA_DEV\\data_csv_examples"   #INSERT ACTUAL FILE PATH
-RPMI_FOLDER = get_latest_csv(folder)
+#folder = r"C:\\Users\\Kayleigh\\DIGITAL_ARCH_REPO\\RPMI_DATA_DEV\\data_csv_examples"   INSERT ACTUAL FILE PATH
+
 
 #%% Laser detection logic, create timestamp
 def process_row(row, previous_laser_state):
@@ -132,7 +132,9 @@ def start_server():
         print("Received:", data)
 
         if data == "START":
+
             print("Starting RPMI monitoring")
+
             latest_file = get_latest_csv(RPMI_FOLDER)
 
             if latest_file is None:
@@ -140,7 +142,12 @@ def start_server():
                 continue
 
             running = True
-            tail_csv(latest_file)
+
+            threading.Thread(
+                target=tail_csv,
+                args=(latest_file,),
+                daemon=True
+            ).start()
 
         elif data == "STOP":
             print("Stopping monitoring")
