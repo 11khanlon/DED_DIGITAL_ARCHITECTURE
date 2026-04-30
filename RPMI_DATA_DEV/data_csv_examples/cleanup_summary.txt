@@ -1,0 +1,6 @@
+
+--- SUMMARY ---
+Original: (7241, 105)
+Final:    (0, 105)
+Cols removed: 0
+Rows removed: 7241
