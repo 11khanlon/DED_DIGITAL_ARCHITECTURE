@@ -208,6 +208,7 @@ def convert_to_tic(df):
     records = []
     unmapped = []
     mapped = []
+    process_parameters = []
 
     print("\n================ TIC CONVERSION START ================\n")
 
@@ -263,9 +264,17 @@ def convert_to_tic(df):
                 "value": val,
                 "unit": extract_unit(col)
             })
+            process_parameters.append({
+                "parameter_id": param_id,
+                "description": val,
+                "unit": extract_unit(col)
+            })
 
     # FINAL SUMMARY PRINT
     # =========================
+    tic_df = pd.DataFrame(records)
+    process_parameters = pd.DataFrame(process_parameters)
+
     print("\n================ SUMMARY ================\n")
     print("Total columns:", len(df.columns) - 1)
     print("Mapped:", len(mapped))
@@ -277,11 +286,9 @@ def convert_to_tic(df):
 
     print("\n================ TIC OUTPUT PREVIEW ================\n")
 
-    tic_df = pd.DataFrame(records)
-
     print(tic_df.head(20))
     print("\nTOTAL TIC ROWS:", len(tic_df))
 
 
-    return tic_df
+    return tic_df, process_parameters
 

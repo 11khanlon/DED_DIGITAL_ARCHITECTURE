@@ -16,11 +16,11 @@ parameter_table, cleaned_df = clean_columns(df)
 
 
 #---------------- PARAMETER MAPPING ----------------
-tic_observations = convert_to_tic(cleaned_df)
+tic_df, process_parameters = convert_to_tic(cleaned_df)
 
 
 #---------------- ASSEMBLE MODULES ----------------
-tic_df = build_tic_observations(tic_observations)
-process_df = build_process_module(tic_df)
+tic_observations = build_tic_observations(tic_df)
+process_df = build_process_module(tic_observations, process_parameters)
 
 print(process_df)
