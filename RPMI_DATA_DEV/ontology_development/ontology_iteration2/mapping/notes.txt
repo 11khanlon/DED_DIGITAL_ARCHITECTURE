@@ -1,0 +1,104 @@
+PARAMETER MAP
+
+--Format--
+1. Load raw CSV 
+2. Clean column names 
+3. Interpret each column semantically 
+--> what system it belongs to 
+--> what parameter it represents 
+4. Convert wide data --> TIC (long format)
+5. Print/debug everything 
+
+--Imports--
+os = for file paths, directory changes
+sys = lets you modify python's import path 
+re = regular expressions 
+
+--- def normalize(col) ----
+this function standardizes everything so logic works consistently 
+col = col.lower().strip()
+-lowercases everything 
+-removes leading/trailing spaces 
+
+col = re.sub(r"[^a-z0-9 ]", " ", col)
+removes punctuation, units, symbols 
+
+col = re.sub(r"\s+", " ", col)
+fixes spacing 
+
+this function is important because without it these would look different
+"PF1 Argon Temp(°F)"
+"PF1 Argon Temp"
+"pf1_argon_temp" 
+
+after normalise --> "pf1 argon temp"
+
+
+--extract_system(col)---
+after we normalize (lowercase, remove symbols), we assign system unit ID 
+
+for example: 
+if "pf1" in c: return "PF1" this is Powder Feeder 1
+if "laser" in c: return "LASER_01" this is Laser subsystem
+
+---classify_state_variable(c)--- 
+Purpose: capture non-physical signals 
+warnings, alarms, enable falgs, etc 
+
+for example: 
+if "warning" in c:
+    return ("WARNING_FLAG", c)
+
+("WARNING_FLAG", "pf1 argon warning high level")
+
+
+---make_parameter_id---
+1. normalize 
+c = normalize(col)
+
+2. Skip timestamp
+if "timestamp" in c:
+    return None
+
+3. Motion Mapping 
+if "pos x" in c: return "POSITION_X"
+map key words to ID 
+
+4. STATE override 
+state = classify_state_variable(c)
+if state:
+    param_id, scope = state
+    return param_id, scope
+
+this is the only place where you return a tuple
+For example: ("WARNING_FLAG", "pf1 argon warning high level")
+
+6. convert_to_tic(df) 
+outer loop (columns)
+for col in df.columns: 
+iterate over each variable 
+
+Skip timestamp column
+if col == "TimeStamp":
+    continue
+
+get semantic meaning 
+param_id = make_parameter_id(col)
+system_id = extract_system(col)
+
+Unmapped variables:
+if param_id is None:
+    param_id = f"UNMAPPED_{col}"
+
+Inner loop (rows): 
+for i, row in df.iterrows():
+iterate over time 
+
+Extract value + timestamp:
+val = row[col]
+timestamp = row["TimeStamp"]
+
+Notice here orignally you dont use timestamp as a parameter to be mapped?
+You use it as the primary column 
+
+

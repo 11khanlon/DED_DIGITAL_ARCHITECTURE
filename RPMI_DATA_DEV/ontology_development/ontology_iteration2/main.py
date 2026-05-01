@@ -3,8 +3,8 @@ import numpy as np
 import pandas as pd
 
 from ingestion.clean_data import clean_columns
-from ingestion.events import get_laser_start_event
-
+from mapping.parameter_map import convert_to_tic
+from modules.TIC import build_tic_observations
 
 # ---------------- LOAD ----------------
 os.chdir(r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\data_csv_examples")
@@ -14,4 +14,11 @@ df = pd.read_csv("dlog_2023-08-09_1106_purge_testing.csv", low_memory=False)
 parameter_table, cleaned_df = clean_columns(df)
 
 
-print(parameter_table, cleaned_df)
+#---------------- PARAMETER MAPPING ----------------
+tic_observations = convert_to_tic(cleaned_df)
+
+
+#---------------- ASSEMBLE MODULES ----------------
+tic_df = build_tic_observations(tic_observations)
+print(tic_df)
+tic_df.to_csv("tic_observations.csv", index=False)

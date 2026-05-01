@@ -1,39 +1,23 @@
+#%%
 import os
 import sys
 import numpy as np
 import pandas as pd
 import re
-
-
+#%%
 # IMPORT CLEANING FUNCTION
 sys.path.append(
     r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\ontology_development\ontology_iteration2"
 )
-
 from ingestion.clean_data import clean_columns
 
-
-# LOAD DATA
-os.chdir(r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\data_csv_examples")
-
-df = pd.read_csv(
-    "cleaned_original.csv",
-    low_memory=False
-)
-
-print("\n================ RAW DATA ================\n")
-print(df.head())
-
-
-# CLEAN DATA
-parameter_table, cleaned_df = clean_columns(df)
-
-print("\n================ PARAMETER TABLE ================\n")
-print(parameter_table)
-
-print("\n================ CLEANED COLUMNS ================\n")
-print(list(cleaned_df.columns))
-
+#%%
+#Extract Unit
+def extract_unit(col):
+    match = re.search(r"\((.*?)\)", col)
+    if match:
+        return match.group(1)
+    return None
 
 #%%
 # NORMALIZATION
@@ -42,7 +26,6 @@ def normalize(col):
     col = re.sub(r"[^a-z0-9 ]", " ", col)
     col = re.sub(r"\s+", " ", col)
     return col
-
 
 # SYSTEM INFERENCE
 def extract_system(col):
@@ -56,15 +39,25 @@ def extract_system(col):
 
     if "center purge" in c: return "CP1"
 
-    if "laser" in c: return "LASER_01"
 
-    if "camera" in c: return "CAM_01"
+    if (
+    "laser" in c or 
+    "fiber" in c or 
+    "beam" in c or 
+    "di water" in c or 
+    "power from meter" in c or
+    "alps" in c or
+    "optics" in c
+    ):
+        return "LASER_01"
+    
+    if "pos" in c or "velocity" in c or "head temp" in c or "layer" in c:
+        return "MH1"
+
+    if "camera" in c or "melt pool" in c: return "CAM_01"
 
     if "o2 sensor" in c: return "O2_SENSOR"
     if "h2o sensor" in c: return "H2O_SENSOR"
-
-    if "pos" in c or "velocity" in c:
-        return "MH1"
 
     if "pressure" in c:
         return "RPMI_01"
@@ -125,7 +118,6 @@ def make_parameter_id(col):
         return param_id, scope
    
     # LASER DIAGNOSTICS / OPTICAL METROLOGY MODULE
-    # =================================================
     if "feed fiber" in c:
         return "LASER_FEED_FIBER_SIGNAL"
 
@@ -144,9 +136,10 @@ def make_parameter_id(col):
     if "alps" in c:
         return "OPTICAL_ALIGNMENT_POSITION"
     
-    
 
     # ---------------- POWDER FEEDERS ----------------
+    if "powder low" in c:
+        return "POWDER_LOW_FLAG"
     for pf in ["pf1", "pf2", "pf3", "pf4"]:
         if pf in c and "rpm setpoint" in c:
             return f"RPM_SETPOINT_{pf.upper()}"
@@ -160,6 +153,7 @@ def make_parameter_id(col):
             return f"ARGON_TEMP_{pf.upper()}"
         if pf in c and "pressure" in c:
             return f"ARGON_PRESSURE_{pf.upper()}"
+       
 
     # ---------------- CENTER PURGE ----------------
     if "center purge" in c and "mflow" in c:
@@ -208,12 +202,10 @@ def make_parameter_id(col):
     return None
 
 
-
 # TIC CONVERSION (PRINT EVERYTHING)
 def convert_to_tic(df):
 
     records = []
-
     unmapped = []
     mapped = []
 
@@ -224,12 +216,17 @@ def convert_to_tic(df):
         if col == "TimeStamp":
             continue
 
-        param_id = make_parameter_id(col)
+        param = make_parameter_id(col)
+
+        if isinstance(param, tuple):
+            param_id, state_scope = param
+        else:
+            param_id = param
+            state_scope = None
+        
         system_id = extract_system(col)
 
-        # =========================
         # PRINT MAPPING INFO
-        # =========================
         print("\n----------------------------------------")
         print("COLUMN:", col)
         print("SYSTEM:", system_id)
@@ -243,17 +240,18 @@ def convert_to_tic(df):
             mapped.append(col)
             print("STATUS:  MAPPED")
 
-        # =========================
         # ROW LOOP
-        # =========================
         for i, row in df.iterrows():
 
             val = row[col]
             timestamp = row["TimeStamp"]
 
-            if pd.isna(val) or val == "":
+            if pd.isna(val):
                 continue
 
+            if isinstance(val, str) and val.strip() == "":
+                continue
+            
             if i < 2:  # ONLY PRINT FIRST 2 ROWS PER COLUMN (prevents spam)
                 print(f"  row[{i}] → ts={timestamp}, val={val}")
 
@@ -261,10 +259,11 @@ def convert_to_tic(df):
                 "timestamp": timestamp,
                 "system_id": system_id,
                 "parameter_id": param_id,
-                "value": val
+                "state_scope": state_scope,
+                "value": val,
+                "unit": extract_unit(col)
             })
 
-    # =========================
     # FINAL SUMMARY PRINT
     # =========================
     print("\n================ SUMMARY ================\n")
@@ -283,10 +282,6 @@ def convert_to_tic(df):
     print(tic_df.head(20))
     print("\nTOTAL TIC ROWS:", len(tic_df))
 
+
     return tic_df
 
-# RUN PIPELINE
-# =========================================================
-tic_observations = convert_to_tic(df)
-
-print(tic_observations)

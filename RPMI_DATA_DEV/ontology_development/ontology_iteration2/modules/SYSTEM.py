@@ -18,7 +18,7 @@ systems = pd.DataFrame({
         "RPMI_01",
         "PF1", "PF2", "PF3", "PF4",
         "CP1",
-        "OPT1",
+        "LASER_01",
         "MH1",
         "CAM_01",
         "TC",
@@ -29,7 +29,7 @@ systems = pd.DataFrame({
         "machine",
         "hopper", "hopper", "hopper", "hopper",
         "purge_line",
-        "optics",
+        "optics/laser",
         "machine_head",
         "camera",
         "thermocouple",
@@ -42,7 +42,7 @@ systems = pd.DataFrame({
         "RPMI_01",
         "RPMI_01",
         "RPMI_01",
-        "OPT1",        # camera mounted in optics
+        "RPMI_01",       
         "MH1",         # thermocouples tied to build plate/head
         "RPMI_01",
         "RPMI_01"

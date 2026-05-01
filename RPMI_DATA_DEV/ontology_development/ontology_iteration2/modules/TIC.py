@@ -1,46 +1,53 @@
+#%%
 import numpy as np
 import pandas as pd
+import sys
+import os
 
-tic_observations = pd.DataFrame({
-    # identity
-    "observation_id": [],
+#%%
+def build_tic_observations(mapped_df, build_id="BUILD_001"):
+    
+    df = mapped_df.copy()
 
-    # links to BUILD (critical CDM connection)
-    "build_id": [],
+    # ---------------- ADD IDS ----------------
+    df["observation_id"] = np.arange(len(df))
+    df["build_id"] = build_id
 
-    # links to SYSTEM (sensor, machine, optics, etc.)
-    "system_id": [],
+    # ---------------- OPTIONAL METADATA ----------------
+    df["measurement_error"] = None
+    df["calibration_id"] = None
+    df["sampling_rate_hz"] = 1
+    df["sequence_index"] = df.groupby("parameter_id").cumcount()
 
-    # links to PROCESS vocabulary (RPM, LASER_POWER, etc.)
-    "parameter_id": [],
+    df["source_system"] = df["system_id"]
+    df["source_sensor"] = None
 
-    # time dimension
-    "timestamp": [],
+    # ---------------- SELECT FINAL COLUMNS ----------------
+    return df[
+        [
+            "observation_id",
+            "build_id",
+            "system_id",
+            "parameter_id",
+            "timestamp",
+            "value",
+            "unit",
+            "measurement_error",
+            "calibration_id",
+            "sampling_rate_hz",
+            "sequence_index",
+            "source_system",
+            "source_sensor",
+        ]
+    ]
 
-    # measured value (raw output)
-    "value": [],
 
-    # optional metadata (very important in real systems)
-    "unit": [],
-    "data_type": [],
 
-    # quality / validity flags
-    "is_valid": [],
-    "quality_flag": [],
+#%%
 
-    # uncertainty / calibration context
-    "measurement_error": [],
-    "calibration_id": [],
 
-    # sampling info (important for sensors like cameras / thermocouples)
-    "sampling_rate_hz": [],
-    "sequence_index": [],
-
-    # source tracking (for distributed systems like yours)
-    "source_system": [],
-    "source_sensor": []
-})
-
+'''
+Need to implement external sensor stream 
 
 sensor_tic_metadata = pd.DataFrame({
     "system_id": [],
@@ -153,3 +160,5 @@ tic_quality = pd.DataFrame({
     "missing_data_flag": [],
     "interpolation_method": []
 })
+
+'''
