@@ -5,6 +5,7 @@ import pandas as pd
 from ingestion.clean_data import clean_columns
 from mapping.parameter_map import convert_to_tic
 from modules.TIC import build_tic_observations
+from modules.PROCESS import build_process_module
 
 # ---------------- LOAD ----------------
 os.chdir(r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\data_csv_examples")
@@ -20,5 +21,6 @@ tic_observations = convert_to_tic(cleaned_df)
 
 #---------------- ASSEMBLE MODULES ----------------
 tic_df = build_tic_observations(tic_observations)
-print(tic_df)
-tic_df.to_csv("tic_observations.csv", index=False)
+process_df = build_process_module(tic_df)
+
+print(process_df)

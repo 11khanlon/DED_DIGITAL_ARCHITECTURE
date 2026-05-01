@@ -1,150 +1,35 @@
-import numpy as np 
 import pandas as pd 
+import numpy as np 
 
 '''
- AM-CDD aligned vocab
- This is what the machine is doing 
- RPM, Argon flow, pressure, laser power
+defines "allowed vocabulary" of process parameters 
+
+it answers: what is a valid process parameter?, what does it mean, what unit should it have, what system does it belong to? 
+
+
 '''
 
-process_parameters = pd.DataFrame({
-    "parameter_id": [
-        # Feeder / Hopper
-        "RPM",
-        "RPM_SETPOINT",
-        "POWDER_FEED_RATE",
-        "POWDER_LOW_LEVEL",
-        "ALARM_ENABLED",
+def build_process_module(tic_df,process_parameters):
+    # 1. extract observed parameters from data
+    observed = (
+        tic_df[["parameter_id", "unit"]]
+        .dropna()
+        .drop_duplicates()
+    )
 
-        # Gas Delivery
-        "ARGON_MFLOW",
-        "ARGON_VFLOW",
-        "ARGON_FLOW",
-        "ARGON_TEMP",
-        "PRESSURE",
-        "PRESSURE_TOP",
-        "PRESSURE_BOTTOM",
+    # 2. join semantic definitions
+    process_df = observed.merge(
+        process_parameters,
+        on="parameter_id",
+        how="left"
+    )
 
-        # Laser / Optics
-        "LASER_POWER",
-        "LASER_POWER_SETPOINT",
-        "LASER_ON_TIME",
-        "SCAN_SPEED",
-        "BEAM_SIZE",
-        "BEAM_POSITION_X",
-        "BEAM_POSITION_Y",
+    # 3. reorder for clarity
+    process_df = process_df[[
+        "parameter_id",
+        "description",
+        "unit"
+    ]]
 
-        # Thermal / Cooling
-        "COOLING_FLOW",
-        "COOLING_TEMPERATURE",
+    return process_df
 
-        # Build / Print Process
-        "LAYER_HEIGHT",
-        "HATCH_SPACING",
-        "ENERGY_DENSITY",
-        "PRINT_SPEED",
-
-        # Motion / Machine Head
-        "MOTION_COMPENSATION",
-        "POSITION_X",
-        "POSITION_Y",
-        "POSITION_Z",
-        "VELOCITY_X",
-        "VELOCITY_Y",
-        "VELOCITY_Z"
-    ],
-
-    "description": [
-        # Feeder
-        "Rotational speed of powder feeder",
-        "Target RPM setpoint for feeder control",
-        "Rate of powder delivery",
-        "Low powder threshold indicator",
-        "Alarm enable/disable flag",
-
-        # Gas
-        "Mass flow of argon gas",
-        "Volumetric flow of argon gas",
-        "General argon flow rate",
-        "Temperature of argon gas",
-        "System pressure",
-        "Upper pressure measurement",
-        "Lower pressure measurement",
-
-        # Laser / Optics
-        "Laser output power",
-        "Laser power setpoint",
-        "Laser active emission time",
-        "Scan velocity of laser beam",
-        "Laser beam diameter",
-        "Beam X position",
-        "Beam Y position",
-
-        # Cooling
-        "Cooling fluid flow rate",
-        "Cooling system temperature",
-
-        # Build process
-        "Thickness of each deposited layer",
-        "Spacing between scan paths",
-        "Energy delivered per unit area",
-        "Overall print scan speed",
-
-        # Motion
-        "Motion compensation enable flag",
-        "Machine head X position",
-        "Machine head Y position",
-        "Machine head Z position",
-        "Velocity along X axis",
-        "Velocity along Y axis",
-        "Velocity along Z axis"
-    ],
-
-    "unit": [
-        # Feeder
-        "rpm",
-        "rpm",
-        "g/min",
-        "bool",
-        "bool",
-
-        # Gas
-        "g/s",
-        "L/min",
-        "L/min",
-        "°F",
-        "psi",
-        "psi",
-        "psi",
-
-        # Laser / Optics
-        "W",
-        "W",
-        "ms",
-        "mm/s",
-        "mm",
-        "mm",
-        "mm",
-
-        # Cooling
-        "L/min",
-        "°C",
-
-        # Build
-        "mm",
-        "mm",
-        "J/mm^2",
-        "mm/s",
-
-        # Motion
-        "bool",
-        "mm",
-        "mm",
-        "mm",
-        "mm/s",
-        "mm/s",
-        "mm/s"
-    ]
-})
-
-print(process_parameters)
