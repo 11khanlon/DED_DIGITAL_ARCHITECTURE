@@ -168,7 +168,7 @@ columns_to_drop = [
     "Hatch Override", 
     "PF1 RPM",
     "PF2 RPM",
-    "PF3 RPM"
+    "PF3 RPM",
     "PF1 RPM Setpoint",
     "PF2 RPM Setpoint",
     "PF3 RPM Setpoint",

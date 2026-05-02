@@ -1,0 +1,14 @@
+parameter_id,value,unit,description
+LASER_SPOT_SIZE,0.07,in,Diameter of laser spot at focal plane
+LASER_POWER,1070,W,Laser output power
+HEAD_TYPE,RPMI 45 Degree,,Laser head configuration
+NOZZLE_TYPE,002-0021-004 STEEP WALL,,Powder nozzle type
+NOZZLE_CHANGE_INTERVAL,18,hr,Time between nozzle replacements
+STANDOFF_HEIGHT,0.25,in,Distance from nozzle to build surface
+POWDER_FEED_RATE_IN718,16.0,g/min,Powder feed rate for Inconel 718
+POWDER_FEED_RATE_SS316L,15.2,g/min,Powder feed rate for SS316L
+LAYER_THICKNESS,0.015,in,Height of each deposited layer
+HATCH_WIDTH,0.045,in,Distance between adjacent scan lines
+HATCH_ANGLES,"0,45,90,135,180,225,270,315",deg,Scan rotation pattern
+MODEL_OFFSET,0.035,in,Geometric offset applied to toolpath
+AFTER_LAYER_WAIT,10000,ms,Delay between layer deposition

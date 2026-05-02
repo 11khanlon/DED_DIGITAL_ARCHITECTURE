@@ -6,28 +6,31 @@ from datetime import datetime
 powder and substrate, physical static properties 
 static ontology model: a strucutured definition of relationships that doens't change with data 
 
-
 '''
 
 #%%
+
+# ---------------- MATERIAL MASTER ----------------
 materials = pd.DataFrame({
-    "material_id": ["MAT_001", "MAT_002"],
-    "material_name": ["SS 316L Powder", "SS 304L Powder"],
-    "material_type": ["metal_powder", "metal_powder"],
-    "supplier": ["Supplier_A", "Supplier_B"],
-    "lot_number": ["LOT_316L_2026_01", "LOT_304L_2026_02"],
-    "batch_mass": [100.0, 200.0],
-    "order_number": ["PO_12345", "PO_67890"],
-    "form": ["powder", "powder"],
-    "received_date": [datetime.now(), datetime.now()],
-    "expiry_date": [None, None],
-    "reuse_count": [3, 1],
-    "recycled": [False, False]
+    "material_id": ["MAT_IN718_01"],
+    "material_name": ["Inconel 718 Powder"],
+    "material_type": ["metal_powder"],
+    "supplier": ["Praxair"],  # example real supplier
+    "lot_number": ["LOT_IN718_2026_01"],
+    "batch_mass": [100.0],
+    "order_number": ["PO_718_001"],
+    "form": ["powder"],
+    "received_date": [datetime.now()],
+    "expiry_date": [None],
+    "reuse_count": [2],
+    "recycled": [False]
 })
 
+# ---------------- POWDER CHARACTERISTICS ----------------
 powder_characteristics = pd.DataFrame({
-    "material_id": ["MAT_001"] * 10,
+    "material_id": ["MAT_IN718_01"] * 12,
     "parameter_id": [
+        "PARTICLE_SIZE_D10",
         "PARTICLE_SIZE_D50",
         "PARTICLE_SIZE_D90",
         "MORPHOLOGY",
@@ -36,53 +39,66 @@ powder_characteristics = pd.DataFrame({
         "FLOWABILITY",
         "CHEMICAL_COMPOSITION",
         "OXYGEN_CONTENT",
+        "NITROGEN_CONTENT",
         "MOISTURE_CONTENT",
         "MANUFACTURING_METHOD"
     ],
     "value": [
+        20.0,
         35.0,
         55.0,
         "spherical",
-        4.1,
-        4.5,
+        4.2,
+        4.8,
         "good",
-        "Fe-17Cr-12Ni-2Mo",
-        0.02,
+        "Ni-19Cr-18Fe-5Nb-3Mo-1Ti-0.5Al",
+        0.015,
         0.01,
+        0.005,
         "gas_atomized"
     ],
     "unit": [
-        "µm", "µm", None,
+        "µm", "µm", "µm",
+        None,
         "g/cm3", "g/cm3",
         None,
         None,
+        "wt%",
         "wt%",
         "wt%",
         None
     ]
 })
 
+# ---------------- THERMAL PROPERTIES ----------------
 material_thermal_properties = pd.DataFrame({
-    "material_id": ["MAT_001"] * 3,
+    "material_id": ["MAT_IN718_01"] * 5,
     "parameter_id": [
         "SOLIDUS_TEMP",
         "LIQUIDUS_TEMP",
-        "THERMAL_CONDUCTIVITY"
+        "THERMAL_CONDUCTIVITY",
+        "SPECIFIC_HEAT",
+        "DENSITY"
     ],
     "value": [
-        1375,
-        1400,
-        15.0
+        1260,
+        1336,
+        11.4,
+        435,
+        8.19
     ],
     "unit": [
         "C",
         "C",
-        "W/mK"
+        "W/mK",
+        "J/kgK",
+        "g/cm3"
     ]
 })
 
+# ---------------- SUBSTRATE ----------------
 substrate_properties = pd.DataFrame({
-    "material_id": ["MAT_SUB_001"],
+    "material_id": ["MAT_SUB_001"] * 5,   
     "parameter_id": [
         "SUBSTRATE_THICKNESS",
         "SUBSTRATE_GEOMETRY",
@@ -91,11 +107,11 @@ substrate_properties = pd.DataFrame({
         "SUBSTRATE_THERMAL_CONDUCTIVITY"
     ],
     "value": [
-        10.0,
+        12.0,
         "plate",
-        "SS 316L",
-        8.0,
-        16.2
+        "IN718",
+        8.19,
+        11.4
     ],
     "unit": [
         "mm",
@@ -106,14 +122,16 @@ substrate_properties = pd.DataFrame({
     ]
 })
 
+# ---------------- BUILD LINK ----------------
 build_material_link = pd.DataFrame({
     "build_id": ["PRINT_20260219_01"],
-    "material_id": ["MAT_001"],
+    "material_id": ["MAT_IN718_01"],
     "role": ["feedstock"]
 })
 
+# ---------------- MATERIAL STATE ----------------
 material_state = pd.DataFrame({
-    "material_id": ["MAT_001"],
+    "material_id": ["MAT_IN718_01"] * 3,
     "parameter_id": [
         "MATERIAL_TEMPERATURE",
         "OXYGEN_EXPOSURE",
@@ -121,8 +139,8 @@ material_state = pd.DataFrame({
     ],
     "value": [
         25.0,
-        50,
-        40
+        20,
+        30
     ],
     "unit": [
         "C",
@@ -131,17 +149,19 @@ material_state = pd.DataFrame({
     ]
 })
 
+# ---------------- CERTIFICATION ----------------
 material_certification = pd.DataFrame({
-    "material_id": ["MAT_001"],
-    "cert_id": ["CERT_316L_A1"],
-    "standard": ["ASTM_F3184"],
-    "tensile_strength": [580],
-    "yield_strength": [290],
-    "elongation": [40],
+    "material_id": ["MAT_IN718_01"],
+    "cert_id": ["CERT_IN718_A1"],
+    "standard": ["AMS_5662"],   # more relevant than ASTM_F3184 here
+    "tensile_strength": [1250],  # MPa
+    "yield_strength": [1030],    # MPa
+    "elongation": [12],          # %
     "cert_date": [datetime.now()],
     "valid": [True]
 })
 
+# ---------------- EXPORT ----------------
 MATERIAL_MODULE_EXPORTS = {
     "materials": materials,
     "powder_characteristics": powder_characteristics,
@@ -151,3 +171,6 @@ MATERIAL_MODULE_EXPORTS = {
     "material_state": material_state,
     "material_certification": material_certification
 }
+
+def build_material_module():
+    return MATERIAL_MODULE_EXPORTS

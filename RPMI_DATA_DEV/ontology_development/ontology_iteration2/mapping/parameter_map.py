@@ -257,23 +257,24 @@ def convert_to_tic(df):
                 print(f"  row[{i}] → ts={timestamp}, val={val}")
 
             records.append({
+                "build_id": "PRINT_20260219_01",
                 "timestamp": timestamp,
                 "system_id": system_id,
                 "parameter_id": param_id,
                 "state_scope": state_scope,
                 "value": val,
                 "unit": extract_unit(col)
+        
             })
             process_parameters.append({
                 "parameter_id": param_id,
-                "description": val,
-                "unit": extract_unit(col)
             })
 
     # FINAL SUMMARY PRINT
     # =========================
     tic_df = pd.DataFrame(records)
-    process_parameters = pd.DataFrame(process_parameters)
+    process_parameters = pd.DataFrame(process_parameters)   
+    
 
     print("\n================ SUMMARY ================\n")
     print("Total columns:", len(df.columns) - 1)

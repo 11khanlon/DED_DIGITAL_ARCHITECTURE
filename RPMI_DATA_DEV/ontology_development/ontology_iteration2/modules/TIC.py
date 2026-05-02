@@ -7,7 +7,7 @@ import os
 '''
 What is observed/measured 
 timestamped sensor data, position X, Y, Z, meltpool data, etc 
-TIC observations are not a static ontology model 
+dynamic - TIC observations are not a static ontology model 
 
 '''
 
@@ -28,6 +28,13 @@ def build_tic_observations(mapped_df, build_id="BUILD_001"):
 
     df["source_system"] = df["system_id"]
     df["source_sensor"] = None
+    df["missing_data_flag"] = None
+    df["interpolation_method"] = None
+    df["is_valid"] = None
+    df["quality_score"] = None
+
+    df["outlier_flag"] = None
+    df["noise_level"] = None
 
     # ---------------- SELECT FINAL COLUMNS ----------------
     return df[
@@ -47,6 +54,51 @@ def build_tic_observations(mapped_df, build_id="BUILD_001"):
             "source_sensor",
         ]
     ]
+
+
+def build_thermocouple_tic(csv_path, build_id="BUILD_001"):
+
+    df = pd.read_csv(csv_path)
+
+    # ----------------------------
+    # reshape wide → long format
+    # ----------------------------
+    df_long = df.melt(
+        id_vars=["timestamp"],
+        value_vars=["ch0", "ch1", "ch2", "ch3"],
+        var_name="channel_id",
+        value_name="value"
+    )
+
+    # ----------------------------
+    # add ontology fields
+    # ----------------------------
+    df_long["observation_id"] = np.arange(len(df_long))
+    df_long["build_id"] = build_id
+    df_long["system_id"] = "TC"
+    df_long["parameter_id"] = "TEMPERATURE"
+    df_long["unit"] = "°C"   # fix if your stream is °F
+    df_long["response_time_ms"] = None
+    df_long["location"] = "build_plate"
+
+
+    thermocouple_observations = df_long[
+        [
+            "observation_id",
+            "build_id",
+            "system_id",
+            "parameter_id",
+            "channel_id",
+            "timestamp",
+            "value",
+            "unit",
+            "response_time_ms",
+            "location"
+        ]
+    ]
+
+    # reorder to match schema
+    return thermocouple_observations
 
 
 
@@ -92,24 +144,6 @@ camera_tic = pd.DataFrame({
 })
 
 
-thermocouple_tic = pd.DataFrame({
-    "observation_id": [],
-    "build_id": [],
-    "system_id": ["TC"],
-    "parameter_id": ["TEMPERATURE"],
-
-    "timestamp": [],
-
-    # multi-channel structure (your ch0–ch3 problem solved properly)
-    "channel_id": [],
-    "value": [],
-
-    "unit": ["°F"],
-
-    # thermal metadata
-    "response_time_ms": [],
-    "location": []
-})
 
 
 
@@ -153,6 +187,7 @@ motion_tic = pd.DataFrame({
     "frame_reference": [],
     "control_mode": ["open_loop", "closed_loop"]
 })
+
 
 tic_quality = pd.DataFrame({
     "observation_id": [],

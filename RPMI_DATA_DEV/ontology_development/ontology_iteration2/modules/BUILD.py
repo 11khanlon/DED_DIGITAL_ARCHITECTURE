@@ -9,15 +9,53 @@ layer count, speed
 execution context links everything together 
 ''' 
 
+
+def create_build_parameters(tic_df):
+
+    return (
+        tic_df[["build_id", "parameter_id", "value", "unit"]]
+        .dropna()
+    )
+
+
+
+
+
+
+
+def build_build_module(tic_df):
+
+    build_df = pd.DataFrame({
+        "build_id": ["BUILD_001"],
+        "start_time": [tic_df["timestamp"].min()],
+        "end_time": [tic_df["timestamp"].max()],
+    })
+
+    return build_df
+
+
+
+
+
+
 builds = pd.DataFrame({
     "build_id": ["PRINT_20260219_01"],
     "machine_id": ["RPMI_01"],
     "material_id": ["MAT_001"],
+    "project_id": [None],
 
     "operator": ["Kayleigh Hanlon"],
+    "organization_id": ["ORG_001"],
     "start_time": ["2026-02-19T12:00:00"],
     "end_time": ["2026-02-19T15:30:00"],
     "status": ["Completed"]
+
+    "process_ids": [["PROC_001"]],
+    "material_ids": [["MAT_IN718_01"]],
+
+    "tic_ids": [[]],
+    "simulation_ids": [[]],
+    "software_ids": [[]]
 })
 
 build_configuration = pd.DataFrame({
