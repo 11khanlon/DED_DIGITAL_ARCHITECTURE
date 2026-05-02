@@ -11,6 +11,8 @@ Optics (OPT1, subsystems)
 Machine head (MH1) 
 Sensors (interal and external)
 
+static ontology
+
 '''
 
 systems = pd.DataFrame({

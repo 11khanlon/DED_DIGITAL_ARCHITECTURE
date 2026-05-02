@@ -4,6 +4,13 @@ import pandas as pd
 import sys
 import os
 
+'''
+What is observed/measured 
+timestamped sensor data, position X, Y, Z, meltpool data, etc 
+TIC observations are not a static ontology model 
+
+'''
+
 #%%
 def build_tic_observations(mapped_df, build_id="BUILD_001"):
     

@@ -1,14 +1,22 @@
-#powder and substrate
-
+#%%
 import pandas as pd
 from datetime import datetime
 
+'''
+powder and substrate, physical static properties 
+static ontology model: a strucutured definition of relationships that doens't change with data 
+
+
+'''
+
+#%%
 materials = pd.DataFrame({
     "material_id": ["MAT_001", "MAT_002"],
     "material_name": ["SS 316L Powder", "SS 304L Powder"],
     "material_type": ["metal_powder", "metal_powder"],
     "supplier": ["Supplier_A", "Supplier_B"],
     "lot_number": ["LOT_316L_2026_01", "LOT_304L_2026_02"],
+    "batch_mass": [100.0, 200.0],
     "order_number": ["PO_12345", "PO_67890"],
     "form": ["powder", "powder"],
     "received_date": [datetime.now(), datetime.now()],

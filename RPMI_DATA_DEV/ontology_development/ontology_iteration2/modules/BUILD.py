@@ -5,6 +5,8 @@ import pandas as pd
 this is print_metadata
 printparameters, printwarnings, printevents, printstatus
 layer count, speed
+
+execution context links everything together 
 ''' 
 
 builds = pd.DataFrame({

@@ -2,8 +2,12 @@ import numpy as np
 import pandas as pd
 
 
-# BASE MODULE
-# person, organization, and measurement
+'''
+BASE MODULE
+person, organization, and measurement
+
+static ontology 
+'''
 
 person = pd.DataFrame({
     "person_id": ["P001", "P002"],

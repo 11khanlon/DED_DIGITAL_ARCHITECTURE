@@ -21,6 +21,6 @@ tic_df, process_parameters = convert_to_tic(cleaned_df)
 
 #---------------- ASSEMBLE MODULES ----------------
 tic_observations = build_tic_observations(tic_df)
-process_df = build_process_module(tic_observations, process_parameters)
+process_df = build_process_module(tic_df)
 
 print(process_df)
