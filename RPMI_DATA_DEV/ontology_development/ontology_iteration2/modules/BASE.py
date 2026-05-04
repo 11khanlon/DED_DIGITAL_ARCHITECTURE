@@ -1,54 +1,60 @@
-import numpy as np 
+#%%
 import pandas as pd
 
+#%%
+'''
+work, organization, and measurement
 
 '''
-BASE MODULE
-person, organization, and measurement
 
-static ontology 
-'''
+def build_base_module():
 
-person = pd.DataFrame({
-    "person_id": ["P001", "P002"],
-    "person_first_name": ["Kayleigh", "Operator_A"],
-    "person_last_name": ["Hanlon", "Smith"],
-    "person_role": ["engineer", "technician"],
-    "organization_id": ["ORG_001", "ORG_001"]
-})
+    organization = pd.DataFrame({
+        "organization_id": ["ORG_001"],
+        "organization_name": ["RPMI Lab"],
+        "organization_type": ["research_lab"],
+        "location": ["USA"]
+    })
 
-organization = pd.DataFrame({
-    "organization_id": ["ORG_001"],
-    "organization_name": ["RPMI Lab"],
-    "organization_type": ["research_lab"],
-    "location": ["USA"]
-})
+    person = pd.DataFrame({
+        "person_id": ["P001", "P002"],
+        "first_name": ["Kayleigh", "Operator_A"],
+        "last_name": ["Hanlon", "Smith"],
+        "role": ["engineer", "technician"],
+        "organization_id": ["ORG_001", "ORG_001"]
+    })
 
-qualification = pd.DataFrame({
-    "qualification_id": ["Q001", "Q002"],
-    "qualification_type": ["welding_cert", "data_systems_cert"],
-    "qualification_level": ["level_2", "level_1"],
-    "qualifying_organization": ["AWS", "internal_training"],
-    "person_id": ["P001", "P002"]
-})
+    qualification = pd.DataFrame({
+        "qualification_id": ["Q001", "Q002"],
+        "person_id": ["P001", "P002"],
+        "qualification_type": ["welding_cert", "data_systems_cert"],
+        "qualification_level": ["level_2", "level_1"]
+    })
 
-measurement = pd.DataFrame({
-    "measurement_id": [],
+    measurement = pd.DataFrame(columns=[
+        "measurement_id",
+        "value",
+        "unit",
+        "timestamp",
+        "source_system",
+        "parameter_id",
+        "build_id"
+    ])
 
-    "value": [],
-    "unit": [],
+    return {
+        "organization": organization,
+        "person": person,
+        "qualification": qualification,
+        "measurement": measurement
+    }
 
-    "data_type": [],
 
-    "timestamp": [],
+# ---------- VALIDATION ----------
+def validate_base(base):
 
-    "uncertainty": [],
-    "calibration_id": [],
+    if not base["person"]["organization_id"].isin(
+        base["organization"]["organization_id"]
+    ).all():
+        raise ValueError("Person has invalid organization_id")
 
-    "is_valid": [],
-
-    "source_system": [],
-    "source_parameter": [],
-
-    "build_id": []
-})
+    return True
