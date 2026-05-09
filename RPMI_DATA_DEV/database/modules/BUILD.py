@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd 
 import sys
 sys.path.append("C:/Users/Kayleigh/DIGITAL_ARCH_REPO/RPMI_DATA_DEV/ontology_development/ontology_iteration2")
-from ingestion.parameter_inputs import toolpath_parameters
+from RPMI_DATA_DEV.ingestion.parameter_inputs import toolpath_parameters
 
 '''
 this is print_metadata

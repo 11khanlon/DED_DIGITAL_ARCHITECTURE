@@ -2,7 +2,7 @@
 import numpy as np
 import pandas as pd
 import os
-from ingestion.columns_to_drop import columns_to_drop
+from RPMI_DATA_DEV.ingestion.columns_to_drop import columns_to_drop
 
 
 def clean_columns(df):

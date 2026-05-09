@@ -9,7 +9,7 @@ import re
 sys.path.append(
     r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\ontology_development\ontology_iteration2"
 )
-from ingestion.clean_data import clean_columns
+from RPMI_DATA_DEV.ingestion.clean_data import clean_columns
 
 #%%
 #Extract Unit
