@@ -26,7 +26,7 @@ def build_tic_observations(mapped_df, build_id="BUILD_001"):
     df["sampling_rate_hz"] = 1
     df["sequence_index"] = df.groupby("parameter_id").cumcount()
 
-    df["source_system"] = df["system_id"]
+
     df["source_sensor"] = None
     df["missing_data_flag"] = None
     df["interpolation_method"] = None

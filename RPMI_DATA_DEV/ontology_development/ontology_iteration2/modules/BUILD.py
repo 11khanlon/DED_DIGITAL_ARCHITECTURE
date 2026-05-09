@@ -1,5 +1,8 @@
 import numpy as np 
 import pandas as pd 
+import sys
+sys.path.append("C:/Users/Kayleigh/DIGITAL_ARCH_REPO/RPMI_DATA_DEV/ontology_development/ontology_iteration2")
+from ingestion.parameter_inputs import toolpath_parameters
 
 '''
 this is print_metadata
@@ -10,91 +13,87 @@ execution context links everything together
 ''' 
 
 
-def create_build_parameters(tic_df):
-
-    return (
-        tic_df[["build_id", "parameter_id", "value", "unit"]]
-        .dropna()
-    )
-
-
-
-
-
-
-
-def build_build_module(tic_df):
+#%% vocabulary layer 
+def create_build_module(tic_observations):
 
     build_df = pd.DataFrame({
         "build_id": ["BUILD_001"],
-        "start_time": [tic_df["timestamp"].min()],
-        "end_time": [tic_df["timestamp"].max()],
+        "machine_id": ["RPMI_01"],
+        "material_id": ["MAT_IN718_01"],
+        "process_id": ["PROC_001"],
+        "base_id": ["BASE_001"],
+
+        # derive from data (good ✔)
+        "start_time": [tic_observations["timestamp"].min()],
+        "end_time": [tic_observations["timestamp"].max()],
+
+        "status": ["completed"]
     })
 
     return build_df
 
 
 
+#creating parameters for later 
+def create_build_parameters(tic_observations, thermocouple_observations):
+
+    # ---------------- MACHINE PARAMETERS (SETPOINTS) ----------------
+    machine_params = toolpath_parameters.copy()
+
+    machine_params["build_id"] = "BUILD_001"
+    machine_params["source"] = "machine_setpoint"
+
+    machine_params = machine_params.rename(columns={
+        "value": "target_value"
+    })
+
+    machine_params = machine_params[[
+        "build_id",
+        "parameter_id",
+        "target_value",
+        "unit",
+        "source"
+    ]]
 
 
+    # ---------------- TIC PARAMETERS (OBSERVED PROCESS) ----------------
+    tic_params = (
+        tic_observations[[
+            "build_id",
+            "parameter_id",
+            "value",
+            "unit"
+        ]]
+        .dropna()
+        .drop_duplicates()
+        .copy()
+    )
 
-builds = pd.DataFrame({
-    "build_id": ["PRINT_20260219_01"],
-    "machine_id": ["RPMI_01"],
-    "material_id": ["MAT_001"],
-    "project_id": [None],
-
-    "operator": ["Kayleigh Hanlon"],
-    "organization_id": ["ORG_001"],
-    "start_time": ["2026-02-19T12:00:00"],
-    "end_time": ["2026-02-19T15:30:00"],
-    "status": ["Completed"]
-
-    "process_ids": [["PROC_001"]],
-    "material_ids": [["MAT_IN718_01"]],
-
-    "tic_ids": [[]],
-    "simulation_ids": [[]],
-    "software_ids": [[]]
-})
-
-build_configuration = pd.DataFrame({
-    "build_id": ["PRINT_20260219_01"] * 6,
-    "parameter_id": [
-        "LAYER_HEIGHT",
-        "PRINT_SPEED",
-        "LASER_POWER_SETPOINT",
-        "HATCH_SPACING",
-        "POWDER_FEED_RATE",
-        "SCAN_STRATEGY"
-    ],
-    "value": [
-        0.5,
-        20,
-        400,
-        0.1,
-        15,
-        "stripe"
-    ]
-})
-
-build_material_link = pd.DataFrame({
-    "build_id": ["PRINT_20260219_01"],
-    "material_id": ["MAT_001"],
-    "material_role": ["feedstock"]
-})
-
-build_parts = pd.DataFrame({
-    "build_id": ["PRINT_20260219_01"],
-    "part_id": ["PART_001"],
-    "geometry_file": ["part_001.stl"],
-    "layer_count": [50]
-})
+    tic_params["source"] = "machine_observation"
 
 
-build_systems = pd.DataFrame({
-    "build_id": ["PRINT_20260219_01"] * 6,
-    "system_id": ["PF1", "PF2", "CP1", "OPT1", "MH1", "CAM_01"]
-})
+    # ---------------- SENSOR PARAMETERS (THERMOCOUPLE) ----------------
+    sensor_params = (
+        thermocouple_observations[[
+            "build_id",
+            "parameter_id",
+            "value",
+            "unit"
+        ]]
+        .dropna()
+        .drop_duplicates()
+        .copy()
+    )
 
+    sensor_params["source"] = "sensor_observation"
+
+
+    # ---------------- COMBINE ALL ----------------
+    build_parameters = pd.concat(
+        [machine_params, tic_params, sensor_params],
+        ignore_index=True,
+        sort=False
+    )
+
+    return build_parameters
 

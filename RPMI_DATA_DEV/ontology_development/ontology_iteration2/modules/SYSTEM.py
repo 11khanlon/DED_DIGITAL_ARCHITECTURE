@@ -5,7 +5,7 @@ import pandas as pd
 def build_system_module():
 
     am_system = pd.DataFrame({
-        "system_id": ["RPMI_01"],
+        "machine_id": ["RPMI_01"],
         "system_name": ["RPMI DED Machine"],
         "process_type": ["directed_energy_deposition"],
         "location": ["Lab_A"],
@@ -60,14 +60,3 @@ def build_system_module():
     }
 
 
-# ---------- VALIDATION ----------
-def validate_systems(systems):
-
-    parent_ids = systems["parent_system"].dropna()
-
-    invalid = parent_ids[~parent_ids.isin(systems["system_id"])]
-
-    if not invalid.empty:
-        raise ValueError(f"Invalid parent_system references: {invalid.tolist()}")
-
-    return True

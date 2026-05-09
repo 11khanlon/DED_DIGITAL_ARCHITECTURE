@@ -257,7 +257,7 @@ def convert_to_tic(df):
                 print(f"  row[{i}] → ts={timestamp}, val={val}")
 
             records.append({
-                "build_id": "PRINT_20260219_01",
+                "build_id": "BUILD_001",
                 "timestamp": timestamp,
                 "system_id": system_id,
                 "parameter_id": param_id,

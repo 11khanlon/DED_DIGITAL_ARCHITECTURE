@@ -31,30 +31,12 @@ def build_base_module():
         "qualification_level": ["level_2", "level_1"]
     })
 
-    measurement = pd.DataFrame(columns=[
-        "measurement_id",
-        "value",
-        "unit",
-        "timestamp",
-        "source_system",
-        "parameter_id",
-        "build_id"
-    ])
 
     return {
         "organization": organization,
         "person": person,
         "qualification": qualification,
-        "measurement": measurement
+        
     }
 
 
-# ---------- VALIDATION ----------
-def validate_base(base):
-
-    if not base["person"]["organization_id"].isin(
-        base["organization"]["organization_id"]
-    ).all():
-        raise ValueError("Person has invalid organization_id")
-
-    return True
