@@ -15,21 +15,7 @@ from RPMI_DATA_DEV.ingestion.clean_data import clean_columns
 os.chdir(r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\data_csv_examples")
 df = pd.read_csv("dlog_2023-08-09_1106_purge_testing.csv", low_memory=False)
 
-#%%
-#Extract Unit
-def extract_unit(col):
-    match = re.search(r"\((.*?)\)", col)
-    if match:
-        return match.group(1)
-    return None
 
-#%%
-# NORMALIZATION
-def normalize(col):
-    col = col.lower().strip()
-    col = re.sub(r"[^a-z0-9 ]", " ", col)
-    col = re.sub(r"\s+", " ", col)
-    return col
 
 # SYSTEM INFERENCE
 def extract_system(col):
