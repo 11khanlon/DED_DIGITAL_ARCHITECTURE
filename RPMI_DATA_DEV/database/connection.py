@@ -16,32 +16,3 @@ engine = create_engine(
 )
 
 
-tic_rows = []
-
-for _, row in tic_df.iterrows():
-
-    tic_rows.append({
-
-        "event_id": str(uuid.uuid4()),
-
-        "build_id": row["build_id"],
-
-        "system_id": row["system_id"],
-
-        "parameter_id": row["parameter_id"],
-
-        "timestamp_utc": row["timestamp"],
-
-        "value_numeric": row["value"],
-
-        "quality_flag": "GOOD"
-    })
-
-tic_sql_df = pd.DataFrame(tic_rows)
-
-tic_sql_df.to_sql(
-    "TICEvent",
-    engine,
-    if_exists="append",
-    index=False
-)

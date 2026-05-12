@@ -1,15 +1,26 @@
+'''
+Telemetry is the measurement and transmission of data from a system 
+what is the machine doing and what values are being measured?
+
+semantic telemetry ingestion pipeline
+
+'''
+
+#%%
 import pandas as pd
 import sys 
 import os 
 import re 
-
+import uuid 
 
 sys.path.append(
     r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\ingestion"
 )
 from RPMI_DATA_DEV.ingestion.clean_data import clean_columns
 from RPMI_DATA_DEV.ingestion.ontology_mapper import map_parameter
+from RPMI_DATA_DEV.database.connection import engine
 
+#%%
 # --------- LOAD RPMI MACHINE DATA ------------
 os.chdir(r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO\RPMI_DATA_DEV\data_csv_examples")
 df = pd.read_csv("dlog_2023-08-09_1106_purge_testing.csv", low_memory=False)
@@ -31,6 +42,8 @@ def normalize(col):
     col = re.sub(r"\s+", " ", col)
     return col
 
+parameter_table, df = clean_columns(df)
+
 # TIC CONVERSION (PRINT EVERYTHING)
 def convert_to_tic(df):
 
@@ -39,7 +52,7 @@ def convert_to_tic(df):
     mapped = []
     process_parameters = []
 
-    print("\n================ TIC CONVERSION START ================\n")
+    print("\n======= Start telemetry conversion =========\n")
 
     for col in df.columns:
 
