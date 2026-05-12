@@ -4,6 +4,7 @@ laser power,LASER_POWER,Laser Power,PROCESS_PARAMETER,LASER_01,W,FLOAT
 laser setpoint,LASER_POWER_SETPOINT,Laser Setpoint,PROCESS_PARAMETER,LASER_01,W,FLOAT
 laser on,LASER_ON,Laser Enabled,STATE_PARAMETER,LASER_01,BOOLEAN,BOOLEAN
 
+
 feed fiber ffbd,LASER_FEED_FIBER_SIGNAL,Feed Fiber Signal,PROCESS_PARAMETER,LASER_01,mV,FLOAT
 process fiber ffbd,LASER_PROCESS_FIBER_SIGNAL,Process Fiber Signal,PROCESS_PARAMETER,LASER_01,mV,FLOAT
 
@@ -26,3 +27,25 @@ head temperature,HEAD_TEMPERATURE,Head Temperature,PROCESS_PARAMETER,MH1,F,FLOAT
 path setpoint velocity,SCAN_SPEED,Scan Speed,PROCESS_PARAMETER,MH1,inch/min,FLOAT
 
 layer,LAYER_ID,Layer Number,PROCESS_PARAMETER,MH1,INTEGER,INTEGER
+
+pos x,pos_x,Position X,PROCESS_PARAMETER,MH1,inch,FLOAT
+pos y,pos_y,Position Y,PROCESS_PARAMETER,MH1,inch,FLOAT
+pos z,pos_z,Position Z,PROCESS_PARAMETER,MH1,inch,FLOAT
+velocity x,velocity_x,Velocity X,PROCESS_PARAMETER,MH1,inch/s,FLOAT
+velocity y,velocity_y,Velocity Y,PROCESS_PARAMETER,MH1,inch/s,FLOAT
+velocity z,velocity_z,Velocity Z,PROCESS_PARAMETER,MH1,inch/s,FLOAT
+pf4 argon mflow,ARGON_MFLOW_PF4,PF4 Argon Mass Flow,PROCESS_PARAMETER,PF4,SLPM,FLOAT
+pf4 argon vflow,ARGON_VFLOW_PF4,PF4 Argon Vol Flow,PROCESS_PARAMETER,PF4,SLPM,FLOAT
+pf4 argon temp,ARGON_TEMP_PF4,PF4 Argon Temp,PROCESS_PARAMETER,PF4,C,FLOAT
+pf4 argon pressure,ARGON_PRESSURE_PF4,PF4 Argon Pressure,PROCESS_PARAMETER,PF4,psi,FLOAT
+box pressure,BOX_PRESSURE,Box Pressure,PROCESS_PARAMETER,MH1,psi,FLOAT
+dust collector diff pressure,DUST_COLLECTOR_PRESSURE,Dust Collector Pressure,PROCESS_PARAMETER,MH1,psi,FLOAT
+
+laser water flow,LASER_COOLING_FLOW,Laser Cooling Flow,PROCESS_PARAMETER,LASER_01,L/min,FLOAT
+laser water temp,LASER_COOLING_TEMP,Laser Cooling Temp,PROCESS_PARAMETER,LASER_01,C,FLOAT
+di water temp,DI_WATER_TEMP,DI Water Temp,PROCESS_PARAMETER,LASER_01,C,FLOAT
+
+toolcode execution time,TOOLCODE_EXECUTION_TIME,Tool Execution Time,PROCESS_PARAMETER,MH1,ms,FLOAT
+
+
+
