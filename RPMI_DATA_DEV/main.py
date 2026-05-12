@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 from RPMI_DATA_DEV.ingestion.clean_data import clean_columns
-from RPMI_DATA_DEV.ontology.parameter_map import convert_to_tic
+from RPMI_DATA_DEV.ingestion.parameter_map import convert_to_tic
 from RPMI_DATA_DEV.database.modules.TIC import build_tic_observations, build_thermocouple_tic
 from RPMI_DATA_DEV.database.modules.PROCESS import build_process_module
 from RPMI_DATA_DEV.database.modules.BUILD import create_build_parameters, create_build_module

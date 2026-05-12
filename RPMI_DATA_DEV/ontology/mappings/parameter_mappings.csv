@@ -1,0 +1,6 @@
+pattern,parameter_id,parameter_name,parameter_type,system_id,unit,data_type
+laser power,LASER_POWER,Laser Power,PROCESS_PARAMETER,LASER_01,W,FLOAT
+laser setpoint,LASER_POWER_SETPOINT,Laser Setpoint,PROCESS_PARAMETER,LASER_01,W,FLOAT
+melt pool area,MELT_POOL_AREA,Melt Pool Area,PROCESS_PARAMETER,CAM_01,mm2,FLOAT
+o2 sensor,OXYGEN_SENSOR,Oxygen Sensor,PROCESS_PARAMETER,O2_SENSOR,ppm,FLOAT
+head temperature,HEAD_TEMPERATURE,Head Temperature,PROCESS_PARAMETER,MH1,C,FLOAT
