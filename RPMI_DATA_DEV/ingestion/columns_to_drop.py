@@ -191,6 +191,7 @@ columns_to_drop = [
     "PF1 Argon Absolute Pressure",
     "PF2 Argon Absolute Pressure",
     "PF3 Argon Absolute Pressure",
+    "PF1 Powder Low", 
     "PF1 Powder Low: Warning Enabled",
     "PF1 Powder Low: Alarm Enabled",
     "PF2 Powder Low",

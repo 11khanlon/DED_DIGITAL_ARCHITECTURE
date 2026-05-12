@@ -11,8 +11,16 @@ process fiber ffbd,LASER_PROCESS_FIBER_SIGNAL,Process Fiber Signal,PROCESS_PARAM
 beam size from meter,BEAM_SIZE,Beam Size,PROCESS_PARAMETER,LASER_01,inch,FLOAT
 beam pos x from meter,BEAM_POS_X,Beam Position X,PROCESS_PARAMETER,LASER_01,inch,FLOAT
 beam pos y from meter,BEAM_POS_Y,Beam Position Y,PROCESS_PARAMETER,LASER_01,inch,FLOAT
+pos alps,POS_ALPS,Position Alps,PROCESS_PARAMETER,LASER_01,inch,FLOAT
+alps spot size,ALPS_SPOT_SIZE,Alps Spot Size,PROCESS_PARAMETER,LASER_01,inch,FLOAT
+power from meter,POWER_FROM_METER,Power From Meter,PROCESS_PARAMETER,LASER_01,W,FLOAT
+power from meter uncompensated,POWER_FROM_METER_UNCOMPENSATED,Power From Meter (Uncompensated),PROCESS_PARAMETER,LASER_01,W,FLOAT
+beam flags from meter,BEAM_FLAGS_FROM_METER,Beam Flags From Meter,PROCESS_PARAMETER,LASER_01,BOOLEAN,BOOLEAN
+
 
 melt pool area,MELT_POOL_AREA,Melt Pool Area,PROCESS_PARAMETER,CAM_01,mm2,FLOAT
+camera temp,CAMERA_TEMP,Camera Temp,PROCESS_PARAMETER,CAM_01,°F,FLOAT
+
 
 o2 sensor,OXYGEN_SENSOR,Oxygen Sensor,PROCESS_PARAMETER,O2_SENSOR,ppm,FLOAT
 h2o sensor,HUMIDITY_SENSOR,Humidity Sensor,PROCESS_PARAMETER,H2O_SENSOR,ppm,FLOAT
@@ -21,6 +29,11 @@ pf4 rpm,RPM_PF4,PF4 RPM,PROCESS_PARAMETER,PF4,rpm,FLOAT
 pf4 rpm setpoint,RPM_SETPOINT_PF4,PF4 RPM Setpoint,PROCESS_PARAMETER,PF4,rpm,FLOAT
 
 center purge argon mflow,ARGON_MFLOW_CP1,Center Purge Mass Flow,PROCESS_PARAMETER,CP1,SLPM,FLOAT
+center purge argon warning high level,ARGON_WARNING_HIGH_CP1,Center Purge Argon Warning High Level,STATE_PARAMETER,CP1,BOOLEAN,BOOLEAN
+center purge argon warning low level,ARGON_WARNING_LOW_CP1,Center Purge Argon Warning Low Level,STATE_PARAMETER,CP1,BOOLEAN,BOOLEAN
+center purge argon vflow,ARGON_VFLOW_CP1,Center Purge Argon Vol Flow,PROCESS_PARAMETER,CP1,SLPM,FLOAT
+center purge argon temp,ARGON_TEMP_CP1,Center Purge Argon Temp,PROCESS_PARAMETER,CP1,C,FLOAT
+center purge argon absolute pressure,ARGON_PRESSURE_CP1,Center Purge Argon Pressure,PROCESS_PARAMETER,CP1,psi,FLOAT
 
 head temperature,HEAD_TEMPERATURE,Head Temperature,PROCESS_PARAMETER,MH1,F,FLOAT
 
@@ -34,18 +47,35 @@ pos z,pos_z,Position Z,PROCESS_PARAMETER,MH1,inch,FLOAT
 velocity x,velocity_x,Velocity X,PROCESS_PARAMETER,MH1,inch/s,FLOAT
 velocity y,velocity_y,Velocity Y,PROCESS_PARAMETER,MH1,inch/s,FLOAT
 velocity z,velocity_z,Velocity Z,PROCESS_PARAMETER,MH1,inch/s,FLOAT
+head temp warning high level,HEAD_TEMP_WARNING_HIGH,Head Temp Warning High Level,STATE_PARAMETER,MH1,BOOLEAN,BOOLEAN
+head temp warning low level,HEAD_TEMP_WARNING_LOW,Head Temp Warning Low Level,STATE_PARAMETER,MH1,BOOLEAN,BOOLEAN
+
+
 pf4 argon mflow,ARGON_MFLOW_PF4,PF4 Argon Mass Flow,PROCESS_PARAMETER,PF4,SLPM,FLOAT
 pf4 argon vflow,ARGON_VFLOW_PF4,PF4 Argon Vol Flow,PROCESS_PARAMETER,PF4,SLPM,FLOAT
 pf4 argon temp,ARGON_TEMP_PF4,PF4 Argon Temp,PROCESS_PARAMETER,PF4,C,FLOAT
 pf4 argon pressure,ARGON_PRESSURE_PF4,PF4 Argon Pressure,PROCESS_PARAMETER,PF4,psi,FLOAT
-box pressure,BOX_PRESSURE,Box Pressure,PROCESS_PARAMETER,MH1,psi,FLOAT
-dust collector diff pressure,DUST_COLLECTOR_PRESSURE,Dust Collector Pressure,PROCESS_PARAMETER,MH1,psi,FLOAT
+pf4 argon warning high level,ARGON_WARNING_HIGH_PF4,PF4 Argon Warning High Level,STATE_PARAMETER,PF4,BOOLEAN,BOOLEAN
+pf4 argon warning low level,ARGON_WARNING_LOW_PF4,PF4 Argon Warning Low Level,STATE_PARAMETER,PF4,BOOLEAN,BOOLEAN
+pf4 argon absolute pressure,ARGON_PRESSURE_PF4,PF4 Argon Pressure,PROCESS_PARAMETER,PF4,psi,FLOAT
+pf4 powder low,PF4_POWDER_LOW,PF4 Powder Low,STATE_PARAMETER,PF4,BOOLEAN,BOOLEAN
+pf4 powder low warning enabled,PF4_POWER_LOW_WARNING_ENABLED,PF4 Power Low Warning Enabled,STATE_PARAMETER,PF4,BOOLEAN,BOOLEAN
+pf4 powder low alarm enabled,PF4_POWER_LOW_ALARM_ENABLED,PF4 Power Low Alarm Enabled,STATE_PARAMETER,PF4,BOOLEAN,BOOLEAN
+pf4 top pressure,PF4_TOP_PRESSURE,PF4 Top Pressure,PROCESS_PARAMETER,PF4,psi,FLOAT
+pf4 bottom pressure,PF4_BOTTOM_PRESSURE,PF4 Bottom Pressure,PROCESS_PARAMETER,PF4,psi,FLOAT
+
+
+box pressure,BOX_PRESSURE,Box Pressure,PROCESS_PARAMETER,RPMI_01,psi,FLOAT
+dust collector diff pressure,DUST_COLLECTOR_PRESSURE,Dust Collector Pressure,PROCESS_PARAMETER, RPMI_01,psi,FLOAT
+powder manifold pressure sensor,POWDER_MANIFOLD_PRESSURE_SENSOR,Powder Manifold Pressure Sensor,PROCESS_PARAMETER,RPMI_01,psi,FLOAT
 
 laser water flow,LASER_COOLING_FLOW,Laser Cooling Flow,PROCESS_PARAMETER,LASER_01,L/min,FLOAT
 laser water temp,LASER_COOLING_TEMP,Laser Cooling Temp,PROCESS_PARAMETER,LASER_01,C,FLOAT
 di water temp,DI_WATER_TEMP,DI Water Temp,PROCESS_PARAMETER,LASER_01,C,FLOAT
 
-toolcode execution time,TOOLCODE_EXECUTION_TIME,Tool Execution Time,PROCESS_PARAMETER,MH1,ms,FLOAT
+toolcode execution time,TOOLCODE_EXECUTION_TIME,Tool Execution Time,PROCESS_PARAMETER,PROCESS_CONTROLLER,ms,FLOAT
+motion compensation active,MOTION_COMPENSATION_ACTIVE,Motion Compensation Active,STATE_PARAMETER,PROCESS_CONTROLLER,BOOLEAN,BOOLEAN
+
 
 
 

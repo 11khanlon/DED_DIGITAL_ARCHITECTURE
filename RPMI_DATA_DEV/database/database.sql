@@ -168,49 +168,17 @@ CREATE TABLE MaterialProperty (
     quality_flag VARCHAR(100)
 );
 
-----BASE TABLES -----
-CREATE TABLE Organization (
 
-    organization_id VARCHAR(100) PRIMARY KEY,
-
-    organization_name VARCHAR(255),
-
-    organization_type VARCHAR(255),
-
-    location VARCHAR(255)
+-- =========================================================
+-- Substrate information
+CREATE TABLE Substrate (
+    substrate_id VARCHAR(100) PRIMARY KEY,
+    material_id VARCHAR(100) REFERENCES Material(material_id),
+    thickness_mm FLOAT,
+    width_mm FLOAT,
+    height_mm FLOAT
 );
 
-CREATE TABLE Person (
-
-    person_id VARCHAR(100) PRIMARY KEY,
-
-    organization_id VARCHAR(100)
-        REFERENCES Organization(organization_id),
-
-    first_name VARCHAR(255),
-
-    last_name VARCHAR(255),
-
-    role VARCHAR(255)
-);
-
-CREATE TABLE Qualification (
-
-    qualification_id VARCHAR(100) PRIMARY KEY,
-
-    person_id VARCHAR(100)
-        REFERENCES Person(person_id),
-
-    qualification_type VARCHAR(255),
-
-    qualification_level VARCHAR(255),
-
-    certification_date TIMESTAMP,
-
-    expiration_date TIMESTAMP,
-
-    issuing_organization VARCHAR(255)
-);
 
 ---Build geometry--- 
 
@@ -306,17 +274,15 @@ CREATE TABLE GeometryRegion (
 -- PARAMETER MODULE
 -- =========================================================
 
-CREATE TABLE Parameter (
-    parameter_id VARCHAR(100) PRIMARY KEY,
-
-    parameter_name VARCHAR(255),
-    parameter_type VARCHAR(255),
-
-    unit VARCHAR(100),
-
-    physical_meaning TEXT,
-
-    data_type VARCHAR(100)
+CREATE TABLE BuildParameter (
+     id SERIAL PRIMARY KEY,
+    build_id VARCHAR,
+    parameter_id VARCHAR,
+    value_text TEXT,
+    value_numeric DOUBLE PRECISION,
+    unit VARCHAR,
+    description TEXT,
+    source VARCHAR
 );
 
 -- =========================================================
@@ -409,3 +375,51 @@ CREATE TABLE TestResult (
 );
 
 
+---
+CREATE TABLE BASE (
+    base_id VARCHAR(100) PRIMARY KEY,
+    org_id VARCHAR(100) REFERENCES ORGANIZATION(org_id),
+    person_id VARCHAR(100) REFERENCES PERSON(person_id),
+    qualification_id VARCHAR(100) REFERENCES QUALIFICATION(qualification_id),
+    base_name VARCHAR(255),
+    base_description TEXT
+)
+
+CREATE TABLE ORGANIZATION (
+    org_id VARCHAR(100) PRIMARY KEY,
+    org_name VARCHAR(255),
+    org_location VARCHAR(255), 
+    org_description TEXT,
+)
+
+CREATE TABLE PERSON (
+     person_id VARCHAR(100) PRIMARY KEY,
+
+    organization_id VARCHAR(100)
+        REFERENCES Organization(organization_id),
+
+    first_name VARCHAR(255),
+
+    last_name VARCHAR(255),
+
+    person_description TEXT
+
+)
+
+CREATE TABLE QUALIFICATION (
+    qualification_id VARCHAR(100) PRIMARY KEY,
+
+        person_id VARCHAR(100)
+            REFERENCES Person(person_id),
+
+        qualification_type VARCHAR(255),
+
+        qualification_level VARCHAR(255),
+
+        certification_date TIMESTAMP,
+
+        expiration_date TIMESTAMP,
+
+        issuing_organization VARCHAR(255)
+
+)
