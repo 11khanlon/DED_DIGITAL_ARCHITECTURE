@@ -1,3 +1,6 @@
+--debating if this goes in parameters. need a place to put build input parameters
+
+
 CREATE TABLE Parameter (
 
     parameter_id VARCHAR(100) PRIMARY KEY,
@@ -21,8 +24,6 @@ CREATE TABLE Parameter (
 CREATE TABLE BuildParameter (
     id SERIAL PRIMARY KEY,
 
-    build_id VARCHAR(100)
-        REFERENCES Build(build_id),
 
     parameter_id VARCHAR(100)
         REFERENCES Parameter(parameter_id),
@@ -30,6 +31,6 @@ CREATE TABLE BuildParameter (
     value_text TEXT,
     value_numeric DOUBLE PRECISION,
     unit VARCHAR(100),
-    source VARCHAR(100),
-    UNIQUE(build_id, parameter_id, source)
+    source VARCHAR(100)
+    -- UNIQUE(build_id, parameter_id, source)
 );

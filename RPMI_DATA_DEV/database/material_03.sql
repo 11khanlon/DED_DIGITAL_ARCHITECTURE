@@ -1,4 +1,20 @@
 -- =========================================================
+-- MATERIAL MODULE
+-- =========================================================
+
+CREATE TABLE Material (
+    material_id VARCHAR(100) PRIMARY KEY,
+    material_name VARCHAR(255),
+
+    generic_material_type VARCHAR(50),  -- Ceramic / Metal / Polymer / etc
+    specific_material_type VARCHAR(50), -- Aluminum / Titanium / etc
+
+    material_grade VARCHAR(255),
+
+    material_product_specification TEXT  -- URI
+);
+
+-- =========================================================
 -- MATERIAL ORGANIZATION
 -- =========================================================
 
@@ -8,6 +24,7 @@ CREATE TABLE Material_Organization (
     relationship_type VARCHAR(50), -- Supplier / Manufacturer / Stock Owner
     PRIMARY KEY (material_id, organization_id, relationship_type)
 );
+
 -- =========================================================
 -- MATERIAL STOCK MODULE
 -- =========================================================
@@ -36,22 +53,7 @@ CREATE TABLE MaterialStock (
     stock_certificate_uri TEXT
 );
 
--- =========================================================
--- MATERIAL MODULE
--- =========================================================
 
-
-CREATE TABLE Material (
-    material_id VARCHAR(100) PRIMARY KEY,
-    material_name VARCHAR(255),
-
-    generic_material_type VARCHAR(50),  -- Ceramic / Metal / Polymer / etc
-    specific_material_type VARCHAR(50), -- Aluminum / Titanium / etc
-
-    material_grade VARCHAR(255),
-
-    material_product_specification TEXT  -- URI
-);
 
 -- =========================================================
 -- Material Characterization Module
@@ -78,7 +80,7 @@ CREATE TABLE Feedstock (
     material_stock_id VARCHAR(100)
         REFERENCES MaterialStock(material_stock_id),
 
-    source_stock_ids TEXT[], -- stringArray
+    --source_stock_ids TEXT[] stringArray
 
     source_stock_quantity_kg DOUBLE PRECISION,
 
@@ -96,7 +98,7 @@ CREATE TABLE RecycledMaterialStock (
 
     feedstock_id VARCHAR(100),
 
-    recycling_collect_date DATE,
+    recycling_collect_date DATE
 
-    associated_build_ids TEXT[] -- stringArray
+    --associated_build_ids TEXT[]  stringArray
 );

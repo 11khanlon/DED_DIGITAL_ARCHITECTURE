@@ -18,8 +18,6 @@ CREATE TABLE Project (
         REFERENCES ORGANIZATION(org_id),
     project_start_date TIMESTAMP,
     project_end_date TIMESTAMP,
-    project_builds VARCHAR(255) 
-        REFERENCES (Build(build_id))
 
     description TEXT
 );

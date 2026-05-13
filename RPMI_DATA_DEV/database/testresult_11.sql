@@ -5,7 +5,7 @@
 CREATE TABLE TestResult (
     result_id VARCHAR(100) PRIMARY KEY,
 
-    tic_id VARCHAR(100) REFERENCES TICInspection(tic_id),
+    tic_id VARCHAR(100) REFERENCES TIC(tic_id),
 
     measurement_type VARCHAR(255),
 

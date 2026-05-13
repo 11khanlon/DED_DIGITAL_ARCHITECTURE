@@ -1,11 +1,4 @@
 
-CREATE TABLE PartDesign (
-    part_design_id VARCHAR(100) PRIMARY KEY,
-    part_design_CAD_file VARCHAR(255), 
-    part_geometry VARCHAR(255) REFERENCES BuildGeometry(build_geometry_id), 
-
-)
-
 -- =============== Build geometry==========================
 CREATE TABLE BuildGeometry (
 
@@ -32,6 +25,14 @@ CREATE TABLE BuildGeometry (
     part_count INT
 );
 
+CREATE TABLE PartDesign (
+    part_design_id VARCHAR(100) PRIMARY KEY,
+    part_design_CAD_file VARCHAR(255), 
+    part_geometry VARCHAR(255) REFERENCES BuildGeometry(build_geometry_id)
+
+);
+
+
 -- =========================================================
 -- GEOMETRY REGION MODULE
 -- =========================================================
@@ -39,7 +40,7 @@ CREATE TABLE BuildGeometry (
 CREATE TABLE GeometryRegion (
     region_id VARCHAR(100) PRIMARY KEY,
 
-    build_geometry VARCHAR(100)
+    build_geometry_id VARCHAR(100)
         REFERENCES BuildGeometry(build_geometry_id),
 
     region_name VARCHAR(255),

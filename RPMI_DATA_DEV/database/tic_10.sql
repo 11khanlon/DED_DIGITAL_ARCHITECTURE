@@ -4,6 +4,7 @@
 
 CREATE TABLE TIC (
     tic_id VARCHAR(100) PRIMARY KEY,
+    tic_part VARCHAR(100) REFERENCES BUILTPART(built_part_id),
 
     tic_name VARCHAR(255),
     tic_type VARCHAR(255),
@@ -30,7 +31,7 @@ CREATE TABLE TIC (
 
     is_destructive BOOLEAN,
 
-    pass_fail VARCHAR(50),
+    --pass_fail VARCHAR(20) CHECK (pass_fail IN ('PASS','FAIL','INFORMATIONAL')),
 
     test_duration INTERVAL,
 
@@ -74,15 +75,12 @@ CREATE TABLE TICSpecimen (
 
     deviation_notes TEXT,
 
-    orientation_x FLOAT,
-    orientation_y FLOAT,
-    orientation_z FLOAT,
 
     test_location TEXT,
 
-    post_process_info TEXT,
+    post_process_info TEXT
 
-    post_process_process_id VARCHAR(100) -- REFERENCES Process(process_id)
+    --post_process_process_id VARCHAR(100)  REFERENCES Process(process_id)
 );
 
 
@@ -91,8 +89,7 @@ CREATE TABLE TICIndication (
 
     tic_id VARCHAR(100) REFERENCES TIC(tic_id),
 
-    pass_fail_flag VARCHAR(50),  -- Pass / Fail / Informational
-
+    ---pass_fail_flag VARCHAR(50) CHECK (pass_fail_flag IN ('PASS','FAIL','INFORMATIONAL')),
     indication_type TEXT,
 
     size_micrometer FLOAT,

@@ -12,17 +12,11 @@ CREATE TABLE Build (
     amsystem_id VARCHAR(100)
         REFERENCES AMSystem(am_system_id),
 
-    process_id VARCHAR(100)
-        REFERENCES Process(process_id),
-
-    build_geometry_id VARCHAR(100)
-        REFERENCES BuildGeometry(build_geometry_id),
-
-    base_id VARCHAR(100)
-        REFERENCES Base(base_id),
-
     material_id VARCHAR(255)
         REFERENCES Material(material_id),
+    
+    parameter_id VARCHAR(100)
+    REFERENCES Parameter(parameter_id),
 
     start_time TIMESTAMP,
 
