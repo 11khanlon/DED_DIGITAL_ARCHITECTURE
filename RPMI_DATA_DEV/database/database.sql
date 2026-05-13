@@ -32,7 +32,8 @@ CREATE TABLE AMMachine (
     build_volume_y_mm FLOAT,
     build_volume_z_mm FLOAT,
     last_calibration_date TIMESTAMP,
-    maintenance_date TIMESTAMP
+    maintenance_date TIMESTAMP,
+    sampling_rate_Hz FLOAT
 );
 
 -- =========================================================
