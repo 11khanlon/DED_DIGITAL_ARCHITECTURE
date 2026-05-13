@@ -9,20 +9,20 @@ CREATE TABLE Build (
     project_id VARCHAR(100)
         REFERENCES Project(project_id),
 
-    machine_id VARCHAR(100)
-        REFERENCES AMMachine(machine_id),
+    amsystem_id VARCHAR(100)
+        REFERENCES AMSystem(am_system_id),
 
-    process_plan_id VARCHAR(100)
-        REFERENCES ProcessPlan(process_plan_id),
+    process_id VARCHAR(100)
+        REFERENCES Process(process_id),
 
     build_geometry_id VARCHAR(100)
         REFERENCES BuildGeometry(build_geometry_id),
 
-    feedstock_material_id VARCHAR(100)
-        REFERENCES Material(material_id),
-
     base_id VARCHAR(100)
         REFERENCES Base(base_id),
+
+    material_id VARCHAR(255)
+        REFERENCES Material(material_id),
 
     start_time TIMESTAMP,
 

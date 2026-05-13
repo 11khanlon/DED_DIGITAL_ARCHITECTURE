@@ -1,10 +1,27 @@
 ---========= Base, organization, person, qualification =========
 
+
+
 CREATE TABLE ORGANIZATION (
     org_id VARCHAR(100) PRIMARY KEY,
     org_name VARCHAR(255),
     org_location VARCHAR(255), 
     org_description TEXT
+);
+
+CREATE TABLE Project (
+    project_id VARCHAR(100) PRIMARY KEY,
+    project_name VARCHAR(255),
+    project_creator VARCHAR(255)
+        REFERENCES ORGANIZATION(org_id), 
+    project_sponsor VARCHAR(255)
+        REFERENCES ORGANIZATION(org_id),
+    project_start_date TIMESTAMP,
+    project_end_date TIMESTAMP,
+    project_builds VARCHAR(255) 
+        REFERENCES (Build(build_id))
+
+    description TEXT
 );
 
 CREATE TABLE PERSON (

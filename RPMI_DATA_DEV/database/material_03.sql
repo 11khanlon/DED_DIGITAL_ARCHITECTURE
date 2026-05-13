@@ -1,99 +1,102 @@
 -- =========================================================
--- MATERIAL FORM MODULE
+-- MATERIAL ORGANIZATION
 -- =========================================================
 
-CREATE TABLE MaterialForm (
-    material_form_id VARCHAR(100) PRIMARY KEY,
-
-    form_type VARCHAR(100)
+CREATE TABLE Material_Organization (
+    material_id VARCHAR(100),
+    organization_id VARCHAR(100),
+    relationship_type VARCHAR(50), -- Supplier / Manufacturer / Stock Owner
+    PRIMARY KEY (material_id, organization_id, relationship_type)
 );
-
 -- =========================================================
--- MATERIAL CERTIFICATION MODULE
+-- MATERIAL STOCK MODULE
 -- =========================================================
+CREATE TABLE MaterialStock (
+    material_stock_id VARCHAR(100) PRIMARY KEY,
 
-CREATE TABLE MaterialCertification (
-    certification_id VARCHAR(100) PRIMARY KEY,
+    material_id VARCHAR(100)
+        REFERENCES Material(material_id),
 
-    certification_type VARCHAR(255),
-    certification_date TIMESTAMP,
-    standard VARCHAR(255),
-    lot_number VARCHAR(255)
+    manufacturing_lot VARCHAR(255),
+
+    purchase_order_number VARCHAR(255),
+
+    stock_quantity_kg DOUBLE PRECISION,
+
+    stock_form VARCHAR(50), -- Bulk / Wire / Powder / Liquid
+
+    stock_owner VARCHAR(100),
+
+    stock_location TEXT, -- ISO 19160 globalAddressFormat
+
+    stock_storage_environment TEXT,
+
+    stock_certification_date DATE,
+
+    stock_certificate_uri TEXT
 );
 
 -- =========================================================
 -- MATERIAL MODULE
 -- =========================================================
 
+
 CREATE TABLE Material (
-
     material_id VARCHAR(100) PRIMARY KEY,
-
-    material_form_id VARCHAR(100)
-        REFERENCES MaterialForm(material_form_id),
-
-    certification_id VARCHAR(100)
-        REFERENCES MaterialCertification(certification_id),
-
     material_name VARCHAR(255),
 
-    alloy VARCHAR(255),
+    generic_material_type VARCHAR(50),  -- Ceramic / Metal / Polymer / etc
+    specific_material_type VARCHAR(50), -- Aluminum / Titanium / etc
 
-    supplier VARCHAR(255),
+    material_grade VARCHAR(255),
 
-    lot_number VARCHAR(255),
-
-    manufacturer VARCHAR(255),
-
-    material_standard VARCHAR(255),
-
-    received_date TIMESTAMP,
-
-    expiry_date TIMESTAMP,
-
-    reuse_count INT,
-
-    recycled BOOLEAN
+    material_product_specification TEXT  -- URI
 );
 
 -- =========================================================
--- POWDER CHARACTERISTICS MODULE
+-- Material Characterization Module
 -- =========================================================
 
-CREATE TABLE MaterialParameter (
+CREATE TABLE MaterialCharacterization (
+    characterization_id VARCHAR(100) PRIMARY KEY,
 
-    material_parameter_id VARCHAR(100) PRIMARY KEY,
+    material_stock_id VARCHAR(100)
+        REFERENCES MaterialStock(material_stock_id),
 
-    parameter_name VARCHAR(255),
-
-    parameter_category VARCHAR(255),
-
-    unit VARCHAR(100),
-
-    data_type VARCHAR(100),
-
-    physical_meaning TEXT
+    chemistry_characterization_uri TEXT,
+    mechanical_characterization_uri TEXT,
+    nde_characterization_uri TEXT
 );
 
 -- =========================================================
--- MATERIAL THERMAL PROPERTIES MODULE
+-- MATERIAL FEEDSTOCK MODULE
 -- =========================================================
 
-CREATE TABLE MaterialProperty (
+CREATE TABLE Feedstock (
+    feedstock_id VARCHAR(100) PRIMARY KEY,
 
-    property_id VARCHAR(100) PRIMARY KEY,
+    material_stock_id VARCHAR(100)
+        REFERENCES MaterialStock(material_stock_id),
 
-    material_id VARCHAR(100)
-        REFERENCES Material(material_id),
+    source_stock_ids TEXT[], -- stringArray
 
-    material_parameter_id VARCHAR(100)
-        REFERENCES MaterialParameter(material_parameter_id),
+    source_stock_quantity_kg DOUBLE PRECISION,
 
-    value_numeric FLOAT,
+    feedstock_preparation_date DATE,
 
-    value_text TEXT,
+    ingot_id VARCHAR(255)
+);
 
-    measurement_date TIMESTAMP,
 
-    quality_flag VARCHAR(100)
+-- =========================================================
+-- RECYCLED MATERIAL STOCK MODULE
+-- =========================================================
+CREATE TABLE RecycledMaterialStock (
+    recycled_stock_id VARCHAR(100) PRIMARY KEY,
+
+    feedstock_id VARCHAR(100),
+
+    recycling_collect_date DATE,
+
+    associated_build_ids TEXT[] -- stringArray
 );
