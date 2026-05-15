@@ -11,11 +11,7 @@ from ingestion.columns_to_drop import columns_to_drop
 
 
 #%%
-#%%
-import numpy as np
-import pandas as pd
-import os
-from ingestion.columns_to_drop import columns_to_drop
+
 
 
 def clean_columns(df):
@@ -113,3 +109,12 @@ def clean_columns(df):
 
     return parameter_table, filtered
 
+
+
+csv_path = (
+    r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO"
+    r"\RPMI_DATA_DEV\data_csv_examples"
+    r"\dlog_2026-04-02_1209_TestPrintInconel718Boeing.csv"
+)
+
+parameter_table, cleaned_df = clean_columns(pd.read_csv(csv_path))

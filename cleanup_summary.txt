@@ -1,0 +1,6 @@
+
+--- SUMMARY ---
+Original: (1689, 265)
+Final:    (0, 62)
+Cols removed: 203
+Rows removed: 1689

@@ -207,7 +207,8 @@ columns_to_drop = [
     "PF2 Top Pressure",
     "PF2 Bottom Pressure",
     "PF3 Top Pressure",
-    "PF3 Bottom Pressure"   
+    "PF3 Bottom Pressure",
+    "Motion Compensation Active"
 
 ]
 

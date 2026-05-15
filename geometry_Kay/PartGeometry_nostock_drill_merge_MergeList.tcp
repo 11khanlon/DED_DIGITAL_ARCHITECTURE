@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ToolcodeParameters>
+  <TCMFileList>
+    <MergeFileList>
+      <MergeFile>
+        <FileName>E:\geometry\PartGeometry_nostock_drill.rmc</FileName>
+        <TranslationX>NaN</TranslationX>
+        <TranslationY>NaN</TranslationY>
+        <TranslationZ>NaN</TranslationZ>
+      </MergeFile>
+      <MergeFile>
+        <FileName>E:\geometry\PartGeometry_nostock_fullsize.rmc</FileName>
+        <TranslationX>NaN</TranslationX>
+        <TranslationY>NaN</TranslationY>
+        <TranslationZ>NaN</TranslationZ>
+      </MergeFile>
+    </MergeFileList>
+    <PF1OffAtEnd>false</PF1OffAtEnd>
+    <PF2OffAtEnd>false</PF2OffAtEnd>
+    <PF3OffAtEnd>false</PF3OffAtEnd>
+    <PF4OffAtEnd>false</PF4OffAtEnd>
+    <IntendedLayerThickness>0.015</IntendedLayerThickness>
+  </TCMFileList>
+</ToolcodeParameters>

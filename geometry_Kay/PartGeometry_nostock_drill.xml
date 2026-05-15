@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RmcTracker xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Records>
+    <RmcRecord>
+      <Patterns>
+        <RmcPattern>
+          <KeptContours>
+            <boolean>true</boolean>
+            <boolean>true</boolean>
+            <boolean>true</boolean>
+            <boolean>true</boolean>
+            <boolean>true</boolean>
+            <boolean>true</boolean>
+            <boolean>true</boolean>
+            <boolean>true</boolean>
+          </KeptContours>
+          <HatchAngles>
+            <double>0</double>
+            <double>45</double>
+            <double>90</double>
+            <double>135</double>
+            <double>180</double>
+            <double>225</double>
+            <double>270</double>
+            <double>315</double>
+          </HatchAngles>
+          <OverhangSpeedCompensationList />
+          <LayerRange>0-999</LayerRange>
+          <ContourSpeed>30</ContourSpeed>
+          <HatchSpeed>30</HatchSpeed>
+          <HatchWidth>0.045</HatchWidth>
+          <HatchShrink>0</HatchShrink>
+          <WaitLaserOnBeforeMove>0</WaitLaserOnBeforeMove>
+          <WaitLaserOnAfterMove>0</WaitLaserOnAfterMove>
+          <WaitBetweenMoves>0</WaitBetweenMoves>
+          <WaitBetweenLayers>0</WaitBetweenLayers>
+          <WaitAfterDeadMove>0</WaitAfterDeadMove>
+          <OpenContourTrim>0</OpenContourTrim>
+          <OverhangDirectionDoesNotMatter>false</OverhangDirectionDoesNotMatter>
+          <OverhangCompAntiOscillation>0</OverhangCompAntiOscillation>
+          <LayerThickness>0.015</LayerThickness>
+          <Randomizer>Standard</Randomizer>
+          <HatchOptimization>Traditional</HatchOptimization>
+          <HatchingPointEven />
+          <HatchingPointOdd />
+          <LaserPower />
+          <LaserPowerSP>1070</LaserPowerSP>
+          <AlpsSpotSize>0.07</AlpsSpotSize>
+          <PowderFeeder1Override />
+          <PowderFeeder2Override />
+          <PowderFeeder3Override />
+          <PowderFeeder4Override />
+          <PowderFeederSetpoint />
+        </RmcPattern>
+      </Patterns>
+      <PowderFeederOverrideRanges />
+      <PowderFeederSetpointRanges>
+        <PowderFeederSetpointsLayerRange>
+          <StartLayer>0</StartLayer>
+          <EndLayer>999</EndLayer>
+          <PFSetpoints>
+            <float>1</float>
+            <float>1</float>
+            <float>0</float>
+            <float>0</float>
+          </PFSetpoints>
+        </PowderFeederSetpointsLayerRange>
+      </PowderFeederSetpointRanges>
+      <Operations />
+      <RmcFile>E:\geometry\PartGeometry_nostock_drill.rmc</RmcFile>
+      <PreheaderInfo />
+      <UseSegmentSpeed>false</UseSegmentSpeed>
+      <UseDeadMoveSpeed>false</UseDeadMoveSpeed>
+      <ThreeAxisCode>true</ThreeAxisCode>
+      <StraightLineJoinEnabled>false</StraightLineJoinEnabled>
+    </RmcRecord>
+  </Records>
+  <Version>1</Version>
+  <LastModification>4/20/2026 5:41:46 PM</LastModification>
+</RmcTracker>

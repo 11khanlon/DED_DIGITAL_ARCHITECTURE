@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RmcTracker xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Records>
+    <RmcRecord>
+      <Patterns />
+      <PowderFeederOverrideRanges />
+      <PowderFeederSetpointRanges />
+      <Operations>
+        <RmcOperation>
+          <OperationPattern>
+            <RmcOperationPattern xsi:type="MergeOperation">
+              <LayerRange>0-39</LayerRange>
+              <MergeOperation>
+                <MergeElement>E:\geometry\PartGeometry_nostock_drill.rmc,0,0,0</MergeElement>
+                <MergeElement>E:\geometry\PartGeometry_nostock_fullsize.rmc,0,0,0</MergeElement>
+              </MergeOperation>
+            </RmcOperationPattern>
+          </OperationPattern>
+          <OperationType>Merge</OperationType>
+        </RmcOperation>
+      </Operations>
+      <RmcFile>E:\geometry\PartGeometry_nostock_drill_merge.rmc</RmcFile>
+      <PreheaderInfo>Merge File Info</PreheaderInfo>
+      <UseSegmentSpeed>true</UseSegmentSpeed>
+      <UseDeadMoveSpeed>false</UseDeadMoveSpeed>
+      <ThreeAxisCode>true</ThreeAxisCode>
+      <StraightLineJoinEnabled>false</StraightLineJoinEnabled>
+    </RmcRecord>
+  </Records>
+  <Version>1</Version>
+  <LastModification>4/20/2026 5:54:06 PM</LastModification>
+</RmcTracker>
