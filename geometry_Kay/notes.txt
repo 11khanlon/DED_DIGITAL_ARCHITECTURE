@@ -1,0 +1,89 @@
+spatial sensitvity scale for thermal accumulation calculation, defines local neighborhodd around each scan midpoint
+thermal_radius = 0.10 inches 
+when i compute whether a point is being reheated I will consider all previous segments within 0.10 inch radius
+“For any new laser vector” look back at all previous laser activity within 0.1 inches and decide if that region is still thermally hot
+
+it is used in neighbors = kdtree.query_ball_point(current_point , r= thermal_radius)
+this means build a circle (in XY plane), radius = 0.10 inches, find all vectors inside it. How recently those neighbors were deposited 
+
+This is a simplified thermal diffusion model. Instead of solving heat equations, approximate "heat influence zone: 
+a 0.10 inch radius is acting like approx melt pool influence range, conduction zone and reheating sensitivity zone 
+For DED systems, melt pool width might be 0.02 - 0.06 in and heat affected zone is larger (0.05 - 0.15 depending on conditions)
+you can treat thermal_radius as a model parameter, not a constant: 
+later conduct a sensitivity analysis : how does defect prediction change with radius 
+tune radius so that predicted thermal hotspots match thermocouples 
+
+what are neighbors? 
+when you compute thermal accumulation you are asking "which previous laser paths are spatially close to the current path"
+Those nearby paths are called neighbors 
+Example: current vector midpoint (0.50, 0.20)
+If another vector midpoint is (0.55, 0.18) and your thermal radius is 0.10 
+then the distance is small enough that it counts as a neighbor. Path liekly still influences local temperature and heat may not have dissipated
+
+In DED: heat diffuses spatially, nearby deposited regions affect new deposition. repeated exposure causes overheating, grain growth, distortion
+
+KDTree is a fast sptial search. Find all points near this point 
+why not just compare everything? suppose you have 200,000 vectors
+for every vector:
+    compare to every other vector
+this is O(n^2) which is slow 
+
+
+what does import re do? 
+it is pythons pattern matching module 
+Used for: parsing text, extracting numbers, reading G-code/MPF 
+
+.mpf is semi-structured manufacturing text 
+Example: N23 X=-1.0 Y=1.0 Z=0.0 Q1=IC(72) F=30
+X = -1.0
+Y = 1.0
+Z = 0.0
+F = 30
+
+Example: match = re.search(r'X=([-\d\.]+)', line)
+This means, Find: X = followed by: numbers, minus signs, decimals
+Then: match.group(1) returns -1 
+
+
+MPF File: 
+The mpf file is not structured like a csv where every line contains all information 
+Instead some lines set machine state, later lines inherit that state 
+change mode
+change feedrate
+change power
+move somewhere
+move somewhere
+change mode
+change feedrate
+move somewhere
+
+
+with open(mpf_path, 'r') as f:
+    lines = f.readlines()
+
+
+State varaibles: these variables store the current machine state at any moment while reading the MPF 
+current_mode = 'UNKNOWN'
+current_feedrate = np.nan
+current_power = np.nan
+current_layer = 0
+
+How CNC/DED machines operate. Machine controllers are modal systems. Command reamin active until overwritten
+Examples: feedrate stays active, laser mode stays active, spinde speed stays active 
+mode_lookup = {
+    '1': 'CONTOUR',
+    '2': 'HATCH',
+    '3': 'OTHER'
+}
+
+$A_DBB[88]=1 means: CONTOUR MODE
+$A_DBB[88]=2 means HATCH MODE
+So parser makes machine encoding into human-readable manufacturing semantics
+
+Now its time to extract events 
+records[] becomes the extracted manufacturing dataset 
+for raw_line in lines. Process MPF line by line and loop it over 
+clean the line. line = raw_line.strip(), this will remove unneeded spaces or newline characters 
+line_match = line_number_pattern.search(line) 
+it uses regex like r'N(\d+)' and extracts N34 to get 34 
+now do it for each regex pattern

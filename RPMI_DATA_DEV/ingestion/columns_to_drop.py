@@ -208,20 +208,39 @@ columns_to_drop = [
     "PF2 Bottom Pressure",
     "PF3 Top Pressure",
     "PF3 Bottom Pressure",
-    "Motion Compensation Active"
-
+    "Motion Compensation Active",
+    "Box Pressure",
+    "Dust Collector Diff Pressure",
+    "Powder Manifold Pressure Sensor",
+    "Path Setpoint Velocity(inch/min)",
+    "PF4 Argon: Warning High Level",
+    "PF4 Argon: Warning Low Level",
+    "Center Purge Argon: Warning High Level",
+    "Center Purge Argon: Warning Low Level",
+    "H2O Sensor: Warning High Level",
+    "H2O Sensor: Warning Low Level",
+    "O2 Sensor: Warning High Level",
+    "O2 Sensor: Warning Low Level",
+    "Head Temp: Warning High Level",
+    "Head Temp: Warning Low Level",
+    "PF4 Powder Low",
+    "PF4 Powder Low: Warning Enabled",
+    "PF4 Powder Low: Alarm Enabled",
+    "Box Pressure",
+    "Powder Manifold Pressure Sensor",
+    "Optics Box Pressure Sensor"
 ]
+
+
 
 print(f"Shape of columns_to_drop: {len(columns_to_drop)}")
 
 #%%
 '''RPMI_machine_data = pd.DataFrame({
     "parameter_name": [
-        "Box Pressure",
-        "Dust Collector Diff Pressure",
-        "Powder Manifold Pressure Sensor",
-        "Path Setpoint Velocity(inch/min)",
-        "Toolcode Execution Time"
+        
+        
+    
     ]
 })
 Path setpoint velocity is the set federate / print speed.
