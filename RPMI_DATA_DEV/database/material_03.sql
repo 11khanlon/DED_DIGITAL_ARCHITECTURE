@@ -5,24 +5,10 @@
 CREATE TABLE Material (
     material_id VARCHAR(100) PRIMARY KEY,
     material_name VARCHAR(255),
-
     generic_material_type VARCHAR(50),  -- Ceramic / Metal / Polymer / etc
     specific_material_type VARCHAR(50), -- Aluminum / Titanium / etc
-
     material_grade VARCHAR(255),
-
     material_product_specification TEXT  -- URI
-);
-
--- =========================================================
--- MATERIAL ORGANIZATION
--- =========================================================
-
-CREATE TABLE Material_Organization (
-    material_id VARCHAR(100),
-    organization_id VARCHAR(100),
-    relationship_type VARCHAR(50), -- Supplier / Manufacturer / Stock Owner
-    PRIMARY KEY (material_id, organization_id, relationship_type)
 );
 
 -- =========================================================
@@ -52,7 +38,6 @@ CREATE TABLE MaterialStock (
 
     stock_certificate_uri TEXT
 );
-
 
 
 -- =========================================================
@@ -89,16 +74,3 @@ CREATE TABLE Feedstock (
     ingot_id VARCHAR(255)
 );
 
-
--- =========================================================
--- RECYCLED MATERIAL STOCK MODULE
--- =========================================================
-CREATE TABLE RecycledMaterialStock (
-    recycled_stock_id VARCHAR(100) PRIMARY KEY,
-
-    feedstock_id VARCHAR(100),
-
-    recycling_collect_date DATE
-
-    --associated_build_ids TEXT[]  stringArray
-);

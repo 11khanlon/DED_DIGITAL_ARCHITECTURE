@@ -16,18 +16,14 @@ CREATE TABLE Parameter (
     data_type VARCHAR(100)
 );
 
-
 -- =========================================================
 -- PARAMETER MODULE
 -- =========================================================
 
 CREATE TABLE BuildParameter (
     id SERIAL PRIMARY KEY,
-
-
     parameter_id VARCHAR(100)
         REFERENCES Parameter(parameter_id),
-
     value_text TEXT,
     value_numeric DOUBLE PRECISION,
     unit VARCHAR(100),

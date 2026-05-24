@@ -4,7 +4,6 @@
 """
 RPMI MPF TOOLPATH ANALYSIS PIPELINE
 
-This script:
 1. Parses RPMI .mpf files
 2. Extracts manufacturing states
 3. Reconstructs deposition vectors
@@ -17,7 +16,6 @@ This script:
     - sequential execution
     - thermal accumulation
 
-Author: Kayleigh Hanlon
 """
 
 #%%
@@ -190,10 +188,11 @@ for i in range(1, len(points_df)):
 
 vectors_df = pd.DataFrame(vector_records)
 
+
 #%%
 # -------------------------------------------------------------------
 # GEOMETRIC METRICS
-# -------------------------------------------------------------------
+
 
 vectors_df['dx'] = vectors_df['x2'] - vectors_df['x1']
 vectors_df['dy'] = vectors_df['y2'] - vectors_df['y1']
@@ -464,7 +463,7 @@ ani = FuncAnimation(
     fig,
     animate,
     frames=len(vectors_df),
-    interval=20
+    interval=0.5
 )
 
 plt.show()

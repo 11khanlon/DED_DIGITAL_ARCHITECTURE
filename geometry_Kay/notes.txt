@@ -68,7 +68,7 @@ current_feedrate = np.nan
 current_power = np.nan
 current_layer = 0
 
-How CNC/DED machines operate. Machine controllers are modal systems. Command reamin active until overwritten
+How CNC/DED machines operate. Machine controllers are modal systems. Command remain active until overwritten
 Examples: feedrate stays active, laser mode stays active, spinde speed stays active 
 mode_lookup = {
     '1': 'CONTOUR',
@@ -80,10 +80,37 @@ $A_DBB[88]=1 means: CONTOUR MODE
 $A_DBB[88]=2 means HATCH MODE
 So parser makes machine encoding into human-readable manufacturing semantics
 
-Now its time to extract events 
+
+--- Now its time to extract events ---
 records[] becomes the extracted manufacturing dataset 
 for raw_line in lines. Process MPF line by line and loop it over 
 clean the line. line = raw_line.strip(), this will remove unneeded spaces or newline characters 
 line_match = line_number_pattern.search(line) 
 it uses regex like r'N(\d+)' and extracts N34 to get 34 
 now do it for each regex pattern
+
+
+--- Build position vectors ----
+make each row a motion vector: 
+x1	y1	x2	y2
+0	0	1	0
+1	0	1	1
+vector_records = []   --> create empty list 
+for i in range(1, len(points_df)):
+You loop through every point starting from the second point. Previous point --> current point 
+prev_row = points_df.iloc[i - 1]
+row = points_df.iloc[i]
+
+Create Vector Records:
+vector_records.append({....
+Metadata: 
+'layer': row['layer'],
+'mode': row['mode'],
+
+Start Coordinates 
+
+
+
+
+
+

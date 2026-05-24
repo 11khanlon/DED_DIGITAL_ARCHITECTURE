@@ -24,9 +24,5 @@ CREATE TABLE Build (
 
     build_status VARCHAR(100),
 
-    build_type VARCHAR(255),
-
-    layer_count INT,
-
     notes TEXT
 );
