@@ -215,4 +215,7 @@ __marimo__/
 /SADL/settings.json
 .bevel/do_not_share
 .bevel/shareable
-.bevel/shareable/graph
+.bevel/shareable/graphbevel/
+*.db
+*.log
+.bevel/
