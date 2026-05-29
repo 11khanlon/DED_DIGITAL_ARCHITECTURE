@@ -213,3 +213,6 @@ __marimo__/
 #sadl
 /SADL/.project
 /SADL/settings.json
+.bevel/do_not_share
+.bevel/shareable
+.bevel/shareable/graph

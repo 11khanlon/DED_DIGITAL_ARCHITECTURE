@@ -76,6 +76,7 @@ def clean_columns(df):
     # parse timestamp
     df["TimeStamp"] = pd.to_datetime(
         df["TimeStamp"],
+        format="%M:%S.%f",
         errors="coerce"
     )
 
@@ -159,9 +160,14 @@ def clean_columns(df):
 
         event_mask = (
             df[events_col]
-            .astype(str)
-            .str.strip()
-            .ne("")
+            .notna()
+            &
+            (
+                df[events_col]
+                .astype(str)
+                .str.strip()
+                != ""
+            )
         )
 
         event_rows = df[event_mask].copy()
@@ -434,18 +440,13 @@ def clean_columns(df):
 #%%
 
 csv_path = (
-    r"C:\Users\Kayleigh\DIGITAL_ARCH_REPO"
-    r"\RPMI_DATA_DEV\data_csv_examples"
-    r"\dlog_2026-04-02_1209_TestPrintInconel718Boeing.csv"
+    r"C:\\Users\\Kayleigh\\DIGITAL_ARCH_REPO"
+    r"\\RPMI_DATA_DEV\\data_csv_examples"
+    r"\\dlog_2026-04-02_1209_TestPrintInconel718Boeing.csv"
 )
 
-'''
-Examples:
+#Examples:r"\dlog_2023-08-09_1106_purge_testing.csv" r"\dlog_2026-04-02_1209_TestPrintInconel718Boeing.csv"
 
-r"\dlog_2023-08-09_1106_purge_testing.csv"
-
-r"\dlog_2026-04-02_1209_TestPrintInconel718Boeing.csv"
-'''
 
 (
     parameter_table,

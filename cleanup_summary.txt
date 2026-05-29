@@ -1,0 +1,6 @@
+
+--- SUMMARY ---
+Original Shape: (1689, 265)
+Final Shape:    (1536, 46)
+Columns Removed: 219
+Rows Removed: 153

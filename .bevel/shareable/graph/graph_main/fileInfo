@@ -1,0 +1,200 @@
+{
+  "fileInfos" : [ {
+    "path" : "Mazak\\MTCONNECT.py",
+    "modificationInfo" : {
+      "contentHash" : -218679550,
+      "lastModified" : 1760410647360
+    },
+    "linesOfCode" : 18
+  }, {
+    "path" : "Mazak\\mtconnect_cleanup.py",
+    "modificationInfo" : {
+      "contentHash" : 459658980,
+      "lastModified" : 1774124706908
+    },
+    "linesOfCode" : 41
+  }, {
+    "path" : "RPMI_DATA_DEV\\database\\SQL Database\\connection.py",
+    "modificationInfo" : {
+      "contentHash" : 179469435,
+      "lastModified" : 1778613079498
+    },
+    "linesOfCode" : 32
+  }, {
+    "path" : "RPMI_DATA_DEV\\ingestion\\clean_data.py",
+    "modificationInfo" : {
+      "contentHash" : 980552572,
+      "lastModified" : 1779916914667
+    },
+    "linesOfCode" : 462
+  }, {
+    "path" : "RPMI_DATA_DEV\\ingestion\\columns_to_drop.py",
+    "modificationInfo" : {
+      "contentHash" : 1117878203,
+      "lastModified" : 1778809294359
+    },
+    "linesOfCode" : 251
+  }, {
+    "path" : "RPMI_DATA_DEV\\ingestion\\ingest_base_parameters.py",
+    "modificationInfo" : {
+      "contentHash" : -152579277,
+      "lastModified" : 1778634255950
+    },
+    "linesOfCode" : 278
+  }, {
+    "path" : "RPMI_DATA_DEV\\ingestion\\ingest_build_parameters.py",
+    "modificationInfo" : {
+      "contentHash" : 2147145398,
+      "lastModified" : 1778627518658
+    },
+    "linesOfCode" : 57
+  }, {
+    "path" : "RPMI_DATA_DEV\\ingestion\\ingest_material.py",
+    "modificationInfo" : {
+      "contentHash" : -152579277,
+      "lastModified" : 1778634328553
+    },
+    "linesOfCode" : 278
+  }, {
+    "path" : "RPMI_DATA_DEV\\ingestion\\ingest_sensor.py",
+    "modificationInfo" : {
+      "contentHash" : 754956717,
+      "lastModified" : 1778629955140
+    },
+    "linesOfCode" : 156
+  }, {
+    "path" : "RPMI_DATA_DEV\\ingestion\\ingest_telemetry.py",
+    "modificationInfo" : {
+      "contentHash" : 1792914617,
+      "lastModified" : 1778607979424
+    },
+    "linesOfCode" : 321
+  }, {
+    "path" : "RPMI_DATA_DEV\\ingestion\\ontology_mapper.py",
+    "modificationInfo" : {
+      "contentHash" : 294745910,
+      "lastModified" : 1778608681621
+    },
+    "linesOfCode" : 66
+  }, {
+    "path" : "RPMI_DATA_DEV\\ingestion\\parameter_inputs.py",
+    "modificationInfo" : {
+      "contentHash" : 1889277091,
+      "lastModified" : 1777689268328
+    },
+    "linesOfCode" : 93
+  }, {
+    "path" : "RPMI_DATA_DEV\\main.py",
+    "modificationInfo" : {
+      "contentHash" : -774895039,
+      "lastModified" : 1778545550985
+    },
+    "linesOfCode" : 52
+  }, {
+    "path" : "Socket_Messaging\\RPMIandClient\\Old files\\Socket_Client.py",
+    "modificationInfo" : {
+      "contentHash" : 602685414,
+      "lastModified" : 1776183104359
+    },
+    "linesOfCode" : 25
+  }, {
+    "path" : "Socket_Messaging\\RPMIandClient\\Old files\\Socket_Host.py",
+    "modificationInfo" : {
+      "contentHash" : 1546150743,
+      "lastModified" : 1776182390060
+    },
+    "linesOfCode" : 163
+  }, {
+    "path" : "Socket_Messaging\\RPMIandClient\\client.py",
+    "modificationInfo" : {
+      "contentHash" : -1643775742,
+      "lastModified" : 1776183277239
+    },
+    "linesOfCode" : 23
+  }, {
+    "path" : "Socket_Messaging\\RPMIandClient\\main.py",
+    "modificationInfo" : {
+      "contentHash" : 1348046893,
+      "lastModified" : 1776201043306
+    },
+    "linesOfCode" : 7
+  }, {
+    "path" : "Socket_Messaging\\RPMIandClient\\monitor.py",
+    "modificationInfo" : {
+      "contentHash" : 1524366500,
+      "lastModified" : 1776199829029
+    },
+    "linesOfCode" : 80
+  }, {
+    "path" : "Socket_Messaging\\RPMIandClient\\server.py",
+    "modificationInfo" : {
+      "contentHash" : -1208238285,
+      "lastModified" : 1776201044103
+    },
+    "linesOfCode" : 70
+  }, {
+    "path" : "Socket_Messaging\\RPMIandClient\\utils.py",
+    "modificationInfo" : {
+      "contentHash" : 37661465,
+      "lastModified" : 1776182186713
+    },
+    "linesOfCode" : 22
+  }, {
+    "path" : "Socket_Messaging\\Raspberry_pi\\sensor_stream.py",
+    "modificationInfo" : {
+      "contentHash" : 1171714510,
+      "lastModified" : 1776201042369
+    },
+    "linesOfCode" : 11
+  }, {
+    "path" : "geometry_Kay\\mazaknc.py",
+    "modificationInfo" : {
+      "contentHash" : 466912594,
+      "lastModified" : 1779481071049
+    },
+    "linesOfCode" : 719
+  }, {
+    "path" : "geometry_Kay\\rpmimachine2.py",
+    "modificationInfo" : {
+      "contentHash" : -874173115,
+      "lastModified" : 1780011331225
+    },
+    "linesOfCode" : 192
+  }, {
+    "path" : "geometry_Kay\\rpmimachinedata.py",
+    "modificationInfo" : {
+      "contentHash" : 1496479374,
+      "lastModified" : 1780014497400
+    },
+    "linesOfCode" : 392
+  }, {
+    "path" : "geometry_Kay\\rpmimpf.py",
+    "modificationInfo" : {
+      "contentHash" : 1344148630,
+      "lastModified" : 1780013473504
+    },
+    "linesOfCode" : 683
+  }, {
+    "path" : "randomizing_data\\RPMI_CLEANUP.py",
+    "modificationInfo" : {
+      "contentHash" : -80556083,
+      "lastModified" : 1777497577171
+    },
+    "linesOfCode" : 147
+  }, {
+    "path" : "randomizing_data\\RPMI_dummy_data.py",
+    "modificationInfo" : {
+      "contentHash" : 955357365,
+      "lastModified" : 1771531948268
+    },
+    "linesOfCode" : 147
+  }, {
+    "path" : "randomizing_data\\write_dummy_csv.py",
+    "modificationInfo" : {
+      "contentHash" : -1698921928,
+      "lastModified" : 1771531924207
+    },
+    "linesOfCode" : 152
+  } ],
+  "appVersion" : "1.3.0"
+}

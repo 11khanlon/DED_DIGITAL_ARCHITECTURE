@@ -26,6 +26,8 @@ import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
 from matplotlib.animation import FuncAnimation
 from scipy.spatial import cKDTree
+from mpl_toolkits.mplot3d import Axes3D
+from scipy.spatial import ConvexHull
 
 #%%
 ''''
@@ -375,6 +377,8 @@ ax.set_title('Sequential Toolpath Execution')
 
 plt.show()
 
+
+
 #%%
 # -------------------------------------------------------------------
 # VISUALIZATION 3
@@ -573,3 +577,107 @@ Each vector becomes:
  └── CONTRIBUTES_TO_DEFECT
 ```
 '''
+
+
+
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
+
+fig = plt.figure(figsize=(10, 10))
+ax = fig.add_subplot(111, projection='3d')
+
+for _, row in vectors_df.iterrows():
+
+    ax.plot(
+        [row['x1'], row['x2']],
+        [row['y1'], row['y2']],
+        [row['z1'], row['z2']],
+        alpha=0.7
+    )
+
+ax.set_title("3D Raw Scan Vectors")
+ax.set_xlabel("X")
+ax.set_ylabel("Y")
+ax.set_zlabel("Z")
+
+plt.show()
+
+
+import numpy as np
+from mpl_toolkits.mplot3d.art3d import Line3DCollection
+
+fig = plt.figure(figsize=(10, 10))
+ax = fig.add_subplot(111, projection='3d')
+
+segments = []
+
+for _, row in vectors_df.iterrows():
+    segments.append([
+        [row['x1'], row['y1'], row['z1']],
+        [row['x2'], row['y2'], row['z2']]
+    ])
+
+lc = Line3DCollection(
+    segments,
+    cmap='viridis',
+    linewidths=2
+)
+
+lc.set_array(np.arange(len(segments)))
+
+ax.add_collection3d(lc)
+
+ax.set_title("3D Sequential Toolpath Execution")
+
+ax.set_xlabel("X")
+ax.set_ylabel("Y")
+ax.set_zlabel("Z")
+
+plt.colorbar(lc, label="Execution Order")
+
+plt.show()
+
+from mpl_toolkits.mplot3d import Axes3D
+
+fig = plt.figure(figsize=(10, 10))
+ax = fig.add_subplot(111, projection='3d')
+
+mode_colors = {
+    'CONTOUR': 'red',
+    'HATCH': 'blue',
+    'OTHER': 'gray'
+}
+
+for _, row in vectors_df.iterrows():
+
+    ax.plot(
+        [row['x1'], row['x2']],
+        [row['y1'], row['y2']],
+        [row['z1'], row['z2']],
+        color=mode_colors.get(row['mode'], 'black'),
+        linewidth=2
+    )
+
+ax.set_title("3D Contour vs Hatch")
+ax.set_xlabel("X")
+ax.set_ylabel("Y")
+ax.set_zlabel("Z")
+
+plt.show()
+
+print("\nGeometry Extents")
+
+print("X:",
+      vectors_df[['x1','x2']].min().min(),
+      "→",
+      vectors_df[['x1','x2']].max().max())
+
+print("Y:",
+      vectors_df[['y1','y2']].min().min(),
+      "→",
+      vectors_df[['y1','y2']].max().max())
+
+print("Z:",
+      vectors_df[['z1','z2']].min().min(),
+      "→",
+      vectors_df[['z1','z2']].max().max())
